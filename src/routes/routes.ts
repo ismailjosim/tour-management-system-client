@@ -1,8 +1,17 @@
 import { createBrowserRouter } from 'react-router'
+
+// * Layout Import
 import App from '../App'
+
+// * Pages Import
 import Home from '../Pages/Home'
-import AdminLayout from '../components/ui/layout/AdminLayout'
-import Analytics from '../Pages/Analytics'
+import About from '../Pages/About'
+import Login from '../Pages/Login'
+import Register from '../Pages/Register'
+
+// * Admin Pages Import
+// * User Pages Import
+// * Guides Pages Import
 
 const router = createBrowserRouter([
 	{
@@ -13,17 +22,19 @@ const router = createBrowserRouter([
 				index: true,
 				Component: Home,
 			},
+			{
+				path: 'about',
+				Component: About,
+			},
 		],
 	},
 	{
-		Component: AdminLayout,
-		path: 'admin',
-		children: [
-			{
-				Component: Analytics,
-				path: 'analytics',
-			},
-		],
+		Component: Login,
+		path: '/login',
+	},
+	{
+		Component: Register,
+		path: '/register',
 	},
 ])
 
