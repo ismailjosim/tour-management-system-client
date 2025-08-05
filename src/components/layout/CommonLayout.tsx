@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
+import TopHeader from "./TopHeader"
 
 
 interface IPros {
@@ -9,10 +10,13 @@ interface IPros {
 
 export default function CommonLayout({ children }: IPros) {
     return (
-        <>
+        <section className="min-h-screen flex-col flex">
+            <TopHeader />
             <Navbar />
-            {children}
+            <div className="grow-1">
+                {children}
+            </div>
             <Footer />
-        </>
+        </section>
     )
 }
