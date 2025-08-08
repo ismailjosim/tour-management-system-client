@@ -86,7 +86,8 @@ export function RegisterForm({
     })
 
     const onSubmit = (data: z.infer<typeof registerSchema>) => {
-        console.log(data)
+        // post request send to register new user
+        // api link: https://tour-management-system-beta.vercel.app/api/v1/user/register
     }
 
     return (
