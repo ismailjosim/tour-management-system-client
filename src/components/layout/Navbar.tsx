@@ -3,6 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/compon
 import { Link } from "react-router"
 import { Button } from "../ui/button"
 import { Menu } from "lucide-react"
+import { ModeToggle } from "./ModeToggler"
 
 
 const navLinks = [
@@ -39,6 +40,7 @@ const Header: React.FC = () => {
                                     </Link>
                                 </NavigationMenuItem>
                             ))}
+                            <ModeToggle />
                         </NavigationMenuList>
                     </NavigationMenu>
                 </nav>
@@ -50,7 +52,9 @@ const Header: React.FC = () => {
                             <Button variant="ghost" size="icon">
                                 <Menu className="h-6 w-6" />
                             </Button>
+
                         </DropdownMenuTrigger>
+                        <ModeToggle />
                         <DropdownMenuContent align="end" className="w-56">
                             {navLinks.map(({ label, href }) => (
                                 <Link
