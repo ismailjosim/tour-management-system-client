@@ -65,7 +65,6 @@ export function LoginForm({
             email: data.email,
             password: data.password,
         }
-        console.log(userInfo)
         try {
             const result = await login(userInfo).unwrap()
             if (result.success) {
@@ -75,7 +74,7 @@ export function LoginForm({
         } catch (error: any) {
             toast.error(error.data.message)
             if (error.status === 401) {
-                navigate('/verify')
+                navigate('/verify', { state: data.email })
             }
         }
     }
