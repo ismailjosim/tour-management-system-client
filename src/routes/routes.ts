@@ -8,6 +8,7 @@ import Home from '../Pages/Home'
 import About from '../Pages/About'
 import Login from '../Pages/Login'
 import Register from '../Pages/Register'
+import Verify from '../Pages/Verify'
 
 // * Admin Pages Import
 // * User Pages Import
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
 	{
 		Component: Register,
 		path: '/register',
+	},
+	{
+		Component: Verify,
+		path: '/verify',
 	},
 ])
 
