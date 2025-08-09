@@ -36,6 +36,10 @@ const router = createBrowserRouter([
 		Component: Register,
 		path: '/register',
 	},
+	{
+		Component: Register,
+		path: '/verify',
+	},
 ])
 
 export default router

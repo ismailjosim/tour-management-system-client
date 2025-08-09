@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import {
     Form,
@@ -47,6 +48,7 @@ export function LoginForm({
     ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
     const [login] = useLoginMutation()
+    const navigate = useNavigate()
 
 
 
@@ -66,10 +68,15 @@ export function LoginForm({
         console.log(userInfo)
         try {
             const result = await login(userInfo).unwrap()
-            console.log(result);
-            toast.success('user Logged In SuccessFully')
-        } catch (error) {
-            console.error(error)
+            if (result.success) {
+                toast.success(result.message)
+                // navigate('/verify')
+            }
+        } catch (error: any) {
+            toast.error(error.data.message)
+            if (error.status === 401) {
+                navigate('/verify')
+            }
         }
     }
 
