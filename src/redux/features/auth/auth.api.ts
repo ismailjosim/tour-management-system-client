@@ -1,5 +1,9 @@
 import { baseApi } from '../../app/baseApi'
 
+interface ISendOTP {
+	email: string
+}
+
 const authApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		login: builder.mutation({
@@ -16,7 +20,15 @@ const authApi = baseApi.injectEndpoints({
 				data: userInfo,
 			}),
 		}),
+		sendOTP: builder.mutation<null, ISendOTP>({
+			query: (userInfo) => ({
+				url: '/otp/send',
+				method: 'POST',
+				data: userInfo,
+			}),
+		}),
 	}),
 })
 
-export const { useRegisterMutation, useLoginMutation } = authApi
+export const { useRegisterMutation, useLoginMutation, useSendOTPMutation } =
+	authApi
