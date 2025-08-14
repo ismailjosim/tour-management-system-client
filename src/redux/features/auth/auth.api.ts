@@ -1,4 +1,4 @@
-import type { ILogin, IResponse, ISendOTP } from '../../../types'
+import type { ILogin, IResponse, ISendOTP, IVerifyOTP } from '../../../types'
 import { baseApi } from '../../app/baseApi'
 
 const authApi = baseApi.injectEndpoints({
@@ -24,8 +24,19 @@ const authApi = baseApi.injectEndpoints({
 				data: userInfo,
 			}),
 		}),
+		verifyOTP: builder.mutation<IResponse<null>, IVerifyOTP>({
+			query: (userInfo) => ({
+				url: '/otp/verify',
+				method: 'POST',
+				data: userInfo,
+			}),
+		}),
 	}),
 })
 
-export const { useRegisterMutation, useLoginMutation, useSendOTPMutation } =
-	authApi
+export const {
+	useRegisterMutation,
+	useLoginMutation,
+	useSendOTPMutation,
+	useVerifyOTPMutation,
+} = authApi

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -28,7 +29,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import { useSendOTPMutation } from '../redux/features/auth/auth.api'
+import {
+    useSendOTPMutation,
+    useVerifyOTPMutation,
+} from '../redux/features/auth/auth.api'
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -42,6 +46,7 @@ const Verify = () => {
     const [email] = useState(location.state)
     const [confirm, setConfirm] = useState(false)
     const [sendOTP] = useSendOTPMutation()
+    const [verifyOTP] = useVerifyOTPMutation()
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -49,10 +54,6 @@ const Verify = () => {
             pin: '',
         },
     })
-
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        console.log(data)
-    }
 
     useEffect(() => {
         if (!email) {
@@ -69,14 +70,32 @@ const Verify = () => {
     }
 
     const handleSendOtp = async () => {
+        const toastId = toast.loading('Sending OTP')
         try {
             const result = await sendOTP({ email }).unwrap()
-            if (result.statusCode === 201) {
-                toast.success(result.message)
+            if (result.success) {
+                toast.success(result.message, { id: toastId })
                 setConfirm(true)
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
+            toast.error(error.data.message, { id: toastId })
+        }
+    }
+
+    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        const payload = { email, otp: data.pin }
+        const toastId = toast.loading('Sending OTP')
+        try {
+            const res = await verifyOTP(payload).unwrap()
+
+            if (res.success) {
+                toast.success(res.message, { id: toastId })
+                navigate('/login')
+            }
+        } catch (error: any) {
+            console.log(error)
+            toast.error(error.data.message, { id: toastId })
         }
     }
 
