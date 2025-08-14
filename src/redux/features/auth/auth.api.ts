@@ -1,12 +1,9 @@
+import type { ILogin, IResponse, ISendOTP } from '../../../types'
 import { baseApi } from '../../app/baseApi'
-
-interface ISendOTP {
-	email: string
-}
 
 const authApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
-		login: builder.mutation({
+		login: builder.mutation<null, ILogin>({
 			query: (userInfo) => ({
 				url: '/auth/login',
 				method: 'POST',
@@ -20,7 +17,7 @@ const authApi = baseApi.injectEndpoints({
 				data: userInfo,
 			}),
 		}),
-		sendOTP: builder.mutation<null, ISendOTP>({
+		sendOTP: builder.mutation<IResponse<null>, ISendOTP>({
 			query: (userInfo) => ({
 				url: '/otp/send',
 				method: 'POST',
