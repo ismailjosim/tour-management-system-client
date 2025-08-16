@@ -16,14 +16,20 @@ import { useTheme } from "../hooks/useTheme"
 import { Link } from "react-router"
 import logoBlack from "@/assets/icons/logo.png"
 import logoWhile from "@/assets/images/site-logo.png"
-import { adminSidebarItems } from "../routes/adminSidebarItems"
+import { getSidebarItems } from "../utils/getSidebarItems"
+import { useUserInfoQuery } from "../redux/features/auth/auth.api"
+import type { TRole } from "../types"
 // This is sample data.
-const data = {
-  navMain: adminSidebarItems
-}
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userData } = useUserInfoQuery(undefined)
+  const getRole = userData?.data.role as TRole
   const { theme } = useTheme()
+
+  const data = {
+    navMain: getSidebarItems(getRole)
+  }
 
   return (
     <Sidebar {...props}>

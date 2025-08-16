@@ -57,11 +57,11 @@ export interface ILoginData {
 // -------------------- User Info -------------------- //
 
 // 🔹 User info response
-export interface IUserInfo {
+export interface IUserInfo<T> {
 	statusCode: number
 	success: boolean
 	message: string
-	data: IUser
+	data: T
 }
 // -------------------- User Logout -------------------- //
 export interface ILogoutResponse {
