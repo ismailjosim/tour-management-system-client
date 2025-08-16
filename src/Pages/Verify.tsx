@@ -47,6 +47,7 @@ const Verify = () => {
     const [confirm, setConfirm] = useState(false)
     const [sendOTP] = useSendOTPMutation()
     const [verifyOTP] = useVerifyOTPMutation()
+    const [timer, setTimer] = useState(120)
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -60,6 +61,14 @@ const Verify = () => {
             navigate('/')
         }
     }, [email])
+    useEffect(() => {
+        const timerId = setInterval(() => {
+            if (email && confirm) {
+                setTimer(prev => prev - 1)
+            }
+
+        }, 1000);
+    }, [email, confirm])
 
     const handleResend = () => {
         console.log('Resending OTP to:', email)
@@ -178,6 +187,7 @@ const Verify = () => {
                             >
                                 Resend OTP
                             </button>
+                            {timer}
                         </div>
                         <div className='mt-4 text-center'>
                             <Link
