@@ -7,6 +7,7 @@ import type {
 	IUserInfo,
 	IVerifyOTP,
 } from '../../../types'
+import type { IUser } from '../../../types/auth.type'
 import { baseApi } from '../../app/baseApi'
 
 export const authApi = baseApi.injectEndpoints({
@@ -32,7 +33,7 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ['USER'],
 		}),
-		userInfo: builder.query<IUserInfo, undefined>({
+		userInfo: builder.query<IUserInfo<IUser>, undefined>({
 			query: () => ({
 				url: '/user/me',
 				method: 'GET',

@@ -1,14 +1,12 @@
-import CommonLayout from "./components/layout/CommonLayout";
-import { Outlet } from "react-router";
+import CommonLayout from './components/layout/CommonLayout'
+import { Outlet } from 'react-router'
 
 const App = () => {
   return (
-    <>
-      <CommonLayout>
-        <Outlet />
-      </CommonLayout>
-    </>
-  );
-};
+    <CommonLayout>
+      <Outlet />
+    </CommonLayout>
+  )
+}
 
-export default App;
+export default App

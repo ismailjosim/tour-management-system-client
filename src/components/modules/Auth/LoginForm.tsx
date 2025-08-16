@@ -29,19 +29,7 @@ const loginSchema = z.object({
         .string()
         .min(6, { message: 'Password must be at least 6 characters long.' })
         .max(100, { message: 'Password cannot exceed 100 characters.' })
-        .regex(/[A-Z]/, {
-            message: 'Password must contain at least one uppercase letter.',
-        })
-        .regex(/[a-z]/, {
-            message: 'Password must contain at least one lowercase letter.',
-        })
-        .regex(/[0-9]/, {
-            message: 'Password must contain at least one number.',
-        })
-        .regex(/[@$!%*?&]/, {
-            message:
-                'Password must contain at least one special character (@, $, !, %, *, ?, &).',
-        }),
+
 })
 
 export function LoginForm({
@@ -70,6 +58,7 @@ export function LoginForm({
             const result = await login(userInfo).unwrap()
             if (result.success) {
                 toast.success(result.message)
+                navigate('/')
             }
         } catch (error: any) {
             toast.error(error.data.message)

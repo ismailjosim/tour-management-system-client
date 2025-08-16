@@ -9,6 +9,10 @@ import About from '../Pages/About'
 import Login from '../Pages/Login'
 import Register from '../Pages/Register'
 import Verify from '../Pages/Verify'
+import DashboardLayout from '../components/layout/DashboardLayout'
+import generateRoutes from '../utils/generateRoutes'
+import { adminSidebarItems } from './adminSidebarItems'
+import { userSidebarItems } from './userSidebarItems'
 
 // * Admin Pages Import
 // * User Pages Import
@@ -28,6 +32,16 @@ const router = createBrowserRouter([
 				Component: About,
 			},
 		],
+	},
+	{
+		Component: DashboardLayout,
+		path: '/admin',
+		children: [...generateRoutes(adminSidebarItems)],
+	},
+	{
+		Component: DashboardLayout,
+		path: '/user',
+		children: [...generateRoutes(userSidebarItems)],
 	},
 	{
 		Component: Login,

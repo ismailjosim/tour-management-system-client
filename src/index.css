@@ -108,22 +108,17 @@ body {
   --secondary: #FDC703;
   --secondary-foreground: #17233e;
 
-
   --muted: #777777;
   --muted-foreground: #e2e8f0;
 
-
   --accent: #263A49;
   --accent-foreground: #ffffff;
-
 
   --destructive: oklch(0.577 0.245 27.325);
 
   --border: #334155;
   --input: #334155;
   --ring: #FDC703;
-
-
 
   --destructive: oklch(0.704 0.191 22.216);
 
