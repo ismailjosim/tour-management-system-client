@@ -4,5 +4,11 @@ import axiosBaseQuery from './axiosBaseQuery'
 export const baseApi = createApi({
 	reducerPath: 'baseApi',
 	baseQuery: axiosBaseQuery(),
+	// * if we want to use fetch base query
+	// baseQuery: fetchBaseQuery({
+	// 	baseUrl: 'your base url',
+	// 	credentials: 'include',
+	// }),
+
 	endpoints: () => ({}),
 })
