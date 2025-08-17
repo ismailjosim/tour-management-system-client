@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ComponentType } from 'react'
 
 export type {
@@ -23,6 +24,14 @@ export interface ISidebarItem {
 		url: string
 		component: ComponentType
 	}[]
+}
+
+export interface ApiError {
+	success: boolean
+	message: string
+	errorSources: unknown[]
+	err?: Record<string, any>
+	stack?: string
 }
 
 export type TRole = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'GUIDE'

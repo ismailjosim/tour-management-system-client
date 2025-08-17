@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -34,6 +34,7 @@ import {
 import { toast } from 'sonner'
 import { useAppDispatch } from '../../redux/app/hook'
 import { role } from '../../constants/role'
+import type { ApiError } from '../../types'
 
 const navLinks = [
     { label: 'Home', href: '/', role: 'PUBLIC' },
@@ -62,8 +63,9 @@ const Header: React.FC = () => {
                 toast.success(data.message)
                 dispatch(authApi.util.resetApiState())
             }
-        } catch (error: any) {
-            toast.error(error?.message)
+        } catch (error: unknown) {
+            const apiError = error as ApiError
+            toast.error(apiError?.message || "Something went wrong")
         }
     }
 
