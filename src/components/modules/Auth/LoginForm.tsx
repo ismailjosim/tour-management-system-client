@@ -19,17 +19,9 @@ import { toast } from 'sonner'
 import { useLoginMutation } from '../../../redux/features/auth/auth.api'
 import config from '../../../config'
 import type { ApiError } from '../../../types'
+import { loginSchema } from '../../../Schema/zodValidationSchemas'
 
-const loginSchema = z.object({
-    email: z
-        .email({ message: 'Please enter a valid email address.' })
-        .min(1, { message: 'Email is required.' }),
 
-    password: z
-        .string()
-        .min(6, { message: 'Password must be at least 6 characters long.' })
-        .max(100, { message: 'Password cannot exceed 100 characters.' }),
-})
 
 export function LoginForm({
     className,
