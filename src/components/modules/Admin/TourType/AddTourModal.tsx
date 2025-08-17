@@ -27,10 +27,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useAddTourTypeMutation } from '@/redux/features/Tour/tour.api'
 import type { ApiError } from '../../../../types'
+import { tourTypeSchema } from '../../../../Schema/zodValidationSchemas'
 
-const tourTypeSchema = z.object({
-    name: z.string().min(5, { message: 'Tour Type Name is required.' }),
-})
+
 
 const AddTourModal = () => {
     const [open, setOpen] = useState(false)

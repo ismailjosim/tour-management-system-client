@@ -18,61 +18,9 @@ import Password from '@/components/ui/Password'
 import { useRegisterMutation } from '../../../redux/features/auth/auth.api'
 import { toast } from 'sonner'
 import type { ApiError } from '../../../types'
+import { registerSchema } from '../../../Schema/zodValidationSchemas'
 
-const registerSchema = z
-    .object({
-        name: z
-            .string()
-            .min(2, { message: 'Name must be at least 2 characters long.' })
-            .max(50, { message: 'Name cannot exceed 50 characters.' })
-            .regex(/^[a-zA-Z\s]+$/, {
-                message: 'Name can only contain letters and spaces.',
-            }),
 
-        email: z
-            .email({ message: 'Please enter a valid email address.' })
-            .min(1, { message: 'Email is required.' }),
-
-        password: z
-            .string()
-            .min(6, { message: 'Password must be at least 6 characters long.' })
-            .max(100, { message: 'Password cannot exceed 100 characters.' })
-            .regex(/[A-Z]/, {
-                message: 'Password must contain at least one uppercase letter.',
-            })
-            .regex(/[a-z]/, {
-                message: 'Password must contain at least one lowercase letter.',
-            })
-            .regex(/[0-9]/, {
-                message: 'Password must contain at least one number.',
-            })
-            .regex(/[@$!%*?&]/, {
-                message:
-                    'Password must contain at least one special character (@, $, !, %, *, ?, &).',
-            }),
-
-        confirmPassword: z
-            .string()
-            .min(6, { message: 'Password must be at least 6 characters long.' })
-            .max(100, { message: 'Password cannot exceed 100 characters.' })
-            .regex(/[A-Z]/, {
-                message: 'Password must contain at least one uppercase letter.',
-            })
-            .regex(/[a-z]/, {
-                message: 'Password must contain at least one lowercase letter.',
-            })
-            .regex(/[0-9]/, {
-                message: 'Password must contain at least one number.',
-            })
-            .regex(/[@$!%*?&]/, {
-                message:
-                    'Password must contain at least one special character (@, $, !, %, *, ?, &).',
-            }),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: 'Passwords do not match.',
-        path: ['confirmPassword'],
-    })
 
 export function RegisterForm({
     className,

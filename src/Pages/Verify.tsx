@@ -22,13 +22,9 @@ import {
     Card, CardDescription, CardFooter, CardHeader, CardTitle,
 } from '@/components/ui/card'
 import type { ApiError } from '../types'
+import { OTPSchema } from '../Schema/zodValidationSchemas'
 
-// ---------------- Schema ----------------
-const FormSchema = z.object({
-    pin: z.string().min(6, {
-        message: 'Your OTP must be 6 characters.',
-    }),
-})
+
 
 // ---------------- Constants ----------------
 const OTP_SLOT_CLASSES =
@@ -45,8 +41,8 @@ const Verify = () => {
     const [sendOTP] = useSendOTPMutation()
     const [verifyOTP] = useVerifyOTPMutation()
 
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<z.infer<typeof OTPSchema>>({
+        resolver: zodResolver(OTPSchema),
         defaultValues: { pin: '' },
     })
 
@@ -81,7 +77,7 @@ const Verify = () => {
         }
     }
 
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    const onSubmit = async (data: z.infer<typeof OTPSchema>) => {
         const toastId = toast.loading('Verifying OTP')
         try {
             const res = await verifyOTP({ email, otp: data.pin }).unwrap()
