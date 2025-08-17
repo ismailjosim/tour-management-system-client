@@ -19,7 +19,7 @@ import logoWhile from "@/assets/images/site-logo.png"
 import { getSidebarItems } from "../utils/getSidebarItems"
 import { useUserInfoQuery } from "../redux/features/auth/auth.api"
 import type { TRole } from "../types"
-// This is sample data.
+
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
