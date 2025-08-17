@@ -1,3 +1,4 @@
+import { role } from './../constants/role'
 import { createBrowserRouter } from 'react-router'
 
 // * Layout Import
@@ -13,6 +14,9 @@ import About from '../Pages/About'
 import Login from '../Pages/Login'
 import Register from '../Pages/Register'
 import Verify from '../Pages/Verify'
+import Unauthorized from '../Pages/Unauthorized'
+import { withAuth } from '../utils/withAuth'
+import type { TRole } from '../types'
 
 const router = createBrowserRouter([
 	{
@@ -30,12 +34,16 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		Component: DashboardLayout,
+		Component: withAuth(DashboardLayout, [
+			role.ADMIN as TRole,
+			role.SUPER_ADMIN as TRole,
+		]),
 		path: '/admin',
 		children: [...generateRoutes(adminSidebarItems)],
 	},
 	{
-		Component: DashboardLayout,
+		Component: withAuth(DashboardLayout, role.USER as TRole),
+
 		path: '/user',
 		children: [...generateRoutes(userSidebarItems)],
 	},
@@ -50,6 +58,10 @@ const router = createBrowserRouter([
 	{
 		Component: Verify,
 		path: '/verify',
+	},
+	{
+		Component: Unauthorized,
+		path: '/unauthorized',
 	},
 ])
 
