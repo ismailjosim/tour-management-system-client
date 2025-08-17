@@ -5,9 +5,24 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Outlet } from "react-router"
+import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router"
 
 export default function DashboardLayout() {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        if (pathname === '/admin') {
+            navigate('/admin/analytics')
+        } else if (pathname === '/user') {
+            navigate('/user/bookings')
+        }
+        else if (pathname === '/guide') {
+            navigate('/guide/bookings')
+        }
+    }, [])
+
     return (
         <SidebarProvider>
             <AppSidebar />

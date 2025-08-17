@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Link, useNavigate } from 'react-router'
@@ -18,6 +17,7 @@ import { z } from 'zod'
 import Password from '@/components/ui/Password'
 import { useRegisterMutation } from '../../../redux/features/auth/auth.api'
 import { toast } from 'sonner'
+import type { ApiError } from '../../../types'
 
 const registerSchema = z
     .object({
@@ -74,7 +74,6 @@ const registerSchema = z
         path: ['confirmPassword'],
     })
 
-
 export function RegisterForm({
     className,
     ...props
@@ -95,7 +94,7 @@ export function RegisterForm({
         const userInfo = {
             name: data.name,
             email: data.email,
-            password: data.password
+            password: data.password,
         }
         try {
             const result = await register(userInfo).unwrap()
@@ -103,8 +102,9 @@ export function RegisterForm({
                 toast.success(result.message)
                 navigate('/verify')
             }
-        } catch (error: any) {
-            toast.error(error?.data?.message)
+        } catch (error: unknown) {
+            const apiError = error as ApiError
+            toast.error(apiError?.message || 'Something went wrong')
         }
     }
 

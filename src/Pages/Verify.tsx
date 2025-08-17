@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -21,6 +21,7 @@ import {
 import {
     Card, CardDescription, CardFooter, CardHeader, CardTitle,
 } from '@/components/ui/card'
+import type { ApiError } from '../types'
 
 // ---------------- Schema ----------------
 const FormSchema = z.object({
@@ -74,9 +75,9 @@ const Verify = () => {
                 setConfirm(true)
                 setTimer(120)
             }
-        } catch (error: any) {
-            console.error(error)
-            toast.error(error.data.message, { id: toastId })
+        } catch (error: unknown) {
+            const apiError = error as ApiError
+            toast.error(apiError?.message || "Something went wrong")
         }
     }
 
@@ -88,9 +89,9 @@ const Verify = () => {
                 toast.success(res.message, { id: toastId })
                 navigate('/login')
             }
-        } catch (error: any) {
-            console.error(error)
-            toast.error(error.data.message, { id: toastId })
+        } catch (error: unknown) {
+            const apiError = error as ApiError
+            toast.error(apiError?.message || "Something went wrong")
         }
     }
 
