@@ -2,6 +2,10 @@ import { createBrowserRouter } from 'react-router'
 
 // * Layout Import
 import App from '../App'
+import DashboardLayout from '../components/layout/DashboardLayout'
+import generateRoutes from '../utils/generateRoutes'
+import { adminSidebarItems } from './adminSidebarItems'
+import { userSidebarItems } from './userSidebarItems'
 
 // * Pages Import
 import Home from '../Pages/Home'
@@ -9,14 +13,6 @@ import About from '../Pages/About'
 import Login from '../Pages/Login'
 import Register from '../Pages/Register'
 import Verify from '../Pages/Verify'
-import DashboardLayout from '../components/layout/DashboardLayout'
-import generateRoutes from '../utils/generateRoutes'
-import { adminSidebarItems } from './adminSidebarItems'
-import { userSidebarItems } from './userSidebarItems'
-
-// * Admin Pages Import
-// * User Pages Import
-// * Guides Pages Import
 
 const router = createBrowserRouter([
 	{
