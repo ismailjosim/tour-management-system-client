@@ -75,3 +75,7 @@ export const OTPSchema = z.object({
 		message: 'Your OTP must be 6 characters.',
 	}),
 })
+export const divisionSchema = z.object({
+	name: z.string().min(5, { message: 'Tour Type Name is required.' }),
+	description: z.string().optional(),
+})
