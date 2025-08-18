@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import logoBlack from "@/assets/icons/logo.png"
-import logoWhile from "@/assets/images/site-logo.png"
+import logoBlack from "@/assets/images/site-logo-dark.png"
+import logoWhile from "@/assets/images/site-logo-light.png"
 import loginBG from "@/assets/images/login.jpg"
 import { useTheme } from "../hooks/useTheme";
 import { LoginForm } from "../components/modules/Auth/LoginForm";

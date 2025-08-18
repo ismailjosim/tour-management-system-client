@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-export type Theme = 'dark' | 'light' | 'system'
+export type Theme = 'dark' | 'light'
 
 export type ThemeProviderProps = {
 	children: React.ReactNode
@@ -14,7 +14,7 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-	theme: 'system',
+	theme: 'dark',
 	setTheme: () => null,
 }
 

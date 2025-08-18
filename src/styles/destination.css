@@ -1,0 +1,259 @@
+.btn-custom {
+    transition: all ease-in-out 0.5s;
+    border: none;
+    overflow: hidden;
+}
+
+.btn-custom:hover::before {
+    width: 100%;
+    transition: all ease-in-out 0.5s;
+}
+
+.btn-custom::before {
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 100%;
+    top: 0;
+    content: '';
+    background: #fdc703;
+    color: #fff !important;
+    transition: all ease-in-out 0.5s;
+    z-index: -1;
+}
+
+.why-us-item {
+    z-index: 1;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all ease-in-out 0.5s;
+    box-shadow: 0px 0px 1px 1px #ddd;
+    cursor: pointer;
+}
+
+.why-us-item:hover .why-us-content,
+.why-us-item:hover .why-us-content .icon {
+    color: #fff !important;
+    transition-delay: 0.4s;
+    transition: all ease-in-out 0.5s;
+}
+
+.why-us-item:hover .why-us-content .icon {
+    color: #fff !important;
+    transition-delay: 0.5s;
+    transition: all ease-in-out 0.8s;
+}
+
+.why-us-item:hover .why-us-content .card_review {
+    color: #fff !important;
+    transition-delay: 0.5s;
+    transition: all ease-in-out 0.9s;
+}
+
+.why-us-item:hover::before {
+    color: #fff !important;
+    height: 100%;
+    transition: all ease-in-out 0.5s;
+}
+
+.why-us-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    background: #029e9d;
+    transition: all ease-in-out 0.5s;
+    z-index: -1;
+}
+
+.bottom_animation {
+    z-index: 1;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all ease-in-out 0.5s;
+    box-shadow: 0px 0px 1px 1px #ddd;
+    cursor: pointer;
+}
+
+.bottom_animation:hover .bottom_animation,
+.bottom_animation:hover .bottom_animation .icon {
+    color: #fff !important;
+    transition-delay: 0.4s;
+    transition: all ease-in-out 0.5s;
+}
+
+.bottom_animation:hover .bottom_animation .icon {
+    color: #fff !important;
+    transition-delay: 0.5s;
+    transition: all ease-in-out 0.8s;
+}
+
+.bottom_animation:hover::before {
+    width: 100%;
+    transition: all ease-in-out 0.5s;
+}
+
+.bottom_animation::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    transition: all ease-in-out 0.5s;
+    background: #029e9d !important;
+    cursor: pointer;
+}
+
+/* section heading */
+
+.dot_overlay {
+    background: #000000 url(../assets/images/dot-overlay.png) repeat;
+}
+
+.testimonial {
+    background-image: url(../assets/images/testimonial.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* destination card section */
+.destination_item:hover .color-overlay {
+    height: 100%;
+    transition: all ease-in-out 0.5s;
+}
+
+.destination_item:hover img {
+    transform: scale(1.2);
+    transition: all ease-in-out 0.5s;
+}
+
+.top_inherit {
+    top: inherit !important;
+}
+
+/* Homepage form section */
+.section-shape {
+    background-image: url(../assets/images/shape-pat.png);
+    position: absolute;
+    top: -96px;
+    left: 0;
+    width: 100%;
+    height: 96px;
+    background-size: contain;
+    background-repeat: repeat-x;
+    z-index: -1;
+}
+
+/* cart page design */
+.table :where(thead, tfoot) :where(th, td) {
+    background-color: transparent !important;
+}
+
+/* Swiper styling */
+.stroke_custom {
+    --progress: 0;
+    stroke-width: 4px;
+    stroke-dasharray: 125.6;
+}
+
+
+.loader {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 50px;
+    height: 80px;
+    border-top: 5px solid #FDC703;
+    border-bottom: 5px solid #FDC703;
+    position: relative;
+    background: linear-gradient(#029E9D 30px, transparent 0) no-repeat;
+    background-size: 2px 40px;
+    background-position: 50% 0px;
+    animation: spinx 5s linear infinite;
+}
+
+.loader:before,
+.loader:after {
+    content: "";
+    width: 40px;
+    left: 50%;
+    height: 35px;
+    position: absolute;
+    top: 0;
+    transform: translatex(-50%);
+    background: rgba(253, 199, 3, 0.4);
+    border-radius: 0 0 20px 20px;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: 0 0px;
+    animation: lqt 5s linear infinite;
+}
+
+.loader:after {
+    top: auto;
+    bottom: 0;
+    border-radius: 20px 20px 0 0;
+    animation: lqb 5s linear infinite;
+}
+
+@keyframes lqt {
+
+    0%,
+    100% {
+        background-image: linear-gradient(#029E9D 40px, transparent 0);
+        background-position: 0% 0px;
+    }
+
+    50% {
+        background-image: linear-gradient(#029E9D 40px, transparent 0);
+        background-position: 0% 40px;
+    }
+
+    50.1% {
+        background-image: linear-gradient(#029E9D 40px, transparent 0);
+        background-position: 0% -40px;
+    }
+}
+
+@keyframes lqb {
+    0% {
+        background-image: linear-gradient(#029E9D 40px, transparent 0);
+        background-position: 0 40px;
+    }
+
+    100% {
+        background-image: linear-gradient(#029E9D 40px, transparent 0);
+        background-position: 0 -40px;
+    }
+}
+
+@keyframes spinx {
+
+    0%,
+    49% {
+        transform: rotate(0deg);
+        background-position: 50% 36px;
+    }
+
+    51%,
+    98% {
+        transform: rotate(180deg);
+        background-position: 50% 4px;
+    }
+
+    100% {
+        transform: rotate(360deg);
+        background-position: 50% 36px;
+    }
+}
+
+/* style.css */
+.active {
+    background-color: #029E9D !important;
+    color: white !important;
+}

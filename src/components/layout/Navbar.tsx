@@ -30,11 +30,14 @@ import {
     authApi,
     useLogoutMutation,
     useUserInfoQuery,
-} from '../../redux/features/auth/auth.api'
+} from '@/redux/features/auth/auth.api'
 import { toast } from 'sonner'
-import { useAppDispatch } from '../../redux/app/hook'
-import { role } from '../../constants/role'
-import type { ApiError } from '../../types'
+import { useAppDispatch } from '@/redux/app/hook'
+import { role } from '@/constants/role'
+import type { ApiError } from '@/types'
+import { useTheme } from '@/hooks/useTheme'
+import logoBlack from "@/assets/images/site-logo-dark.png"
+import logoWhile from "@/assets/images/site-logo-light.png"
 
 const navLinks = [
     { label: 'Home', href: '/', role: 'PUBLIC' },
@@ -55,6 +58,8 @@ const Header: React.FC = () => {
     const [logout] = useLogoutMutation()
     const dispatch = useAppDispatch()
     const user = data?.data
+    const { theme } = useTheme()
+
 
     const handleLogout = async () => {
         try {
@@ -151,9 +156,10 @@ const Header: React.FC = () => {
     return (
         <header className='border-b shadow-sm'>
             <div className='container mx-auto flex items-center justify-between px-0 py-4'>
-                <Link to='/' className='text-2xl font-bold uppercase text-primary'>
-                    Traveler
+                <Link to='/' className="flex items-center gap-2 font-medium">
+                    <img src={theme === 'dark' ? logoWhile : logoBlack} alt="Site logo" />
                 </Link>
+
 
                 {/* Desktop Navigation */}
                 <nav className='hidden lg:flex'>

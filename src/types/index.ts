@@ -35,3 +35,28 @@ export interface ApiError {
 }
 
 export type TRole = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'GUIDE'
+
+export interface IDestination {
+	_id: string
+	title: string
+	description: string
+	images: string[]
+	location: string
+	departureLocation: string
+	arrivalLocation: string
+	costFrom: number
+	startDate: string
+	endDate: string
+	excluded: string[]
+	amenities: string[]
+	tourPlan: string[]
+	maxGuest: number
+	minAge: number
+	tourType: {
+		name: string
+	}
+	division: string
+	createdAt: string
+	updatedAt: string
+	slug: string
+}

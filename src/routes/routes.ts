@@ -17,6 +17,7 @@ import Verify from '../Pages/Verify'
 import Unauthorized from '../Pages/Unauthorized'
 import { withAuth } from '../utils/withAuth'
 import type { TRole } from '../types'
+import Destinations from '../Pages/Destinations'
 
 const router = createBrowserRouter([
 	{
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
 			{
 				path: 'about',
 				Component: About,
+			},
+			{
+				path: 'destinations',
+				Component: Destinations,
 			},
 		],
 	},
