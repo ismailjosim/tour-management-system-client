@@ -17,6 +17,8 @@ import Verify from '../Pages/Verify'
 import Unauthorized from '../Pages/Unauthorized'
 import { withAuth } from '../utils/withAuth'
 import type { TRole } from '../types'
+import Destinations from '../Pages/Destinations'
+import ErrorPage from '../utils/ErrorPaage'
 
 const router = createBrowserRouter([
 	{
@@ -30,6 +32,10 @@ const router = createBrowserRouter([
 			{
 				path: 'about',
 				Component: About,
+			},
+			{
+				path: 'destinations',
+				Component: Destinations,
 			},
 		],
 	},
@@ -62,6 +68,10 @@ const router = createBrowserRouter([
 	{
 		Component: Unauthorized,
 		path: '/unauthorized',
+	},
+	{
+		path: '*',
+		Component: ErrorPage,
 	},
 ])
 

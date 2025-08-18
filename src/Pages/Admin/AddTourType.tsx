@@ -42,7 +42,7 @@ const AddTourType = () => {
                     <TableHeader>
                         <TableRow>
                             <TableHead className='w-[100px]'>Name</TableHead>
-                            <TableHead className='w-[100px]'>createdAt</TableHead>
+                            <TableHead className='text-center hidden sm:block'>createdAt</TableHead>
                             <TableHead className='text-right'>Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -51,7 +51,7 @@ const AddTourType = () => {
                             (item: { name: string; _id: string; createdAt: string }) => (
                                 <TableRow key={item._id}>
                                     <TableCell className='font-medium'>{item.name}</TableCell>
-                                    <TableCell className='font-medium'>
+                                    <TableCell className='font-medium text-center hidden sm:block'>
                                         {format(new Date(item.createdAt), 'dd-MMM-yyyy: hh:mma')}
                                     </TableCell>
                                     <TableCell className='text-right'>
