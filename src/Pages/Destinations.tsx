@@ -4,6 +4,10 @@ import DestinationLoading from '../utils/DestinationLoading'
 import DestinationCard from '../components/modules/Destination/DestinationCard'
 import type { IDestination } from '../types'
 
+import sectionBG from "@/assets/destinations/destination-section-bg.jpg"
+import PageHeading from '../utils/PageHeading'
+
+
 const Destinations = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -28,7 +32,10 @@ const Destinations = () => {
         )
     }
 
-    return content
+    return <>
+        <PageHeading headTitle="destination list" sectionBackground={sectionBG} />
+        {content}
+    </>
 }
 
 export default Destinations

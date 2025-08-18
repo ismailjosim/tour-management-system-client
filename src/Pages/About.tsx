@@ -1,8 +1,12 @@
+import PageHeading from "@/utils/PageHeading";
+import img1 from "@/assets/images/bg1.jpg"
+
+
 const About = () => {
     return (
-        <div>
-            This is About component
-        </div>
+        <section>
+            <PageHeading headTitle="About Us" sectionBackground={img1} />
+        </section>
     );
 };
 
