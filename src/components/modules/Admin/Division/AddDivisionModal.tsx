@@ -30,6 +30,7 @@ import { useAddDivisionMutation } from "@/redux/features/division/division.api"
 import { Loader2 } from "lucide-react"
 import { useWindowSize } from "react-use"
 import Confetti from "react-confetti"
+import Swal from 'sweetalert2'
 
 const AddDivisionModal = () => {
     // ---------- State ----------
@@ -65,6 +66,12 @@ const AddDivisionModal = () => {
 
             toast.success(result.message)
             triggerConfetti()
+
+            Swal.fire({
+                title: "Awesome ❤️",
+                text: result.message,
+                icon: "success"
+            });
 
             reset()
             setImage(null)
