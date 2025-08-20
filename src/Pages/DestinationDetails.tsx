@@ -137,7 +137,7 @@ const DestinationDetails: React.FC = () => {
                                     <span className="text-gray-500 dark:text-gray-500">(500 Reviews)</span>
                                 </div>
                             </div>
-                            <Link to='/booking'>
+                            <Link to={`/booking/${slug}`}>
                                 <Button className="w-full md:w-auto text-lg font-semibold px-8 py-6">
                                     Book Now
                                 </Button>

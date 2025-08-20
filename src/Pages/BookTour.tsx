@@ -3,27 +3,36 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Check, MapPin, Calendar, Users, Minus, Plus } from 'lucide-react'
-import type { IDestination } from '../types'
-import { dummyTourData } from '../DummyData'
+import type { ApiError, IDestination, IResponse } from '../types'
+import { useParams } from 'react-router'
+import { useGetSingleTourQuery } from '../redux/features/Tour/tour.api'
+import { useAddBookingMutation } from '../redux/features/booking/booking.api'
+import { toast } from 'sonner'
 
 const BookTour = () => {
-    const [guestCount, setGuestCount] = useState(3)
-    const [tour, setTour] = useState<IDestination | null>(null)
+    const [guestCount, setGuestCount] = useState(1)
+    const { slug } = useParams<{ slug: string }>()
+    const { data } = useGetSingleTourQuery(slug);
+    const [addBooking] = useAddBookingMutation()
+
+    // Cast the data to the defined ApiResponse interface
+    const apiResponse = data as IResponse<IDestination> | undefined;
+    const tour = apiResponse?.data;
 
     useEffect(() => {
-        setTour(dummyTourData as IDestination)
         window.scrollTo(0, 0)
     }, [])
 
     if (!tour) {
         return (
             <div className='min-h-screen bg-gray-950 dark:bg-gray-950 flex items-center justify-center text-white'>
-                Loading tour details...
+                Booking info...
             </div>
         )
     }
 
     const {
+        _id,
         title,
         description,
         images,
@@ -32,7 +41,7 @@ const BookTour = () => {
         included,
         tourPlan,
         costFrom,
-    } = tour
+    } = tour || {}
 
     const totalAmount = (costFrom || 0) * guestCount
 
@@ -45,17 +54,35 @@ const BookTour = () => {
         }
     }
 
-    const handleBookNow = () => {
-        console.log('Initiating SSLCommerz payment with the following data:')
-        console.log('Tour ID:', tour._id)
-        console.log('Guest Count:', guestCount)
-        console.log('Total Amount:', totalAmount)
+    const handleBookNow = async () => {
+        if (data) {
+            const toastId = toast.loading("Booking Processing...")
+            const bookingData = {
+                tour: _id,
+                guestCount
+            }
+            try {
+                const res = await addBooking(bookingData).unwrap()
+                if (res.success) {
+                    const paymentUrl = res?.data?.paymentUrl
+                    window.open(paymentUrl)
 
-        alert('Booking process initiated. Redirecting to payment gateway...')
+                    toast.success("Tour created", { id: toastId })
+
+                } else {
+                    toast.error("Something went wrong", { id: toastId })
+                }
+            } catch (err: unknown) {
+                toast.error((err as ApiError).message || "Something went wrong", { id: toastId })
+            }
+
+        }
+
+
     }
 
     return (
-        <section className='min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200'>
+        <section className='bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200'>
             <div className='container mx-auto px-4 py-16'>
                 <div className='grid lg:grid-cols-3 gap-12'>
                     {/* Left Column: Tour Details */}
@@ -187,7 +214,7 @@ const BookTour = () => {
                                 {/* Book Now Button */}
                                 <Button
                                     onClick={handleBookNow}
-                                    className='w-full text-lg font-semibold py-6 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white'
+                                    className='w-full text-lg font-semibold py-6 text-white'
                                 >
                                     Book Now
                                 </Button>
