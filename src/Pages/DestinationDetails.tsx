@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { MapPin, Star, Check, X, Facebook, Twitter, Instagram } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -137,19 +137,21 @@ const DestinationDetails: React.FC = () => {
                                     <span className="text-gray-500 dark:text-gray-500">(500 Reviews)</span>
                                 </div>
                             </div>
-                            <Button className="w-full md:w-auto text-lg font-semibold px-8 py-6">
-                                Book Now
-                            </Button>
+                            <Link to='/booking'>
+                                <Button className="w-full md:w-auto text-lg font-semibold px-8 py-6">
+                                    Book Now
+                                </Button>
+                            </Link>
                         </div>
 
                         {/* Destination Image */}
-                        <Card className="overflow-hidden shadow-lg dark:shadow-none">
+                        <div className=" shadow-lg dark:shadow-none ">
                             <img
-                                className="w-full h-64 md:h-96 object-cover"
+                                className="w-full h-64 md:h-96 object-cover rounded-md"
                                 src={newThumbnail}
                                 alt={newTitle}
                             />
-                        </Card>
+                        </div>
 
 
 

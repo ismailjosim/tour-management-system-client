@@ -20,6 +20,7 @@ import type { TRole } from '../types'
 import Destinations from '../Pages/Destinations'
 import ErrorPage from '../utils/ErrorPaage'
 import DestinationDetails from '../Pages/DestinationDetails'
+import BookTour from '../Pages/BookTour'
 
 const router = createBrowserRouter([
 	{
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
 			{
 				path: 'destination/:slug',
 				Component: DestinationDetails,
+			},
+			{
+				path: 'booking',
+				Component: BookTour,
 			},
 		],
 	},
