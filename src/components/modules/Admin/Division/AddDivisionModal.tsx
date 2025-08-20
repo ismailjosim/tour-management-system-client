@@ -52,7 +52,7 @@ const AddDivisionModal = () => {
     // ---------- Handlers ----------
     const triggerConfetti = () => {
         setShowConfetti(true)
-        setTimeout(() => setShowConfetti(false), 4000)
+        setTimeout(() => setShowConfetti(false), 10000)
     }
 
     const onSubmit = async (data: z.infer<typeof divisionSchema>) => {

@@ -19,6 +19,11 @@ import { withAuth } from '../utils/withAuth'
 import type { TRole } from '../types'
 import Destinations from '../Pages/Destinations'
 import ErrorPage from '../utils/ErrorPaage'
+import DestinationDetails from '../Pages/DestinationDetails'
+import BookTour from '../Pages/BookTour'
+import SuccessPayment from '../Pages/Payment/SuccessPayment'
+import FailPayment from '../Pages/Payment/FailPayment'
+import CancelPayment from '../Pages/Payment/CancelPayment'
 
 const router = createBrowserRouter([
 	{
@@ -36,6 +41,14 @@ const router = createBrowserRouter([
 			{
 				path: 'destinations',
 				Component: Destinations,
+			},
+			{
+				path: 'destination/:slug',
+				Component: DestinationDetails,
+			},
+			{
+				path: 'booking/:slug',
+				Component: withAuth(BookTour),
 			},
 		],
 	},
@@ -68,6 +81,18 @@ const router = createBrowserRouter([
 	{
 		Component: Unauthorized,
 		path: '/unauthorized',
+	},
+	{
+		Component: SuccessPayment,
+		path: '/payment/success',
+	},
+	{
+		Component: FailPayment,
+		path: '/payment/fail',
+	},
+	{
+		Component: CancelPayment,
+		path: '/payment/cancel',
 	},
 	{
 		path: '*',
