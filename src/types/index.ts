@@ -47,6 +47,7 @@ export interface IDestination {
 	costFrom: number
 	startDate: string
 	endDate: string
+	included: string[]
 	excluded: string[]
 	amenities: string[]
 	tourPlan: string[]

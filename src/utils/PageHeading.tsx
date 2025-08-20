@@ -1,26 +1,31 @@
 import { Link } from "react-router"
 import { cn } from "@/lib/utils"
-import img2 from "@/assets/images/shape8.png"
+import shapeLight from "@/assets/images/shapeLight.png"
+import shapeDark from "@/assets/images/shapeDark.png"
+import { useTheme } from "@/hooks/useTheme"
+import defaultBG from '@/assets/destinations/destination2.jpg'
 
 interface PageHeadingProps {
     headTitle: string,
     sectionBackground: string
 }
 
-const PageHeading: React.FC<PageHeadingProps> = ({ headTitle, sectionBackground }) => {
+const PageHeading: React.FC<PageHeadingProps> = ({ headTitle, sectionBackground = defaultBG }) => {
+    const { theme } = useTheme()
+
     return (
         <section
             className={cn(
                 "relative z-[1] py-28 bg-no-repeat bg-top bg-cover bg-fixed text-center justify-center"
             )}
-            style={{ backgroundImage: `url(${sectionBackground})` }}
+            style={{ backgroundImage: `url(${sectionBackground || defaultBG})` }}
         >
             {/* Decorative Shape */}
             <div
                 className={cn(
-                    "absolute bottom-0 left-0 w-full h-20 pb-40 pt-28 rotate-180 origin-center bg-contain bg-repeat-x z-[1]"
+                    "absolute bottom-0 left-0 w-full h-20 pb-40 pt-28 rotate-180 origin-center bg-contain bg-repeat-x z-[1]",
                 )}
-                style={{ backgroundImage: `url(${img2})` }}
+                style={{ backgroundImage: `url(${theme === 'dark' ? shapeDark : shapeLight})` }}
             />
 
             {/* Content */}

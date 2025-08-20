@@ -7,10 +7,10 @@ interface DestinationCardProps {
 }
 
 const DestinationCard: React.FC<DestinationCardProps> = ({ item }) => {
-    const { _id, images, title, location, tourType } = item || {}
+    const { images, title, location, tourType, slug } = item || {}
     return (
         <>
-            <Link to={`/destination/${_id}`} key={_id} className='destination_item'>
+            <Link to={`/destination/${slug}`} key={slug} className='destination_item'>
                 <div className='transition-all relative rounded-xl ease-in-out duration-500 overflow-hidden max-h-72 h-full'>
                     <img
                         src={images[0]}
