@@ -1,17 +1,21 @@
 import { useEffect } from 'react'
-import { useGetAllToursQuery } from '../redux/features/Tour/tour.api'
-import DestinationLoading from '../utils/DestinationLoading'
-import DestinationCard from '../components/modules/Destination/DestinationCard'
-import type { IDestination } from '../types'
+import { useGetAllToursQuery } from '@/redux/features/Tour/tour.api'
+import DestinationLoading from '@/utils/DestinationLoading'
+import DestinationCard from '@/components/modules/Destination/DestinationCard'
+import type { IDestination } from '@/types'
 
 import sectionBG from '@/assets/destinations/destination-section-bg.jpg'
-import PageHeading from '../utils/PageHeading'
-import DestinationFilter from '../components/modules/Destination/DestinationFilter'
+import PageHeading from '@/utils/PageHeading'
+import DestinationFilter from '@/components/modules/Destination/DestinationFilter'
+import { useSearchParams } from 'react-router'
 
 const Destinations = () => {
+    const [searchParams] = useSearchParams()
+    const division = searchParams.get('division') || undefined
+    const tourType = searchParams.get('tourType') || undefined
     const { isLoading, data, isError } = useGetAllToursQuery({
-        // division: selectedDivision,
-        // tourType: selectedTourType,
+        division,
+        tourType,
     })
 
     useEffect(() => {

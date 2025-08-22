@@ -1,4 +1,4 @@
-// left side filter system
+import { type FC, useMemo } from 'react';
 import {
     Select,
     SelectContent,
@@ -7,95 +7,116 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from '@/components/ui/select'
-import { Label } from '@/components/ui/label'
-import { useGetDivisionsQuery } from '@/redux/features/division/division.api'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
-import { useGetTourTypesQuery } from '@/redux/features/Tour/tour.api'
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useSearchParams } from 'react-router';
+import { useGetDivisionsQuery } from '@/redux/features/division/division.api';
+import { useGetTourTypesQuery } from '@/redux/features/Tour/tour.api';
 
-const DestinationFilter = () => {
-    const [selectedDivision, setSelectedDivision] = useState<string | undefined>(undefined)
-    const [selectedTourType, setSelectedTourType] = useState<string | undefined>(undefined)
+interface Option {
+    value: string;
+    label: string;
+}
 
-    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined)
-    const divisionOptions = divisionData?.data?.map((item: { _id: string; name: string }) => ({
-        value: item._id,
-        label: item.name,
-    }))
+const DestinationFilter: FC = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourTypesQuery(undefined)
-    const tourTypeOptions = tourTypeData?.data?.map((tourType: { _id: string; name: string }) => ({
-        value: tourType._id,
-        label: tourType.name,
-    }))
+    const selectedDivision = searchParams.get('division') || '';
+    const selectedTourType = searchParams.get('tourType') || '';
+
+    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined);
+    const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourTypesQuery(undefined);
+
+    // Memoize options to avoid recalculation on each render
+    const divisionOptions: Option[] = useMemo(
+        () =>
+            divisionData?.data?.map((item: { _id: string; name: string }) => ({
+                value: item._id,
+                label: item.name,
+            })) || [],
+        [divisionData]
+    );
+
+    const tourTypeOptions: Option[] = useMemo(
+        () =>
+            tourTypeData?.data?.map((item: { _id: string; name: string }) => ({
+                value: item._id,
+                label: item.name,
+            })) || [],
+        [tourTypeData]
+    );
+
+    const updateSearchParams = (key: string, value?: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (value) {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+        setSearchParams(params);
+    };
 
     const handleClearFilter = () => {
-        setSelectedDivision(undefined)
-        setSelectedTourType(undefined)
+        setSearchParams(new URLSearchParams());
     };
-    const handleDivisionChange = (value: string) => {
-        setSelectedDivision(value)
-    }
-    const handleTourTypeChange = (value: string) => {
-        setSelectedTourType(value)
-    }
+
     return (
-        <div>
-            <Card className='px-5'>
-                <div className="flex justify-between items-center">
-                    <h1>Filters</h1>
-                    <Button size="sm" variant="outline" onClick={handleClearFilter}>
-                        Clear Filter
-                    </Button>
-                </div>
-                <Label className='pb-0'>Division to visit</Label>
+        <Card className="px-5">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-lg font-semibold">Filters</h1>
+                <Button size="sm" variant="outline" onClick={handleClearFilter}>
+                    Clear Filter
+                </Button>
+            </div>
+
+            <div className="mb-4">
+                <Label className="pb-2">Division to visit</Label>
                 <Select
-                    onValueChange={(value) => handleDivisionChange(value)}
-                    value={selectedDivision ? selectedDivision : ""}
+                    onValueChange={(value) => updateSearchParams('division', value)}
+                    value={selectedDivision}
                     disabled={divisionLoading}
                 >
-                    <SelectTrigger className='w-full'>
-                        <SelectValue />
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a division" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Divisions</SelectLabel>
-                            {divisionOptions?.map(
-                                (item: { value: string; label: string }) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ),
-                            )}
+                            {divisionOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-                <Label className='pb-0'>Tour Type</Label>
+            </div>
+
+            <div>
+                <Label className="pb-2  ">Tour Type</Label>
                 <Select
-                    onValueChange={(value) => handleTourTypeChange(value)}
-                    value={selectedTourType ? selectedTourType : ""}
+                    onValueChange={(value) => updateSearchParams('tourType', value)}
+                    value={selectedTourType}
                     disabled={tourTypeLoading}
                 >
-                    <SelectTrigger className='w-full'>
-                        <SelectValue />
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a tour type" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectLabel>Divisions</SelectLabel>
-                            {tourTypeOptions?.map(
-                                (item: { value: string; label: string }) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ),
-                            )}
+                            <SelectLabel>Tour Types</SelectLabel>
+                            {tourTypeOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
-            </Card>
-        </div>
+            </div>
+        </Card>
     );
 };
 

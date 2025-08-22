@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react'
 import {
     Dialog,
@@ -26,8 +24,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { useAddTourTypeMutation } from '@/redux/features/Tour/tour.api'
-import type { ApiError } from '../../../../types'
-import { tourTypeSchema } from '../../../../Schema/zodValidationSchemas'
+import type { ApiError } from '@/types'
+import { tourTypeSchema } from '@/Schema/zodValidationSchemas'
 
 
 
