@@ -18,9 +18,10 @@ export const tourApi = baseApi.injectEndpoints({
 			invalidatesTags: ['TOUR'],
 		}),
 		getTourTypes: builder.query({
-			query: () => ({
+			query: (params) => ({
 				url: '/tour/tour-types',
 				method: 'GET',
+				params,
 			}),
 			providesTags: ['TOUR'],
 			// transformResponse: (response) => response.data, * trim data that we want to consume
@@ -35,9 +36,10 @@ export const tourApi = baseApi.injectEndpoints({
 			invalidatesTags: ['TOUR'],
 		}),
 		getAllTours: builder.query({
-			query: () => ({
+			query: (params) => ({
 				url: '/tour',
 				method: 'GET',
+				params: params,
 			}),
 			providesTags: ['TOUR'],
 		}),
