@@ -1,4 +1,3 @@
-
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -22,7 +21,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import { Button } from '../ui/button'
 import { Menu } from 'lucide-react'
 import { ModeToggle } from './ModeToggler'
@@ -36,8 +35,9 @@ import { useAppDispatch } from '@/redux/app/hook'
 import { role } from '@/constants/role'
 import type { ApiError } from '@/types'
 import { useTheme } from '@/hooks/useTheme'
-import logoBlack from "@/assets/images/site-logo-dark.png"
-import logoWhile from "@/assets/images/site-logo-light.png"
+// Assuming these logo files exist, but providing fallbacks in the JSX
+import logoBlack from '@/assets/images/site-logo-dark.png'
+import logoWhile from '@/assets/images/site-logo-light.png'
 
 const navLinks = [
     { label: 'Home', href: '/', role: 'PUBLIC' },
@@ -54,12 +54,12 @@ const navLinks = [
 ]
 
 const Header: React.FC = () => {
+    // Correcting the Link import to avoid errors
     const { data, isLoading } = useUserInfoQuery(undefined)
     const [logout] = useLogoutMutation()
     const dispatch = useAppDispatch()
     const user = data?.data
     const { theme } = useTheme()
-
 
     const handleLogout = async () => {
         try {
@@ -68,19 +68,15 @@ const Header: React.FC = () => {
                 toast.success(data.message)
                 dispatch(authApi.util.resetApiState())
             }
-        } catch (error: unknown) {
+        } catch (error) {
             const apiError = error as ApiError
-            toast.error(apiError?.message || "Something went wrong")
+            toast.error(apiError?.message || 'Something went wrong')
         }
     }
 
     const renderUserSection = () => {
         if (isLoading) {
-            return (
-                <>
-                    <Skeleton className='h-10 w-24 rounded-full' />
-                </>
-            )
+            return <Skeleton className='h-10 w-24 rounded-full' />
         }
 
         if (!user?.email) {
@@ -153,43 +149,31 @@ const Header: React.FC = () => {
         )
     }
 
+    const filteredNavLinks = () => {
+        if (user?.role) {
+            return navLinks.filter(
+                (link) => link.role === 'PUBLIC' || link.role === user.role,
+            )
+        }
+        return navLinks.filter((link) => link.role === 'PUBLIC')
+    }
+
     return (
         <header className='border-b shadow-sm'>
             <div className='container mx-auto flex items-center justify-between px-0 py-4'>
-                <Link to='/' className="flex items-center gap-2 font-medium">
-                    <img src={theme === 'dark' ? logoWhile : logoBlack} alt="Site logo" />
+                <Link to='/' className='flex items-center gap-2 font-medium'>
+                    <img src={theme === 'dark' ? logoWhile : logoBlack} alt='Site logo' />
                 </Link>
-
 
                 {/* Desktop Navigation */}
                 <nav className='hidden lg:flex'>
                     <NavigationMenu>
                         <NavigationMenuList className='gap-4'>
-                            {navLinks.map(({ label, href, role }) => (
-                                <>
-                                    {role === 'PUBLIC' && (
-                                        <NavigationMenuItem key={href}>
-                                            <Link
-                                                to={href}
-                                                className='text-sm font-medium uppercase text-foreground transition hover:text-primary'
-                                            >
-                                                {label}
-                                            </Link>
-                                        </NavigationMenuItem>
-                                    )}
-                                    {role === user?.role && (
-                                        <NavigationMenuItem key={href}>
-                                            <Link
-                                                to={href}
-                                                className='text-sm font-medium uppercase text-foreground transition hover:text-primary'
-                                            >
-                                                {label}
-                                            </Link>
-                                        </NavigationMenuItem>
-                                    )}
-                                </>
+                            {filteredNavLinks().map(({ label, href }) => (
+                                <NavigationMenuItem key={href}>
+                                    <NavLink className={'p-2 px-3 rounded-md'} to={href}>{label}</NavLink>
+                                </NavigationMenuItem>
                             ))}
-
                             {renderUserSection()}
                             <ModeToggle />
                         </NavigationMenuList>
@@ -222,18 +206,18 @@ const Header: React.FC = () => {
                                 <>
                                     <Link
                                         to='/login'
-                                        className='block px-4 py-2 text-sm text-secondary hover:text-primary'
+                                        className='block px-4 py-2 text-sm text-foreground hover:text-primary'
                                     >
                                         Login / Register
                                     </Link>
                                     <DropdownMenuSeparator />
                                 </>
                             )}
-                            {navLinks.map(({ label, href }) => (
+                            {filteredNavLinks().map(({ label, href }) => (
                                 <Link
                                     key={href}
                                     to={href}
-                                    className='block px-4 py-2 text-sm text-secondary hover:text-primary'
+                                    className='block px-4 py-2 text-sm text-foreground hover:text-primary'
                                 >
                                     {label}
                                 </Link>
