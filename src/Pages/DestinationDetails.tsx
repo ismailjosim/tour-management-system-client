@@ -201,7 +201,7 @@ const DestinationDetails: React.FC = () => {
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <Card className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
                                         <CardHeader>
-                                            <CardTitle className="text-lg text-green-800 dark:text-green-300">Price Includes</CardTitle>
+                                            <CardTitle className="text-lg text-green-800 dark:text-green-300">Tour Includes</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <ul className="space-y-3">
@@ -216,7 +216,7 @@ const DestinationDetails: React.FC = () => {
                                     </Card>
                                     <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
                                         <CardHeader>
-                                            <CardTitle className="text-lg text-red-800 dark:text-red-300">Package Not Included</CardTitle>
+                                            <CardTitle className="text-lg text-red-800 dark:text-red-300">Tour Not Included</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <ul className="space-y-3">
