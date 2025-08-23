@@ -1,28 +1,33 @@
-import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router'
-import { MapPin, Star, Check, X, Facebook, Twitter, Instagram } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-import { Progress } from '@/components/ui/progress'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import PageHeading from '../utils/PageHeading'
-import { useGetSingleTourQuery } from '../redux/features/Tour/tour.api'
-import type { IDestination, IResponse } from '../types'
-
-
-
-
+import React, { useEffect } from 'react';
+import { Link, useParams } from 'react-router';
+import { MapPin, Star, Check, X, Facebook, Twitter, Instagram, Calendar, Compass, Plane, User, Users, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import PageHeading from '../utils/PageHeading';
+import { useGetSingleTourQuery, useGetTourTypesQuery } from '../redux/features/Tour/tour.api';
+import type { IDestination, IResponse } from '../types';
+import { dummyCategories, dummyFeaturedContent, userReviews } from '../DummyData';
+import { format } from 'date-fns';
+import { useGetDivisionsQuery } from '../redux/features/division/division.api';
 
 // Define a default image for when no image is found
 const DEFAULT_IMAGE = "https://via.placeholder.com/1200x800.png?text=No+Image+Available";
 
+// Helper function to calculate average rating
+const calculateAverageRating = (reviews: { rating: number }[]) => {
+    if (!reviews || reviews.length === 0) return { average: 0, total: 0 };
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const average = totalRating / reviews.length;
+    return { average, total: reviews.length };
+};
+
 const DestinationDetails: React.FC = () => {
-    const { slug } = useParams<{ slug: string }>()
+    const { slug } = useParams<{ slug: string }>();
     const { data, isLoading, isError } = useGetSingleTourQuery(slug);
 
-    // Cast the data to the defined ApiResponse interface
     const apiResponse = data as IResponse<IDestination> | undefined;
     const destination = apiResponse?.data;
 
@@ -31,22 +36,33 @@ const DestinationDetails: React.FC = () => {
         description,
         images,
         location,
+        departureLocation,
+        arrivalLocation,
         included,
         excluded,
         amenities,
+        minAge,
+        tourType,
+        division,
     } = destination || {};
 
-    // A simple mapping with default values for rendering
     const newTitle = title || "No Title Found";
     const newLocation = location || "No Location Found";
-    const newCity = newLocation.split(',')[0]?.trim() || "No City Found";
-    const newCountry = newLocation.split(',')[1]?.trim() || "No Country Found";
+    const [newCity, newCountry] = newLocation.split(',').map(s => s.trim());
     const newDescription = description || "No Description Found";
     const newIncluded = included && included.length > 0 ? included : ["No Included Items Found"];
     const newExcluded = excluded && excluded.length > 0 ? excluded : ["No Excluded Items Found"];
     const newGallery = images && images.length > 0 ? images : [DEFAULT_IMAGE];
     const newThumbnail = newGallery[0];
-    const newAmenities = amenities || [];
+    const tags = amenities && amenities.length > 0 ? amenities : [];
+
+    const { average, total } = calculateAverageRating(userReviews);
+    const averageRating = average.toFixed(1);
+    const { data: divisionInfo } = useGetDivisionsQuery({ _id: division, fields: 'name' }, { skip: !data })
+    const { data: tourTypeInfo } = useGetTourTypesQuery({ _id: tourType, fields: 'name' }, { skip: !data })
+
+
+
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -73,42 +89,17 @@ const DestinationDetails: React.FC = () => {
         );
     }
 
-    // Dummy data for reviews, categories, and tags as they are not in the provided API response
-    const dummyReviews = [
-        { label: 'Cleanliness', value: 80 },
-        { label: 'Facilities', value: 60 },
-        { label: 'Value for money', value: 100 },
-        { label: 'Service', value: 40 },
-        { label: 'Location', value: 75 }
-    ];
-    const dummyCategories = ["Adventure", "Beach", "Cultural", "Hiking", "Relaxation"];
-    const dummyTags = newAmenities.length > 0 ? newAmenities : ["Travel", "Explore", "Nature", "City Break"];
-    const dummyFeaturedContent = "https://via.placeholder.com/400x300.png?text=Featured+Content";
-
-    // Dummy user reviews
-    const userReviews = [
-        {
-            name: "Jane Doe",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Jane",
-            rating: 5,
-            comment: "This tour was an amazing experience! Everything was well-organized and the guides were fantastic. Highly recommend!",
-            date: "August 15, 2025"
-        },
-        {
-            name: "John Smith",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=John",
-            rating: 4,
-            comment: "Had a great time, but the schedule was a bit rushed. The scenery was beautiful though.",
-            date: "August 10, 2025"
-        },
-        {
-            name: "Alice Johnson",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Alice",
-            rating: 5,
-            comment: "A perfect getaway! The facilities were top-notch and the value for money was excellent.",
-            date: "July 28, 2025"
-        }
-    ];
+    // A reusable component for star ratings to reduce duplication
+    const StarRating = ({ rating }: { rating: number }) => (
+        <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+                <Star
+                    key={i}
+                    className={`h-4 w-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'}`}
+                />
+            ))}
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -116,9 +107,9 @@ const DestinationDetails: React.FC = () => {
 
             <div className="container mx-auto py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Left Side: Main Content */}
+                    {/* Main Content Area */}
                     <div className="lg:col-span-2 space-y-8">
-                        {/* Destination Title & Booking Button */}
+                        {/* Title & Booking */}
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
                                 <h2 className="text-3xl md:text-5xl font-bold capitalize mb-2">
@@ -130,11 +121,9 @@ const DestinationDetails: React.FC = () => {
                                         <span>{newCity}, {newCountry}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                        ))}
+                                        <StarRating rating={average} />
                                     </div>
-                                    <span className="text-gray-500 dark:text-gray-500">(500 Reviews)</span>
+                                    <span className="text-gray-500 dark:text-gray-500">({total} Reviews)</span>
                                 </div>
                             </div>
                             <Link to={`/booking/${slug}`}>
@@ -144,8 +133,8 @@ const DestinationDetails: React.FC = () => {
                             </Link>
                         </div>
 
-                        {/* Destination Image */}
-                        <div className=" shadow-lg dark:shadow-none ">
+                        {/* Main Image */}
+                        <div className="shadow-lg dark:shadow-none">
                             <img
                                 className="w-full h-64 md:h-96 object-cover rounded-md"
                                 src={newThumbnail}
@@ -153,20 +142,63 @@ const DestinationDetails: React.FC = () => {
                             />
                         </div>
 
-
-
-                        {/* Description */}
+                        {/* Tour Details */}
                         <Card className="dark:bg-gray-800">
                             <CardHeader>
-                                <CardTitle className="text-xl">Description</CardTitle>
+                                <CardTitle className="text-xl">Tour Details</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                                    {newDescription}
-                                </p>
-
+                            <CardContent className="grid gap-6">
+                                <div className="grid md:grid-cols-2 gap-x-12 gap-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <Calendar className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Dates</p>
+                                            <p className="font-medium">From {format(destination.startDate, 'PP')} - {format(destination.endDate, 'PP')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Compass className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Tour Type</p>
+                                            <p className="font-medium">{tourTypeInfo?.data[0]?.name || 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Plane className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Departure</p>
+                                            <p className="font-medium">{departureLocation || 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <User className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Minimum Age</p>
+                                            <p className="font-medium">{minAge ? `${minAge} Years` : 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <MapPin className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Arrival</p>
+                                            <p className="font-medium">{arrivalLocation || 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Users className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                                        <div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Division</p>
+                                            <p className="font-medium">{divisionInfo?.data[0]?.name || 'Not specified'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3>Description</h3>
+                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                        {newDescription}
+                                    </p>
+                                </div>
                                 <div className="grid md:grid-cols-2 gap-6">
-                                    {/* Price Includes */}
                                     <Card className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
                                         <CardHeader>
                                             <CardTitle className="text-lg text-green-800 dark:text-green-300">Price Includes</CardTitle>
@@ -182,8 +214,6 @@ const DestinationDetails: React.FC = () => {
                                             </ul>
                                         </CardContent>
                                     </Card>
-
-                                    {/* Package Not Included */}
                                     <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
                                         <CardHeader>
                                             <CardTitle className="text-lg text-red-800 dark:text-red-300">Package Not Included</CardTitle>
@@ -247,30 +277,37 @@ const DestinationDetails: React.FC = () => {
                             <CardContent className="space-y-6">
                                 <Card className="bg-blue-600 text-white text-center dark:bg-blue-800">
                                     <CardContent className="pt-6">
-                                        <h3 className="text-3xl font-bold">2.2/5</h3>
-                                        <h4 className="text-xl font-semibold my-2">
-                                            "Feel So Much Worse Than Thinking"
-                                        </h4>
-                                        <p>From 40 Reviews</p>
+                                        <h3 className="text-3xl font-bold">{averageRating}/5</h3>
+                                        <p className="text-xl font-semibold my-2">
+                                            {total > 0 ? `"Based on user feedback"` : `"No reviews yet"`}
+                                        </p>
+                                        <p>From {total} Reviews</p>
                                     </CardContent>
                                 </Card>
                                 <div className="space-y-4">
-                                    {dummyReviews.map(({ label, value }) => (
-                                        <div key={label} className="space-y-2">
-                                            <div className="flex justify-between">
-                                                <span className="font-medium">{label}</span>
-                                                <span className="text-gray-500 dark:text-gray-400">{value}%</span>
+                                    {/* These progress bars should also be dynamic */}
+                                    {/* For now, we'll use dummy data as a placeholder */}
+                                    {
+                                        [
+                                            { label: 'Cleanliness', value: 85 },
+                                            { label: 'Value for Money', value: 70 },
+                                            { label: 'Service', value: 90 },
+                                            { label: 'Location', value: 95 }
+                                        ].map(({ label, value }) => (
+                                            <div key={label} className="space-y-2">
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium">{label}</span>
+                                                    <span className="text-gray-500 dark:text-gray-400">{value}%</span>
+                                                </div>
+                                                <Progress value={value} className="h-3" />
                                             </div>
-                                            <Progress value={value} className="h-3" />
-                                        </div>
-                                    ))}
+                                        ))
+                                    }
                                 </div>
                             </CardContent>
                         </Card>
 
-
-
-                        {/* Users Reviews Section */}
+                        {/* User Reviews Section */}
                         <Card className="dark:bg-gray-800">
                             <CardHeader>
                                 <CardTitle className="text-2xl">User Reviews</CardTitle>
@@ -287,11 +324,7 @@ const DestinationDetails: React.FC = () => {
                                                 <div className="flex items-center justify-between">
                                                     <div>
                                                         <h4 className="font-semibold text-lg">{review.name}</h4>
-                                                        <div className="flex items-center gap-1">
-                                                            {[...Array(review.rating)].map((_, i) => (
-                                                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                                            ))}
-                                                        </div>
+                                                        <StarRating rating={review.rating} />
                                                     </div>
                                                     <span className="text-sm text-gray-500 dark:text-gray-400">{review.date}</span>
                                                 </div>
@@ -310,8 +343,6 @@ const DestinationDetails: React.FC = () => {
 
                     {/* Right Side: Sticky Sidebar */}
                     <div className="space-y-6 lg:sticky lg:top-8 self-start">
-
-
                         {/* Author Profile */}
                         <Card className="dark:bg-gray-800">
                             <CardContent className="pt-6">
@@ -354,9 +385,10 @@ const DestinationDetails: React.FC = () => {
                                         <li key={idx}>
                                             <Button
                                                 variant="ghost"
-                                                className="w-full justify-start hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-blue-400"
+                                                className="w-full justify-between items-center hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-gray-700 dark:hover:text-blue-400"
                                             >
-                                                {category}
+                                                <span>{category}</span>
+                                                <ChevronRight className='h-4 w-4' />
                                             </Button>
                                         </li>
                                     ))}
@@ -387,15 +419,14 @@ const DestinationDetails: React.FC = () => {
                             </CardContent>
                         </Card>
 
-                        {/* Packages & Relevant Tours Section */}
+                        {/* Relevant Tours Section */}
                         <Card className="dark:bg-gray-800">
                             <CardHeader>
-                                <CardTitle className="text-xl">Packages & Relevant Tours</CardTitle>
+                                <CardTitle className="text-xl">Relevant Tours</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {/* Placeholder for Packages and Relevant Tours */}
                                 <div className="text-center text-gray-500 dark:text-gray-400 space-y-4">
-                                    <p>This section will feature a list of packages and other tours relevant to this destination.</p>
+                                    <p>This section will feature a list of other tours relevant to this destination.</p>
                                     <p>You can fetch this data from your API and render it here in a carousel or grid format.</p>
                                 </div>
                             </CardContent>
@@ -407,9 +438,9 @@ const DestinationDetails: React.FC = () => {
                                 <CardTitle className="text-xl">Tags</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {dummyTags.length > 0 ? (
+                                {tags.length > 0 ? (
                                     <div className="flex flex-wrap gap-2">
-                                        {dummyTags.map((tag, idx) => (
+                                        {tags.map((tag, idx) => (
                                             <Badge
                                                 key={idx}
                                                 variant="outline"
@@ -424,7 +455,6 @@ const DestinationDetails: React.FC = () => {
                                 )}
                             </CardContent>
                         </Card>
-
                     </div>
                 </div>
             </div>

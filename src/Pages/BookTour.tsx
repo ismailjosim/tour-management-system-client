@@ -8,6 +8,7 @@ import { useParams } from 'react-router'
 import { useGetSingleTourQuery } from '../redux/features/Tour/tour.api'
 import { useAddBookingMutation } from '../redux/features/booking/booking.api'
 import { toast } from 'sonner'
+import { format } from 'date-fns'
 
 const BookTour = () => {
     const [guestCount, setGuestCount] = useState(1)
@@ -41,6 +42,8 @@ const BookTour = () => {
         included,
         tourPlan,
         costFrom,
+        startDate,
+        endDate
     } = tour || {}
 
     const totalAmount = (costFrom || 0) * guestCount
@@ -114,7 +117,7 @@ const BookTour = () => {
                             </div>
                             <div className='flex items-center space-x-3'>
                                 <Calendar className='text-blue-500' size={20} />
-                                <span>Duration: {'duration'}</span>
+                                <span>Duration: {format(startDate, 'PP')} - {format(endDate, 'PP')}</span>
                             </div>
                             <div className='flex items-center space-x-3'>
                                 <Users className='text-blue-500' size={20} />
@@ -145,7 +148,7 @@ const BookTour = () => {
                             <h3 className='text-2xl font-bold text-gray-900 dark:text-gray-50'>
                                 Tour Plan
                             </h3>
-                            <ol className='list-decimal list-inside space-y-3 pl-4 text-gray-700 dark:text-gray-300'>
+                            <ol className='space-y-3 pl-4 text-gray-700 dark:text-gray-300'>
                                 {tourPlan.map((step, index) => (
                                     <li key={index} className='text-lg'>
                                         {step}

@@ -30,3 +30,50 @@ export const dummyTourData: Partial<IDestination> = {
 		'Relax at Red Beach and visit Akrotiri ruins',
 	],
 }
+
+// Dummy data for reviews, categories, and tags as they are not in the provided API response
+export const dummyReviews = [
+	{ label: 'Cleanliness', value: 80 },
+	{ label: 'Facilities', value: 60 },
+	{ label: 'Value for money', value: 100 },
+	{ label: 'Service', value: 40 },
+	{ label: 'Location', value: 75 },
+]
+export const dummyCategories = [
+	'Adventure',
+	'Beach',
+	'Cultural',
+	'Hiking',
+	'Relaxation',
+]
+export const dummyTags = ['Travel', 'Explore', 'Nature', 'City Break']
+export const dummyFeaturedContent =
+	'https://via.placeholder.com/400x300.png?text=Featured+Content'
+
+// Dummy user reviews
+export const userReviews = [
+	{
+		name: 'Jane Doe',
+		avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jane',
+		rating: 5,
+		comment:
+			'This tour was an amazing experience! Everything was well-organized and the guides were fantastic. Highly recommend!',
+		date: 'August 15, 2025',
+	},
+	{
+		name: 'John Smith',
+		avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=John',
+		rating: 4,
+		comment:
+			'Had a great time, but the schedule was a bit rushed. The scenery was beautiful though.',
+		date: 'August 10, 2025',
+	},
+	{
+		name: 'Alice Johnson',
+		avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Alice',
+		rating: 5,
+		comment:
+			'A perfect getaway! The facilities were top-notch and the value for money was excellent.',
+		date: 'July 28, 2025',
+	},
+]

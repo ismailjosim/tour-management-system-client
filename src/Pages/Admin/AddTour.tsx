@@ -25,8 +25,8 @@ import TourDynamicFields from "@/components/modules/Admin/Tour/TourDynamicFields
 export default function AddTour() {
     const [images, setImages] = useState<(File | FileMetadata)[]>([])
 
-    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined)
-    const { data: tourTypeData } = useGetTourTypesQuery(undefined)
+    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery({ limit: 1000, fields: '_id,name' })
+    const { data: tourTypeData } = useGetTourTypesQuery({ limit: 1000, fields: '_id,name' })
     const [addTour] = useAddTourMutation()
 
     const divisionOptions = divisionData?.data?.map((item: { _id: string; name: string }) => ({
