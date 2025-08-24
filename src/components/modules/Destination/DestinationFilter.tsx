@@ -26,8 +26,8 @@ const DestinationFilter: FC = () => {
     const selectedDivision = searchParams.get('division') || '';
     const selectedTourType = searchParams.get('tourType') || '';
 
-    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery(undefined);
-    const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourTypesQuery(undefined);
+    const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery({ limit: 1000, fields: '_id,name' });
+    const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourTypesQuery({ limit: 1000, fields: '_id,name' });
 
     // Memoize options to avoid recalculation on each render
     const divisionOptions: Option[] = useMemo(

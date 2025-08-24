@@ -14,11 +14,15 @@
 
 		/* Bundler mode */
 		"moduleResolution": "bundler",
+		"esModuleInterop": true,
 		"allowImportingTsExtensions": true,
+		"allowSyntheticDefaultImports": true,
 		"verbatimModuleSyntax": true,
 		"moduleDetection": "force",
 		"noEmit": true,
 		"jsx": "react-jsx",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
 
 		/* Linting */
 		"strict": true,
