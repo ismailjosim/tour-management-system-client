@@ -66,7 +66,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
     const { icon, title, subtitle, review } = data
 
     return (
-        <ShadCard className='why-us-item p-12 border-2 rounded-xl bg-white'>
+        <ShadCard className='why-us-item p-12 border-2 rounded-xl'>
             <div className='why-us-content'>
                 <p className='text-6xl text-primary mb-3 icon'>{icon}</p>
                 <h4 className='font-semibold text-xl leading-6'>{title}</h4>

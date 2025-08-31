@@ -12,13 +12,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { useTheme } from "../hooks/useTheme"
+import { useTheme } from "@/hooks/useTheme"
 import { Link } from "react-router"
 import logoBlack from "@/assets/images/site-logo-dark.png"
 import logoWhile from "@/assets/images/site-logo-light.png"
-import { getSidebarItems } from "../utils/getSidebarItems"
-import { useUserInfoQuery } from "../redux/features/auth/auth.api"
-import type { TRole } from "../types"
+import { getSidebarItems } from "@/utils/getSidebarItems"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import type { TRole } from "@/types"
 
 
 

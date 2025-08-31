@@ -2,18 +2,28 @@
 import { MapPin, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { useTheme } from '@/hooks/useTheme';
 // import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 // import { Calendar } from '@/components/ui/calendar';
 // import { format } from 'date-fns';
-
+import shapeLight from "@/assets/images/shapeLight.png"
+import shapeDark from "@/assets/images/shapeDark.png"
 
 const HolidayForm: React.FC = () => {
+    const { theme } = useTheme()
     // const [startDate, setStartDate] = useState<Date | undefined>(new Date());
     // const [endDate, setEndDate] = useState<Date | undefined>(new Date());
 
     return (
         <div className="relative z-10 pt-10">
-            <div className="section-shape lg:mt-12 md:mt-12 mt-20" />
+            <div
+                className={cn(
+                    "absolute bottom-16 left-0 w-full h-20 pb-40 pt-28 rotate-180 origin-center bg-contain bg-repeat-x z-[1]",
+                )}
+                style={{ backgroundImage: `url(${theme === 'dark' ? shapeDark : shapeLight})` }}
+            />
+            {/* <div className="section-shape lg:mt-12 md:mt-12 mt-20" /> */}
             <div className="container mx-auto relative -top-10 flex sm:flex-row flex-col justify-between gap-5 items-center bg-white dark:bg-accent shadow-xl rounded-lg overflow-hidden z-10">
                 <div className="bg-primary flex-1 w-full">
                     <h3 className="flex gap-2 justify-center items-center font-semibold px-2 py-10 text-white">
