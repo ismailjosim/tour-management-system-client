@@ -116,17 +116,25 @@ const Header: React.FC = () => {
 						<DropdownMenuContent className='w-56' align='center'>
 							<DropdownMenuLabel>My Account</DropdownMenuLabel>
 							<DropdownMenuGroup>
-								<DropdownMenuItem>
-									Profile
-									<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+								<DropdownMenuItem asChild>
+									<NavLink to='/profile'>
+										Profile
+										<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+									</NavLink>
 								</DropdownMenuItem>
-								<DropdownMenuItem>
-									Settings
-									<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+								<DropdownMenuItem asChild>
+									<NavLink to='/settings'>
+										Settings
+										<DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+									</NavLink>
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
+
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>Support</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<NavLink to='/support'>Support</NavLink>
+							</DropdownMenuItem>
+
 							<DropdownMenuSeparator />
 							<DropdownMenuItem onClick={handleLogout}>
 								Log out
