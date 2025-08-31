@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import type { ReactNode } from "react"
 import { toast } from "sonner"
-import type { ApiError } from "../types"
+import type { ApiError } from "@/types"
 
 interface IProps {
     children: ReactNode

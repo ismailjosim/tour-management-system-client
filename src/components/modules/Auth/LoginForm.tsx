@@ -112,7 +112,7 @@ export function LoginForm({
                     </span>
                 </div>
                 <Button
-                    onClick={() => window.open(`${config.baseUrl}/auth/google`)}
+                    onClick={() => document.location.href = `${config.baseUrl}/auth/google`}
                     variant='outline'
                     className='w-full'
                 >

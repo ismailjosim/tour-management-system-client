@@ -68,7 +68,11 @@ const BookTour = () => {
                 const res = await addBooking(bookingData).unwrap()
                 if (res.success) {
                     const paymentUrl = res?.data?.paymentUrl
-                    window.open(paymentUrl)
+                    // option 01: open new tab
+                    // window.open(paymentUrl)
+
+                    // option 02:
+                    document.location.href = paymentUrl;
 
                     toast.success("Tour created", { id: toastId })
 

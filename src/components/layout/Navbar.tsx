@@ -35,19 +35,18 @@ import { useAppDispatch } from '@/redux/app/hook'
 import { role } from '@/constants/role'
 import type { ApiError } from '@/types'
 import { useTheme } from '@/hooks/useTheme'
-// Assuming these logo files exist, but providing fallbacks in the JSX
 import logoBlack from '@/assets/images/site-logo-dark.png'
 import logoWhile from '@/assets/images/site-logo-light.png'
 
 const navLinks = [
     { label: 'Home', href: '/', role: 'PUBLIC' },
-    { label: 'About', href: '/about', role: 'PUBLIC' },
+    // { label: 'About', href: '/about', role: 'PUBLIC' },
     { label: 'Destination', href: '/destinations', role: 'PUBLIC' },
-    { label: 'Packages', href: '/packages', role: 'PUBLIC' },
-    { label: 'Blog', href: '/blog', role: 'PUBLIC' },
-    { label: 'Contact Us', href: '/contact', role: 'PUBLIC' },
-    { label: 'FAQs', href: '/faq', role: 'PUBLIC' },
-    { label: 'Cart', href: '/cart', role: 'PUBLIC' },
+    // { label: 'Packages', href: '/packages', role: 'PUBLIC' },
+    // { label: 'Blog', href: '/blog', role: 'PUBLIC' },
+    // { label: 'Contact Us', href: '/contact', role: 'PUBLIC' },
+    // { label: 'FAQs', href: '/faq', role: 'PUBLIC' },
+    // { label: 'Cart', href: '/cart', role: 'PUBLIC' },
     { label: 'Dashboard', href: '/admin', role: role.ADMIN },
     { label: 'Dashboard', href: '/admin', role: role.SUPER_ADMIN },
     { label: 'Dashboard', href: '/user', role: role.USER },
