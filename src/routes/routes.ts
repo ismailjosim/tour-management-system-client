@@ -26,6 +26,7 @@ import FailPayment from '../Pages/Payment/FailPayment'
 import CancelPayment from '../Pages/Payment/CancelPayment'
 import Contact from '../Pages/Contact'
 import FAQs from '../Pages/FAQs'
+import Profile from '../Pages/Profile'
 
 const router = createBrowserRouter([
 	{
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
 			{
 				path: 'booking/:slug',
 				Component: withAuth(BookTour),
+			},
+			{
+				path: 'profile',
+				Component: withAuth(Profile),
 			},
 		],
 	},
