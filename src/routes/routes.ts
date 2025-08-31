@@ -24,6 +24,8 @@ import BookTour from '../Pages/BookTour'
 import SuccessPayment from '../Pages/Payment/SuccessPayment'
 import FailPayment from '../Pages/Payment/FailPayment'
 import CancelPayment from '../Pages/Payment/CancelPayment'
+import Contact from '../Pages/Contact'
+import FAQs from '../Pages/FAQs'
 
 const router = createBrowserRouter([
 	{
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
 			{
 				path: 'about',
 				Component: About,
+			},
+			{
+				path: 'contact',
+				Component: Contact,
+			},
+			{
+				path: 'faq',
+				Component: FAQs,
 			},
 			{
 				path: 'destinations',

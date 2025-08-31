@@ -145,7 +145,7 @@ const PartnerSection: React.FC = () => {
 				</div>
 
 				{/* Stats Section */}
-				<div className='grid grid-cols-2 md:grid-cols-4 gap-6 mb-16'>
+				<div className='grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 '>
 					<div className='text-center'>
 						<div className='text-3xl font-bold text-primary mb-2'>150+</div>
 						<div className='text-sm text-muted-foreground'>Global Partners</div>
@@ -167,7 +167,7 @@ const PartnerSection: React.FC = () => {
 				</div>
 
 				{/* Partners Grid */}
-				<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto'>
+				<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
 					{partners.map((partner) => (
 						<Card
 							key={partner.id}
@@ -179,7 +179,7 @@ const PartnerSection: React.FC = () => {
 									<img
 										src={partner.logo}
 										alt={`${partner.name} logo`}
-										className='w-full h-24 object-cover group-hover:scale-105 transition-transform duration-300'
+										className='w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300'
 									/>
 									<div className='absolute top-2 right-2'>
 										{getCategoryIcon(partner.category)}
