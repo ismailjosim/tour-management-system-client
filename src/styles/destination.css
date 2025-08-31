@@ -45,46 +45,6 @@
     z-index: -1;
 }
 
-.bottom_animation {
-    z-index: 1;
-    border: none;
-    position: relative;
-    overflow: hidden;
-    transition: all ease-in-out 0.5s;
-    box-shadow: 0px 0px 1px 1px #ddd;
-    cursor: pointer;
-}
-
-.bottom_animation:hover .bottom_animation,
-.bottom_animation:hover .bottom_animation .icon {
-    color: #fff !important;
-    transition-delay: 0.4s;
-    transition: all ease-in-out 0.5s;
-}
-
-.bottom_animation:hover .bottom_animation .icon {
-    color: #fff !important;
-    transition-delay: 0.5s;
-    transition: all ease-in-out 0.8s;
-}
-
-.bottom_animation:hover::before {
-    width: 100%;
-    transition: all ease-in-out 0.5s;
-}
-
-.bottom_animation::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 3px;
-    transition: all ease-in-out 0.5s;
-    background: #029e9d !important;
-    cursor: pointer;
-}
-
 /* section heading */
 
 .dot_overlay {
