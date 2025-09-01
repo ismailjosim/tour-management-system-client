@@ -50,6 +50,13 @@ export const tourApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ['TOUR'],
 		}),
+		removeTour: builder.mutation({
+			query: (tourId) => ({
+				url: `/tour/${tourId}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['TOUR'],
+		}),
 	}),
 })
 
@@ -60,4 +67,5 @@ export const {
 	useAddTourMutation,
 	useGetAllToursQuery,
 	useGetSingleTourQuery,
+	useRemoveTourMutation,
 } = tourApi
