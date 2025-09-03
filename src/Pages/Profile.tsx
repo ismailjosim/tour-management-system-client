@@ -2,10 +2,15 @@ import React, { useState } from 'react'
 import { Edit3, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { useUserInfoQuery } from '@/redux/features/auth/auth.api'
+import {
+	useUpdateProfileMutation,
+	useUserInfoQuery,
+} from '@/redux/features/auth/auth.api'
 import ProfileSummary from '../components/modules/Profile/ProfileSummary'
 import PersonalInfo from '../components/modules/Profile/PersonalInfo'
 import AccountInfo from '../components/modules/Profile/AccountInfo'
+import { toast } from 'sonner'
+import type { ApiError } from '../types'
 
 export interface EditFormData {
 	name: string
@@ -15,6 +20,7 @@ export interface EditFormData {
 
 const Profile: React.FC = () => {
 	const { data, isError, isLoading } = useUserInfoQuery(undefined)
+	const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation()
 	const [isEditing, setIsEditing] = useState(false)
 	const [editData, setEditData] = useState<EditFormData>({
 		name: '',
@@ -25,10 +31,27 @@ const Profile: React.FC = () => {
 	const userData = data?.data
 
 	/** Handlers */
-	const handleEditToggle = () => {
+	const handleEditToggle = async () => {
 		if (isEditing) {
-			console.log('Saving changes:', editData)
-			setIsEditing(false)
+			try {
+				// API কল
+				const res = await updateProfile({
+					id: userData?._id,
+					...editData,
+				}).unwrap()
+
+				if (res.statusCode === 201) {
+					toast.success(res?.message)
+				}
+
+				setIsEditing(false)
+			} catch (err) {
+				// RTK Query error typecast
+				const error = err as { data?: ApiError }
+
+				console.log(error)
+				toast.error(error?.data?.message || 'Something went wrong')
+			}
 		} else {
 			if (userData) {
 				setEditData({
@@ -100,8 +123,14 @@ const Profile: React.FC = () => {
 					<Button
 						onClick={handleEditToggle}
 						variant={isEditing ? 'outline' : 'default'}
+						disabled={isUpdating}
 					>
-						{isEditing ? (
+						{isUpdating ? (
+							<>
+								<Loader2 className='w-4 h-4 mr-2 animate-spin' />
+								Saving...
+							</>
+						) : isEditing ? (
 							<>
 								<X className='w-4 h-4 mr-2' />
 								Cancel
