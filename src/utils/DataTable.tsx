@@ -35,12 +35,17 @@ const DataTable = ({
 	}
 
 	return (
-		<div className='border border-muted rounded-md'>
-			<Table>
+		<div className='border border-muted rounded-md overflow-x-auto'>
+			<Table className='w-full'>
 				<TableHeader>
 					<TableRow>
 						{columns.map((column) => (
-							<TableHead key={column.key} className={column.className}>
+							<TableHead
+								key={column.key}
+								className={`px-4 py-3 text-left font-semibold ${
+									column.className ?? ''
+								}`}
+							>
 								{column.header}
 							</TableHead>
 						))}
@@ -60,7 +65,10 @@ const DataTable = ({
 						data.map((item, index) => (
 							<TableRow key={item._id || index}>
 								{columns.map((column) => (
-									<td key={column.key} className={column.className}>
+									<td
+										key={column.key}
+										className={`px-4 py-2 ${column.className ?? ''}`}
+									>
 										{column.render
 											? column.render(item[column.key], item)
 											: item[column.key]}

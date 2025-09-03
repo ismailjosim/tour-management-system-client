@@ -6,7 +6,7 @@ import { Link } from 'react-router'
 
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { TableCell } from '@/components/ui/table'
+
 import DeleteConfirmation from '@/components/DeleteConfirmation'
 
 import usePagination from '@/hooks/usePagination'
@@ -51,7 +51,7 @@ const AllTours = () => {
 			header: 'Image',
 			className: 'font-medium',
 			render: (images: string[], item: Tour) => (
-				<TableCell className='font-medium'>
+				<div className='font-medium'>
 					<Avatar className='rounded-md'>
 						{images && images.length > 0 ? (
 							<AvatarImage src={images[0]} alt={item.title} />
@@ -59,7 +59,7 @@ const AllTours = () => {
 							<AvatarFallback>{item.title?.charAt(0) ?? 'T'}</AvatarFallback>
 						)}
 					</Avatar>
-				</TableCell>
+				</div>
 			),
 		},
 		{
@@ -67,11 +67,11 @@ const AllTours = () => {
 			header: 'Tour Title',
 			className: 'font-medium',
 			render: (title: string) => (
-				<TableCell className='font-medium'>
+				<div className='font-medium'>
 					<div className='max-w-[200px] truncate' title={title}>
 						{title}
 					</div>
-				</TableCell>
+				</div>
 			),
 		},
 		{
@@ -79,7 +79,7 @@ const AllTours = () => {
 			header: 'Location',
 			className: 'font-medium',
 			render: (location: string) => (
-				<TableCell className='font-medium'>{location}</TableCell>
+				<div className='font-medium'>{location}</div>
 			),
 		},
 		{
@@ -87,7 +87,7 @@ const AllTours = () => {
 			header: 'Price',
 			className: 'font-medium',
 			render: (costFrom: number) => (
-				<TableCell className='font-medium'>${costFrom}</TableCell>
+				<div className='font-medium'>${costFrom}</div>
 			),
 		},
 		{
@@ -95,10 +95,10 @@ const AllTours = () => {
 			header: 'Duration',
 			className: 'font-medium hidden md:table-cell',
 			render: (_: any, item: Tour) => (
-				<TableCell className='font-medium hidden md:table-cell'>
+				<div className='font-medium hidden md:table-cell'>
 					{format(new Date(item.startDate), 'MMM dd')} -{' '}
 					{format(new Date(item.endDate), 'MMM dd, yyyy')}
-				</TableCell>
+				</div>
 			),
 		},
 		{
@@ -106,9 +106,9 @@ const AllTours = () => {
 			header: 'Max Guests',
 			className: 'text-center hidden sm:table-cell',
 			render: (maxGuest: number) => (
-				<TableCell className='text-center hidden sm:table-cell'>
+				<div className='text-center hidden sm:table-cell'>
 					{maxGuest} guests
-				</TableCell>
+				</div>
 			),
 		},
 		{
@@ -116,7 +116,7 @@ const AllTours = () => {
 			header: 'Actions',
 			className: 'text-right',
 			render: (_: any, item: Tour) => (
-				<TableCell className='text-right'>
+				<div className='text-right'>
 					<div className='flex items-center justify-end gap-2'>
 						<Button size='sm' variant='outline' asChild>
 							<Link to={`/destination/${item.slug}`}>
@@ -134,7 +134,7 @@ const AllTours = () => {
 							</Button>
 						</DeleteConfirmation>
 					</div>
-				</TableCell>
+				</div>
 			),
 		},
 	]
