@@ -17,7 +17,27 @@ export const bookingApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ['BOOKING'],
 		}),
+		getMyBookings: builder.query({
+			query: (params) => ({
+				url: '/booking/my-bookings',
+				method: 'GET',
+				params,
+			}),
+			providesTags: ['BOOKING'],
+		}),
+		removeBooking: builder.mutation({
+			query: (bookingId) => ({
+				url: `/booking/${bookingId}`,
+				method: 'DELETE',
+			}),
+			invalidatesTags: ['DIVISION'],
+		}),
 	}),
 })
 
-export const { useAddBookingMutation, useGetAllBookingsQuery } = bookingApi
+export const {
+	useAddBookingMutation,
+	useGetAllBookingsQuery,
+	useGetMyBookingsQuery,
+	useRemoveBookingMutation,
+} = bookingApi
