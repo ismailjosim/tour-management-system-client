@@ -53,7 +53,6 @@ const navLinks = [
 ]
 
 const Header: React.FC = () => {
-	// Correcting the Link import to avoid errors
 	const { data, isLoading } = useUserInfoQuery(undefined)
 	const [logout] = useLogoutMutation()
 	const dispatch = useAppDispatch()

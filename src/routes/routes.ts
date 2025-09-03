@@ -63,7 +63,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: 'profile',
-				Component: withAuth(Profile),
+				Component: withAuth(Profile, role.USER as TRole),
 			},
 		],
 	},
