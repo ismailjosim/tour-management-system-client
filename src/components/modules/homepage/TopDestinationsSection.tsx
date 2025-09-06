@@ -2,7 +2,7 @@ import { useGetAllToursQuery } from '@/redux/features/Tour/tour.api'
 import SectionHeading from '@/utils/SectionHeading'
 import DestinationLoading from '@/utils/DestinationLoading'
 import Error from '@/utils/Error'
-import DestinationCard from '../Destination/DestinationCard'
+import DestinationCard from '../Destination/DestinationGridCard'
 import ButtonNavigate from '@/utils/ButtonNavigate'
 import type { IDestination } from '../../../types'
 
@@ -15,7 +15,7 @@ const heading = {
 }
 
 const TopDestinationsSection = () => {
-	const { isLoading, data, isError } = useGetAllToursQuery(undefined)
+	const { isLoading, data, isError } = useGetAllToursQuery({ limit: 6 })
 
 	let content
 	if (isLoading) {
