@@ -16,10 +16,15 @@ const DivisionProgressCard: React.FC<DivisionProgressCardProps> = ({
 	const maxCount = Math.max(...data.map((d) => d.count), 1)
 
 	return (
-		<div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+		<div className='bg-white dark:bg-[#202E3C] rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700'>
+			{/* Header */}
 			<div className='flex items-center justify-between mb-6'>
-				<h2 className='text-xl font-bold text-gray-900'>{title}</h2>
+				<h2 className='text-xl font-bold text-gray-900 dark:text-gray-100'>
+					{title}
+				</h2>
 			</div>
+
+			{/* Progress bars */}
 			<div className='space-y-4'>
 				{data.map((item, index) => (
 					<div key={item.name} className='flex items-center justify-between'>
@@ -28,10 +33,12 @@ const DivisionProgressCard: React.FC<DivisionProgressCardProps> = ({
 								className='w-4 h-4 rounded-full'
 								style={{ backgroundColor: colors[index % colors.length] }}
 							/>
-							<span className='font-medium text-gray-900'>{item.name}</span>
+							<span className='font-medium text-gray-900 dark:text-gray-100'>
+								{item.name}
+							</span>
 						</div>
 						<div className='flex items-center space-x-2'>
-							<div className='w-24 bg-gray-200 rounded-full h-2'>
+							<div className='w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2'>
 								<div
 									className='h-2 rounded-full'
 									style={{
@@ -40,7 +47,7 @@ const DivisionProgressCard: React.FC<DivisionProgressCardProps> = ({
 									}}
 								/>
 							</div>
-							<span className='text-sm font-semibold text-gray-700'>
+							<span className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
 								{item.count}
 							</span>
 						</div>
@@ -48,13 +55,18 @@ const DivisionProgressCard: React.FC<DivisionProgressCardProps> = ({
 				))}
 			</div>
 
+			{/* Extra stats */}
 			{extraStats && extraStats.length > 0 && (
-				<div className='mt-6 pt-6 border-t border-gray-200'>
+				<div className='mt-6 pt-6 border-t border-gray-200 dark:border-gray-700'>
 					<div className='grid grid-cols-2 gap-4 text-center'>
 						{extraStats.map((stat, idx) => (
 							<div key={idx}>
-								<p className='text-2xl font-bold text-gray-900'>{stat.value}</p>
-								<p className='text-sm text-gray-500'>{stat.label}</p>
+								<p className='text-2xl font-bold text-gray-900 dark:text-gray-100'>
+									{stat.value}
+								</p>
+								<p className='text-sm text-gray-500 dark:text-gray-400'>
+									{stat.label}
+								</p>
 							</div>
 						))}
 					</div>

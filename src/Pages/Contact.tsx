@@ -136,7 +136,7 @@ const Contact: React.FC = () => {
 										className='w-full resize-none'
 										onChange={handleInputChange}
 									/>
-									<div className='flex justify-center pt-4'>
+									<div className='flex justify-end pt-4'>
 										<Button
 											onClick={handleSubmit}
 											className='px-8 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium'

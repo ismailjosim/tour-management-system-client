@@ -11,8 +11,12 @@ import { Button } from '../components/ui/button'
 import { LayoutGrid, Rows3 } from 'lucide-react'
 import DestinationGridCard from '@/components/modules/Destination/DestinationGridCard'
 import DestinationFlexCard from '../components/modules/Destination/DestinationFlexCard'
+import usePagination from '../hooks/usePagination'
+import DataPagination from '../utils/DataPagination'
 
 const Destinations = () => {
+	const { currentPage, limit, handlePageChange, handleLimitChange } =
+		usePagination({ initialLimit: 9 })
 	const [searchParams] = useSearchParams()
 	const [changeLayout, setChangeLayout] = useState(false)
 	const division = searchParams.get('division') || undefined
@@ -20,13 +24,13 @@ const Destinations = () => {
 	const { isLoading, data, isError } = useGetAllToursQuery({
 		division,
 		tourType,
+		page: currentPage,
+		limit,
 	})
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
-
-	// left side component
 
 	let content
 	if (isLoading) {
@@ -75,6 +79,15 @@ const Destinations = () => {
 						>
 							{content}
 						</div>
+						{data?.meta && (
+							<DataPagination
+								currentPage={currentPage}
+								totalPage={data.meta.totalPage}
+								limit={limit}
+								onPageChange={handlePageChange}
+								onLimitChange={handleLimitChange}
+							/>
+						)}
 					</div>
 				</div>
 			</section>

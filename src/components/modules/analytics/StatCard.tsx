@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import type React from 'react'
 
-// ---------- StatCard Component ----------
 interface StatCardProps {
 	title: string
 	value: string | number
@@ -32,34 +30,41 @@ const StatCard: React.FC<StatCardProps> = ({
 	}
 
 	return (
-		<div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300'>
-			<div className='flex items-center justify-between mb-4'>
+		<div className='rounded-2xl border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md'>
+			{/* top section */}
+			<div className='mb-4 flex items-center justify-between'>
 				<div
-					className={`p-3 rounded-xl bg-gradient-to-r ${colorClasses[color]} shadow-lg`}
+					className={`rounded-xl bg-gradient-to-r ${colorClasses[color]} p-3 shadow-md`}
 				>
-					<Icon className='w-6 h-6 text-white' />
+					<Icon className='h-6 w-6 text-white' />
 				</div>
+
 				{trend && trendValue && (
 					<div
-						className={`flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-semibold ${
+						className={`flex items-center space-x-1 rounded-full px-3 py-1 text-sm font-semibold ${
 							trend === 'up'
-								? 'bg-green-100 text-green-700'
-								: 'bg-red-100 text-red-700'
+								? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+								: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
 						}`}
 					>
 						{trend === 'up' ? (
-							<TrendingUp className='w-4 h-4' />
+							<TrendingUp className='h-4 w-4' />
 						) : (
-							<TrendingDown className='w-4 h-4' />
+							<TrendingDown className='h-4 w-4' />
 						)}
 						<span>{trendValue}</span>
 					</div>
 				)}
 			</div>
-			<h3 className='text-sm font-medium text-gray-600 mb-1'>{title}</h3>
-			<p className='text-3xl font-bold text-gray-900 mb-1'>{value}</p>
-			{subtitle && <p className='text-sm text-gray-500'>{subtitle}</p>}
+
+			{/* texts */}
+			<h3 className='mb-1 text-sm font-medium text-muted-foreground'>
+				{title}
+			</h3>
+			<p className='mb-1 text-3xl font-bold text-foreground'>{value}</p>
+			{subtitle && <p className='text-sm text-muted-foreground'>{subtitle}</p>}
 		</div>
 	)
 }
+
 export default StatCard

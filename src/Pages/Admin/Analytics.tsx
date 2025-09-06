@@ -7,10 +7,11 @@ import {
 	useGetPaymentStatsQuery,
 	useGetTourStatsQuery,
 } from '@/redux/features/Stats/stats.api'
-import PieChartCard from '../../components/modules/analytics/PieChartCard'
-import BarChartCard from '../../components/modules/analytics/BarChartCard'
-import DivisionProgressCard from '../../components/modules/analytics/DivisionProgressCard'
-import StatCard from '../../components/modules/analytics/StatCard'
+import PieChartCard from '@/components/modules/analytics/PieChartCard'
+import BarChartCard from '@/components/modules/analytics/BarChartCard'
+import DivisionProgressCard from '@/components/modules/analytics/DivisionProgressCard'
+import StatCard from '@/components/modules/analytics/StatCard'
+import DestinationLoading from '@/utils/DestinationLoading'
 
 const COLORS = [
 	'#3B82F6',
@@ -28,11 +29,7 @@ const Analytics: React.FC = () => {
 	const { data: tourStatsRes } = useGetTourStatsQuery(undefined)
 
 	if (!userStatsRes || !bookingStatsRes || !paymentStatsRes || !tourStatsRes) {
-		return (
-			<div className='text-center mt-20 text-gray-500'>
-				Loading analytics...
-			</div>
-		)
+		return <DestinationLoading />
 	}
 
 	const userStats = userStatsRes.data ?? {}
@@ -56,7 +53,6 @@ const Analytics: React.FC = () => {
 			name: String(p._id),
 			value: Number(p.count),
 		})) ?? []
-	console.log(paymentStatusData)
 
 	const tourTypeData =
 		tourStats.totalTourByTourType?.map((t: any) => ({
@@ -73,12 +69,11 @@ const Analytics: React.FC = () => {
 	return (
 		<div className='min-h-screen'>
 			{/* Header */}
+
 			<div className='mb-8 flex items-center justify-center text-center'>
 				<div>
-					<h1 className='text-4xl font-bold text-gray-900 mb-2'>
-						Tour Dashboard
-					</h1>
-					<p className='text-gray-600'>
+					<h1 className='text-4xl font-bold mb-2'>Tour Dashboard</h1>
+					<p className='text-muted-foreground'>
 						Overview of your tour business performance
 					</p>
 				</div>
