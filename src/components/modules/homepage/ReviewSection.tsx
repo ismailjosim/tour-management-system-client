@@ -1,146 +1,18 @@
 import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react'
-import { useState, useEffect } from 'react'
 import SectionHeading from '../../../utils/SectionHeading'
+import type { HeadingProps, ReviewContent } from '../../../types/home.type'
+import CustomSlider from './CustomSlider'
+import TestimonialCard from './TestimonialCard'
 
-// Types
-interface HeadingProps {
-	subHeading: string
-	headingOne: string
-	headingTwo: string
-	describe: string
+const heading: HeadingProps = {
+	subHeading: "CLIENT'S REVIEWS",
+	headingOne: "TRAVELER'S",
+	headingTwo: 'TESTIMONIAL',
+	describe:
+		'Discover what our valued travelers say about their extraordinary journeys and experiences with us.',
 }
 
-interface ReviewContent {
-	name: string
-	post: string
-	details: string
-	avatar?: string
-	rating?: number
-}
-
-// Custom Slider Component (replacing react-slick)
-interface SliderProps {
-	children: React.ReactNode[]
-	autoplay?: boolean
-	autoplaySpeed?: number
-	slidesToShow?: number
-	className?: string
-}
-
-const CustomSlider: React.FC<SliderProps> = ({
-	children,
-	autoplay = true,
-	autoplaySpeed = 5000,
-	slidesToShow = 3,
-	className = '',
-}) => {
-	const [currentSlide, setCurrentSlide] = useState(0)
-	const totalSlides = children.length
-	const maxSlide = Math.max(0, totalSlides - slidesToShow)
-
-	useEffect(() => {
-		if (!autoplay) return
-
-		const interval = setInterval(() => {
-			setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1))
-		}, autoplaySpeed)
-
-		return () => clearInterval(interval)
-	}, [autoplay, autoplaySpeed, maxSlide])
-
-	const nextSlide = () => {
-		setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1))
-	}
-
-	const prevSlide = () => {
-		setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1))
-	}
-
-	return (
-		<div className={`relative ${className}`}>
-			<div className='overflow-hidden'>
-				<div
-					className='flex transition-transform duration-500 ease-in-out'
-					style={{
-						transform: `translateX(-${currentSlide * (100 / slidesToShow)}%)`,
-					}}
-				>
-					{children.map((child, index) => (
-						<div
-							key={index}
-							className={`flex-shrink-0 px-4`}
-							style={{ width: `${100 / slidesToShow}%` }}
-						>
-							{child}
-						</div>
-					))}
-				</div>
-			</div>
-
-			{/* Navigation Buttons */}
-			<button
-				onClick={prevSlide}
-				className='absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors'
-				aria-label='Previous slide'
-			>
-				<ChevronLeft className='w-5 h-5 text-gray-600' />
-			</button>
-
-			<button
-				onClick={nextSlide}
-				className='absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors'
-				aria-label='Next slide'
-			>
-				<ChevronRight className='w-5 h-5 text-gray-600' />
-			</button>
-
-			{/* Dots Indicator */}
-			<div className='flex justify-center mt-8 space-x-2'>
-				{Array.from({ length: maxSlide + 1 }).map((_, index) => (
-					<button
-						key={index}
-						onClick={() => setCurrentSlide(index)}
-						className={`w-3 h-3 rounded-full transition-colors ${
-							currentSlide === index ? 'bg-blue-600' : 'bg-gray-300'
-						}`}
-						aria-label={`Go to slide ${index + 1}`}
-					/>
-				))}
-			</div>
-		</div>
-	)
-}
-
-// Star Rating Component
-const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
-	return (
-		<div className='flex items-center space-x-1 mb-4'>
-			{[1, 2, 3, 4, 5].map((star) => (
-				<Star
-					key={star}
-					className={`w-4 h-4 ${
-						star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-					}`}
-				/>
-			))}
-		</div>
-	)
-}
-
-// Main Reviews Component
 const ReviewSection: React.FC = () => {
-	const heading: HeadingProps = {
-		subHeading: "CLIENT'S REVIEWS",
-		headingOne: "TRAVELER'S",
-		headingTwo: 'TESTIMONIAL',
-		describe:
-			'Discover what our valued travelers say about their extraordinary journeys and experiences with us.',
-	}
-
 	const contents: ReviewContent[] = [
 		{
 			name: 'Sarah Johnson',
@@ -198,65 +70,28 @@ const ReviewSection: React.FC = () => {
 	]
 
 	return (
-		<div className='py-16 bg-gradient-to-br from-gray-50 to-white'>
-			<div className='container mx-auto px-4'>
+		<section className='py-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 transition-colors duration-300'>
+			<div className='container mx-auto'>
 				<SectionHeading heading={heading} />
 
-				<section className='mb-20'>
+				<div className='mb-20'>
 					<CustomSlider
-						className='w-11/12 mx-auto max-w-6xl'
+						className='w-full mx-auto'
 						autoplay={true}
-						autoplaySpeed={5000}
+						autoplaySpeed={6000}
 						slidesToShow={3}
 					>
-						{contents.map((content, idx) => {
-							const { name, post, details, avatar, rating = 5 } = content
-							return (
-								<Card
-									key={idx}
-									className='h-full shadow-lg hover:shadow-xl transition-shadow duration-300 border-0 bg-white'
-								>
-									<CardContent className='p-8 h-full flex flex-col'>
-										{/* Quote Icon */}
-										<Quote className='w-8 h-8 text-blue-600 mb-4 opacity-60' />
-
-										{/* Star Rating */}
-										<StarRating rating={rating} />
-
-										{/* Review Text */}
-										<p className='text-gray-700 text-center leading-relaxed mb-8 flex-grow'>
-											"{details}"
-										</p>
-
-										{/* Author Info */}
-										<div className='flex flex-col items-center'>
-											<Avatar className='w-16 h-16 mb-4 ring-2 ring-blue-100'>
-												<AvatarImage src={avatar} alt={name} />
-												<AvatarFallback className='bg-blue-100 text-blue-600 text-lg font-semibold'>
-													{name
-														.split(' ')
-														.map((n) => n[0])
-														.join('')}
-												</AvatarFallback>
-											</Avatar>
-
-											<div className='text-center'>
-												<h3 className='font-semibold text-gray-900 text-lg mb-1'>
-													{name}
-												</h3>
-												<Badge variant='secondary' className='text-sm'>
-													{post}
-												</Badge>
-											</div>
-										</div>
-									</CardContent>
-								</Card>
-							)
-						})}
+						{contents.map((content, idx) => (
+							<TestimonialCard
+								key={`testimonial-${idx}`}
+								content={content}
+								index={idx}
+							/>
+						))}
 					</CustomSlider>
-				</section>
+				</div>
 			</div>
-		</div>
+		</section>
 	)
 }
 

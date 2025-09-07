@@ -1,94 +1,196 @@
-import { useEffect, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router'
+import { LayoutGrid, Rows3 } from 'lucide-react'
+
 import { useGetAllToursQuery } from '@/redux/features/Tour/tour.api'
+import { Button } from '@/components/ui/button'
 import DestinationLoading from '@/utils/DestinationLoading'
+import PageHeading from '@/utils/PageHeading'
+import DestinationFilter from '@/components/modules/Destination/DestinationFilter'
+import DestinationGridCard from '@/components/modules/Destination/DestinationGridCard'
+import DestinationFlexCard from '@/components/modules/Destination/DestinationFlexCard'
+import DataPagination from '@/utils/DataPagination'
+import usePagination from '@/hooks/usePagination'
 import type { IDestination } from '@/types'
 
 import sectionBG from '@/assets/destinations/destination-section-bg.jpg'
-import PageHeading from '@/utils/PageHeading'
-import DestinationFilter from '@/components/modules/Destination/DestinationFilter'
-import { useSearchParams } from 'react-router'
-import { Button } from '../components/ui/button'
-import { LayoutGrid, Rows3 } from 'lucide-react'
-import DestinationGridCard from '@/components/modules/Destination/DestinationGridCard'
-import DestinationFlexCard from '../components/modules/Destination/DestinationFlexCard'
-import usePagination from '../hooks/usePagination'
-import DataPagination from '../utils/DataPagination'
 
-const Destinations = () => {
-	const { currentPage, limit, handlePageChange, handleLimitChange } =
-		usePagination({ initialLimit: 9 })
+// Constants
+const INITIAL_LIMIT = 9
+
+// Custom hooks
+const useDestinationFilters = () => {
 	const [searchParams] = useSearchParams()
-	const [changeLayout, setChangeLayout] = useState(false)
-	const division = searchParams.get('division') || undefined
-	const tourType = searchParams.get('tourType') || undefined
-	const { isLoading, data, isError } = useGetAllToursQuery({
-		division,
-		tourType,
+
+	return useMemo(
+		() => ({
+			division: searchParams.get('division') || undefined,
+			tourType: searchParams.get('tourType') || undefined,
+		}),
+		[searchParams],
+	)
+}
+
+const useDestinationData = (
+	filters: Record<string, any>,
+	currentPage: number,
+	limit: number,
+) => {
+	return useGetAllToursQuery({
+		...filters,
 		page: currentPage,
 		limit,
 	})
+}
 
+// Component for rendering destination content
+const DestinationContent = ({
+	data,
+	isLoading,
+	isError,
+	isFlexLayout,
+}: {
+	data: any
+	isLoading: boolean
+	isError: boolean
+	isFlexLayout: boolean
+}) => {
+	if (isLoading) {
+		return <DestinationLoading />
+	}
+
+	if (isError) {
+		return (
+			<div className='text-center py-10'>
+				<h3 className='text-xl text-red-500'>Something went wrong</h3>
+				<p className='text-gray-600 mt-2'>Please try again later</p>
+			</div>
+		)
+	}
+
+	if (!data?.data || data.data.length === 0) {
+		return (
+			<div className='text-center py-10'>
+				<h3 className='text-xl text-gray-500'>No destinations found</h3>
+				<p className='text-gray-600 mt-2'>Try adjusting your filters</p>
+			</div>
+		)
+	}
+
+	const containerClasses = isFlexLayout
+		? 'flex flex-wrap gap-10'
+		: 'grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10'
+
+	return (
+		<div className={containerClasses}>
+			{data.data.map((destination: IDestination) =>
+				isFlexLayout ? (
+					<DestinationFlexCard key={destination._id} item={destination} />
+				) : (
+					<DestinationGridCard key={destination._id} item={destination} />
+				),
+			)}
+		</div>
+	)
+}
+
+// Layout toggle component
+const LayoutToggle = ({
+	isFlexLayout,
+	onToggle,
+}: {
+	isFlexLayout: boolean
+	onToggle: () => void
+}) => (
+	<Button
+		onClick={onToggle}
+		variant='default'
+		size='sm'
+		aria-label={`Switch to ${isFlexLayout ? 'grid' : 'flex'} layout`}
+	>
+		{isFlexLayout ? <Rows3 size={16} /> : <LayoutGrid size={16} />}
+	</Button>
+)
+
+// Main component
+const Destinations = () => {
+	// State
+	const [isFlexLayout, setIsFlexLayout] = useState(false)
+
+	// Custom hooks
+	const { currentPage, limit, handlePageChange, handleLimitChange } =
+		usePagination({
+			initialLimit: INITIAL_LIMIT,
+		})
+
+	const filters = useDestinationFilters()
+	const { isLoading, data, isError } = useDestinationData(
+		filters,
+		currentPage,
+		limit,
+	)
+
+	// Effects
 	useEffect(() => {
 		window.scrollTo(0, 0)
 	}, [])
 
-	let content
-	if (isLoading) {
-		content = <DestinationLoading />
-	}
-	if (!isLoading && isError) {
-		content = <h3>something went wrong</h3>
-	}
-	if (!isLoading && !isError && data?.data?.length === 0) {
-		content = <h3>No destination found</h3>
-	} else {
-		content = (
-			<>
-				{data?.data?.map((item: IDestination) =>
-					changeLayout ? (
-						<DestinationFlexCard item={item} key={item._id} />
-					) : (
-						<DestinationGridCard item={item} key={item._id} />
-					),
-				)}
-			</>
-		)
-	}
+	// Handlers
+	const handleLayoutToggle = useCallback(() => {
+		setIsFlexLayout((prev) => !prev)
+	}, [])
+
+	// Computed values
+	const hasResults = data?.data && data.data.length > 0
+	const showPagination = hasResults && data?.meta
 
 	return (
 		<>
-			<PageHeading headTitle='destination list' sectionBackground={sectionBG} />
+			<PageHeading headTitle='Destination List' sectionBackground={sectionBG} />
+
 			<section className='w-11/12 mx-auto my-20'>
 				<div className='grid lg:grid-cols-5 gap-10'>
-					<div className='min-h-60'>
+					{/* Filter Sidebar */}
+					<aside className='min-h-60'>
 						<DestinationFilter />
-					</div>
-					<div className='col-span-4'>
-						<div className='flex justify-between items-center gap-5 mb-5'>
-							<h3 className='text-2xl font-semibold'>All Destination</h3>
-							<Button onClick={() => setChangeLayout(!changeLayout)}>
-								{changeLayout ? <Rows3 /> : <LayoutGrid />}
-							</Button>
-						</div>
-						<div
-							className={`${
-								changeLayout
-									? 'flex flex-wrap'
-									: 'grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1'
-							}   gap-10`}
-						>
-							{content}
-						</div>
-						{data?.meta && (
-							<DataPagination
-								currentPage={currentPage}
-								totalPage={data.meta.totalPage}
-								limit={limit}
-								onPageChange={handlePageChange}
-								onLimitChange={handleLimitChange}
-							/>
+					</aside>
+
+					{/* Main Content */}
+					<main className='col-span-4'>
+						{/* Header */}
+						<header className='flex justify-between items-center gap-5 mb-5'>
+							<h1 className='text-2xl font-semibold '>All Destinations</h1>
+
+							{hasResults && (
+								<LayoutToggle
+									isFlexLayout={isFlexLayout}
+									onToggle={handleLayoutToggle}
+								/>
+							)}
+						</header>
+
+						{/* Content */}
+						<DestinationContent
+							data={data}
+							isLoading={isLoading}
+							isError={isError}
+							isFlexLayout={isFlexLayout}
+						/>
+
+						{/* Pagination */}
+						{showPagination && (
+							<footer className='mt-10'>
+								<DataPagination
+									currentPage={currentPage}
+									totalPage={data.meta.totalPage}
+									limit={limit}
+									onPageChange={handlePageChange}
+									onLimitChange={handleLimitChange}
+								/>
+							</footer>
 						)}
-					</div>
+					</main>
 				</div>
 			</section>
 		</>
