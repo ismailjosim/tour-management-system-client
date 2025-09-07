@@ -68,7 +68,7 @@ const Header: React.FC = () => {
 			}
 		} catch (error) {
 			const apiError = error as ApiError
-			toast.error(apiError?.message || 'Something went wrong')
+			toast.error(apiError.data.message)
 		}
 	}
 

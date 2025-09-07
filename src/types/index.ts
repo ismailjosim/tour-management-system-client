@@ -27,11 +27,14 @@ export interface ISidebarItem {
 }
 
 export interface ApiError {
-	success: boolean
-	message: string
-	errorSources: unknown[]
-	err?: Record<string, any>
-	stack?: string
+	status: number
+	data: {
+		success: boolean
+		message: string
+		errorSources: unknown[]
+		err?: Record<string, any>
+		stack?: string
+	}
 }
 
 export type TRole = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'GUIDE'
