@@ -58,9 +58,10 @@ const DestinationDetails: React.FC = () => {
 		data: reviews,
 		isLoading: reviewLoading,
 		isError: reviewError,
-	} = useGetSpecificTourReviewsQuery({ tourId: destination?._id })
-
-	console.log(reviews)
+	} = useGetSpecificTourReviewsQuery(
+		{ tourId: destination?._id },
+		{ skip: !destination },
+	)
 
 	const {
 		title,
