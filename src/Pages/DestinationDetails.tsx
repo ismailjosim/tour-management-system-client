@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import {
 	MapPin,
-	Star,
 	Check,
 	X,
 	Facebook,
@@ -35,18 +34,12 @@ import {
 import { format } from 'date-fns'
 import { useGetDivisionsQuery } from '../redux/features/division/division.api'
 import { useGetSpecificTourReviewsQuery } from '../redux/features/review/review.api'
+import { calculateAverageRating } from '../utils/helpers'
+import StarRating from '../components/modules/destinationDetails/StarRating'
 
 // Define a default image for when no image is found
 const DEFAULT_IMAGE =
 	'https://via.placeholder.com/1200x800.png?text=No+Image+Available'
-
-// Helper function to calculate average rating
-const calculateAverageRating = (reviews: { rating: number }[]) => {
-	if (!reviews || reviews.length === 0) return { average: 0, total: 0 }
-	const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0)
-	const average = totalRating / reviews.length
-	return { average, total: reviews.length }
-}
 
 const DestinationDetails: React.FC = () => {
 	const { slug } = useParams<{ slug: string }>()
@@ -132,22 +125,6 @@ const DestinationDetails: React.FC = () => {
 			</div>
 		)
 	}
-
-	// A reusable component for star ratings to reduce duplication
-	const StarRating = ({ rating }: { rating: number }) => (
-		<div className='flex items-center gap-1'>
-			{[...Array(5)].map((_, i) => (
-				<Star
-					key={i}
-					className={`h-4 w-4 ${
-						i < rating
-							? 'fill-yellow-400 text-yellow-400'
-							: 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
-					}`}
-				/>
-			))}
-		</div>
-	)
 
 	return (
 		<div className='min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
