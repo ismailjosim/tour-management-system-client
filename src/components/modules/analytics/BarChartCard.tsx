@@ -17,12 +17,16 @@ interface BarChartCardProps {
 	horizontal?: boolean
 }
 
-// Helper to generate random hex color
-const getRandomColor = () =>
-	'#' +
-	Math.floor(Math.random() * 16777215)
-		.toString(16)
-		.padStart(6, '0')
+// Bright colors that work on both dark & light themes
+const barColors = [
+	'#f43f5e', // pink
+	'#22d3ee', // cyan
+	'#10b981', // green
+	'#6366f1', // indigo
+	'#f59e0b', // amber
+	'#84cc16', // lime
+	'#ec4899', // rose
+]
 
 const BarChartCard: React.FC<BarChartCardProps> = ({
 	title,
@@ -32,30 +36,52 @@ const BarChartCard: React.FC<BarChartCardProps> = ({
 	horizontal = false,
 }) => {
 	return (
-		<div className='bg-white rounded-2xl shadow-lg p-6 border border-gray-100'>
+		<div className='bg-white dark:bg-[#202E3C] rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700'>
+			{/* Header */}
 			<div className='flex items-center justify-between mb-6'>
-				<h2 className='text-xl font-bold text-gray-900'>{title}</h2>
-				{Icon && <Icon className='w-5 h-5 text-gray-400' />}
+				<h2 className='text-xl font-bold text-gray-900 dark:text-gray-100'>
+					{title}
+				</h2>
+				{Icon && <Icon className='w-5 h-5 text-gray-400 dark:text-gray-300' />}
 			</div>
+
+			{/* Chart */}
 			<div className='h-64'>
 				<ResponsiveContainer width='100%' height='100%'>
 					<BarChart data={data} layout={horizontal ? 'vertical' : 'horizontal'}>
-						<CartesianGrid strokeDasharray='3 3' stroke='#f0f0f0' />
+						<CartesianGrid
+							strokeDasharray='3 3'
+							className='stroke-gray-200 dark:stroke-gray-700'
+						/>
 
 						{horizontal ? (
 							<>
-								<XAxis type='number' />
+								<XAxis
+									type='number'
+									tick={{ fontSize: 12, fill: 'currentColor' }}
+									className='text-gray-800 dark:text-gray-200'
+								/>
 								<YAxis
 									dataKey='name'
 									type='category'
 									width={100}
-									tick={{ fontSize: 12 }}
+									tick={{ fontSize: 12, fill: 'currentColor' }}
+									className='text-gray-800 dark:text-gray-200'
 								/>
 							</>
 						) : (
 							<>
-								<XAxis dataKey='name' type='category' tick={{ fontSize: 12 }} />
-								<YAxis type='number' />
+								<XAxis
+									dataKey='name'
+									type='category'
+									tick={{ fontSize: 12, fill: 'currentColor' }}
+									className='text-gray-800 dark:text-gray-200'
+								/>
+								<YAxis
+									type='number'
+									tick={{ fontSize: 12, fill: 'currentColor' }}
+									className='text-gray-800 dark:text-gray-200'
+								/>
 							</>
 						)}
 
@@ -64,7 +90,7 @@ const BarChartCard: React.FC<BarChartCardProps> = ({
 							radius={horizontal ? [0, 4, 4, 0] : [4, 4, 0, 0]}
 						>
 							{data.map((_, index) => (
-								<Cell key={index} fill={getRandomColor()} />
+								<Cell key={index} fill={barColors[index % barColors.length]} />
 							))}
 						</Bar>
 					</BarChart>

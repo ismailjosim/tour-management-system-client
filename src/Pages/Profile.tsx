@@ -45,12 +45,9 @@ const Profile: React.FC = () => {
 				}
 
 				setIsEditing(false)
-			} catch (err) {
-				// RTK Query error typecast
-				const error = err as { data?: ApiError }
-
-				console.log(error)
-				toast.error(error?.data?.message || 'Something went wrong')
+			} catch (error) {
+				const apiError = error as ApiError
+				toast.error(apiError.data.message)
 			}
 		} else {
 			if (userData) {

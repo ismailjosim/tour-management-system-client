@@ -65,7 +65,7 @@ const ActivitySection = () => {
 
 	return (
 		<section className='bg-muted/30 pb-10'>
-			<div className='container mx-auto px-4 my-10'>
+			<div className='container mx-auto my-10'>
 				<SectionHeading heading={heading} />
 				<div className='grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-8'>
 					{data.map((activity: ActivityData) => (

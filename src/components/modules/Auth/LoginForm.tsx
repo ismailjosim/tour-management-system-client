@@ -55,10 +55,9 @@ export function LoginForm({
 				toast.success(result.message)
 				navigate('/')
 			}
-		} catch (error: unknown) {
+		} catch (error) {
 			const apiError = error as ApiError
-
-			toast.error(apiError?.message || 'Something went wrong')
+			toast.error(apiError.data.message)
 
 			if ('status' in apiError && apiError.status === 401) {
 				navigate('/verify', { state: data.email })

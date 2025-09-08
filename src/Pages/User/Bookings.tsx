@@ -15,6 +15,7 @@ import {
 	useGetMyBookingsQuery,
 	useRemoveBookingMutation,
 } from '../../redux/features/booking/booking.api'
+import AddReviewButton from '../../components/modules/booking/AddReviewButton'
 
 interface Booking {
 	_id: string
@@ -102,6 +103,7 @@ const Bookings = () => {
 					<Button size='sm' variant='outline' asChild>
 						<Link to={`/destination/${item.tour}`}>View Tour</Link>
 					</Button>
+					<AddReviewButton tourId={item.tour} />
 					<DeleteConfirmation onConfirm={() => handleDelete(item._id)}>
 						<Button size='sm' variant='destructive'>
 							<Trash2 className='h-4 w-4' />
