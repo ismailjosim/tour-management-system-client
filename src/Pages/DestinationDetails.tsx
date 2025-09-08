@@ -36,6 +36,7 @@ import { useGetDivisionsQuery } from '../redux/features/division/division.api'
 import { useGetSpecificTourReviewsQuery } from '../redux/features/review/review.api'
 import { calculateAverageRating } from '../utils/helpers'
 import StarRating from '../components/modules/destinationDetails/StarRating'
+import MapRender from '../components/modules/map/MapRender'
 
 // Define a default image for when no image is found
 const DEFAULT_IMAGE =
@@ -325,23 +326,15 @@ const DestinationDetails: React.FC = () => {
 						</Card>
 
 						{/* Map Section */}
-						<Card className='dark:bg-gray-800'>
-							<CardHeader>
-								<CardTitle className='text-2xl'>Map</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className='bg-gray-100 dark:bg-gray-700 rounded-lg h-64 flex items-center justify-center'>
-									<p className='text-gray-500 dark:text-gray-400'>
-										Interactive map will be implemented here
-									</p>
-								</div>
-							</CardContent>
-						</Card>
+						<div className='dark:bg-gray-800 p-5 rounded-md space-y-5'>
+							<h3 className='text-2xl font-semibold'>Map Direction</h3>
+							<MapRender />
+						</div>
 
 						{/* Reviews */}
 						<Card className='dark:bg-gray-800'>
 							<CardHeader>
-								<CardTitle className='text-2xl'>Average Reviews</CardTitle>
+								<CardTitle className='text-2xl '>Average Reviews</CardTitle>
 							</CardHeader>
 							<CardContent className='space-y-6'>
 								<Card className='bg-blue-600 text-white text-center dark:bg-blue-800'>
