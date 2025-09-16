@@ -11,15 +11,19 @@ export interface IUser {
 	email: string
 	phone: string
 	address: string
-	role: string
+	role: Role
 	isDeleted: boolean
-	isActive: boolean | string // 👈 depends on API (boolean preferred)
+	isActive: IsActive
 	isVerified: boolean
 	auths: IAuth[]
 	picture?: string
 	createdAt: string
 	updatedAt: string
 }
+
+// Types based on your interface
+export type Role = 'ADMIN' | 'USER' | 'GUIDE' | 'SUPER_ADMIN'
+export type IsActive = 'ACTIVE' | 'INACTIVE' | 'BLOCKED'
 
 // -------------------- Auth Flow -------------------- //
 
