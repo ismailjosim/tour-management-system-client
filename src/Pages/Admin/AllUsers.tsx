@@ -288,7 +288,11 @@ const AllUsers = () => {
 					<div className='text-right'>
 						<div className='flex items-center justify-end gap-2'>
 							{/* View Details (always enabled) */}
-							<UserDetailsModal user={item}>
+							<UserDetailsModal
+								user={item}
+								getRoleBadgeVariant={getRoleBadgeVariant}
+								getStatusBadgeVariant={getStatusBadgeVariant}
+							>
 								<Button size='sm' variant='outline'>
 									<EyeIcon className='h-4 w-4' />
 								</Button>

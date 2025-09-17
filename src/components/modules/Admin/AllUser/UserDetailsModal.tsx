@@ -23,39 +23,23 @@ import { Separator } from '@/components/ui/separator'
 import type { ReactNode } from 'react'
 import type { IUser, IAuth, IsActive, Role } from '@/types/auth.type'
 
-interface UserDetailsModalProps {
+type UserDetailsModalProps = {
 	user: IUser
+	getRoleBadgeVariant: (
+		role: Role,
+	) => 'default' | 'secondary' | 'destructive' | 'outline'
+	getStatusBadgeVariant: (
+		status: IsActive,
+	) => 'default' | 'secondary' | 'destructive' | 'outline'
 	children: ReactNode
 }
 
-const UserDetailsModal = ({ user, children }: UserDetailsModalProps) => {
-	const getStatusBadgeVariant = (status?: IsActive) => {
-		switch (status) {
-			case 'ACTIVE':
-				return 'default'
-			case 'INACTIVE':
-				return 'secondary'
-			case 'BLOCKED':
-				return 'destructive'
-			default:
-				return 'outline'
-		}
-	}
-
-	const getRoleBadgeVariant = (role?: Role) => {
-		switch (role) {
-			case 'ADMIN':
-			case 'SUPER_ADMIN':
-				return 'destructive'
-			case 'GUIDE':
-				return 'default'
-			case 'USER':
-				return 'secondary'
-			default:
-				return 'outline'
-		}
-	}
-
+const UserDetailsModal = ({
+	user,
+	getRoleBadgeVariant,
+	getStatusBadgeVariant,
+	children,
+}: UserDetailsModalProps) => {
 	const formatAuthProviders = (auths?: IAuth[]) => {
 		if (!auths || auths.length === 0) return 'Email/Password'
 		return auths.map((auth) => auth.provider).join(', ')
