@@ -117,7 +117,7 @@ export default function AddTour() {
 	}
 
 	return (
-		<div className='w-full max-w-4xl mx-auto px-5 mt-16'>
+		<div className='w-full max-w-4xl mx-auto sm:mt-16'>
 			<Card>
 				<CardHeader>
 					<CardTitle>Add New Tour</CardTitle>
@@ -139,8 +139,8 @@ export default function AddTour() {
 							/>
 							<TourGuestInfo form={form} />
 							<TourDatePickers form={form} />
-							<TourDescriptionImages form={form} setImages={setImages} />
 							<TourDynamicFields form={form} />
+							<TourDescriptionImages form={form} setImages={setImages} />
 						</form>
 					</Form>
 				</CardContent>
