@@ -1,118 +1,123 @@
-import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
-
-import { useFileUpload } from "@/hooks/use-file-upload"
-import { useEffect } from "react"
+import { AlertCircleIcon, ImageUpIcon, XIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useFileUpload } from '../hooks/use-file-upload'
 
 interface ISingleImageUploaderProps {
-  onChange: (file: File | null) => void;
+	onChange: (file: File | null) => void
+	initialImage?: string | null // URL of the existing image
 }
 
+export default function SingleImageUploader({
+	onChange,
+	initialImage = null,
+}: ISingleImageUploaderProps) {
+	const maxSizeMB = 5
+	const maxSize = maxSizeMB * 1024 * 1024 // 5MB
 
-export default function SingleImageUploader({ onChange }: ISingleImageUploaderProps) {
-  const maxSizeMB = 5
-  const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
+	const [
+		{ files, isDragging, errors },
+		{
+			handleDragEnter,
+			handleDragLeave,
+			handleDragOver,
+			handleDrop,
+			openFileDialog,
+			removeFile,
+			getInputProps,
+		},
+	] = useFileUpload({
+		accept: 'image/*',
+		maxSize,
+	})
 
-  const [
-    { files, isDragging, errors },
-    {
-      handleDragEnter,
-      handleDragLeave,
-      handleDragOver,
-      handleDrop,
-      openFileDialog,
-      removeFile,
-      getInputProps,
-    },
-  ] = useFileUpload({
-    accept: "image/*",
-    maxSize,
-  })
+	// Track previous image state
+	const [previewUrl, setPreviewUrl] = useState<string | null>(initialImage)
 
+	// Update preview when user uploads a new file
+	useEffect(() => {
+		if (files.length > 0) {
+			const maybeFile = files[0].file
+			if (maybeFile instanceof File) {
+				onChange(maybeFile)
+				setPreviewUrl(files[0].preview || null)
+			} else {
+				onChange(null)
+			}
+		} else {
+			// If user removed the file, reset
+			onChange(null)
+			setPreviewUrl(initialImage)
+		}
+	}, [files, onChange, initialImage])
 
-  useEffect(() => {
-    if (files.length > 0) {
-      const maybeFile = files[0].file
-      if (maybeFile instanceof File) {
-        onChange(maybeFile)
-      } else {
-        onChange(null)
-      }
-    } else {
-      onChange(null)
-    }
-  }, [files, onChange])
+	return (
+		<div className='flex flex-col gap-2'>
+			<div className='relative'>
+				<div
+					role='button'
+					onClick={openFileDialog}
+					onDragEnter={handleDragEnter}
+					onDragLeave={handleDragLeave}
+					onDragOver={handleDragOver}
+					onDrop={handleDrop}
+					data-dragging={isDragging || undefined}
+					className='border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors'
+				>
+					<input
+						{...getInputProps()}
+						className='sr-only'
+						aria-label='Upload file'
+					/>
 
+					{previewUrl ? (
+						<div className='absolute inset-0'>
+							<img
+								src={previewUrl}
+								alt='Uploaded image'
+								className='w-full h-full object-cover'
+							/>
+						</div>
+					) : (
+						<div className='flex flex-col items-center justify-center px-4 py-3 text-center'>
+							<div className='bg-background mb-2 flex h-11 w-11 items-center justify-center rounded-full border'>
+								<ImageUpIcon className='h-4 w-4 opacity-60' />
+							</div>
+							<p className='mb-1.5 text-sm font-medium'>
+								Drop your image here or click to browse
+							</p>
+							<p className='text-muted-foreground text-xs'>
+								Max size: {maxSizeMB}MB
+							</p>
+						</div>
+					)}
+				</div>
 
-  const previewUrl = files[0]?.preview || null
+				{previewUrl && (
+					<div className='absolute top-4 right-4'>
+						<button
+							type='button'
+							className='z-50 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 focus:outline-none'
+							onClick={() => {
+								removeFile(files[0]?.id)
+								setPreviewUrl(null) // remove old image
+							}}
+							aria-label='Remove image'
+						>
+							<XIcon className='h-4 w-4' />
+						</button>
+					</div>
+				)}
+			</div>
 
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="relative">
-        {/* Drop area */}
-        <div
-          role="button"
-          onClick={openFileDialog}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          data-dragging={isDragging || undefined}
-          className="border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none has-[input:focus]:ring-[3px]"
-        >
-          <input
-            {...getInputProps()}
-            className="sr-only"
-            aria-label="Upload file"
-          />
-          {previewUrl ? (
-            <div className="absolute inset-0">
-              <img
-                src={previewUrl}
-                alt={files[0]?.file?.name || "Uploaded image"}
-                className="size-full object-cover"
-              />
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
-              <div
-                className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
-                aria-hidden="true"
-              >
-                <ImageUpIcon className="size-4 opacity-60" />
-              </div>
-              <p className="mb-1.5 text-sm font-medium">
-                Drop your image here or click to browse
-              </p>
-              <p className="text-muted-foreground text-xs">
-                Max size: {maxSizeMB}MB
-              </p>
-            </div>
-          )}
-        </div>
-        {previewUrl && (
-          <div className="absolute top-4 right-4">
-            <button
-              type="button"
-              className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-              onClick={() => removeFile(files[0]?.id)}
-              aria-label="Remove image"
-            >
-              <XIcon className="size-4" aria-hidden="true" />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {errors.length > 0 && (
-        <div
-          className="text-destructive flex items-center gap-1 text-xs"
-          role="alert"
-        >
-          <AlertCircleIcon className="size-3 shrink-0" />
-          <span>{errors[0]}</span>
-        </div>
-      )}
-
-    </div>
-  )
+			{errors.length > 0 && (
+				<div
+					className='text-destructive flex items-center gap-1 text-xs'
+					role='alert'
+				>
+					<AlertCircleIcon className='h-3 w-3' />
+					<span>{errors[0]}</span>
+				</div>
+			)}
+		</div>
+	)
 }

@@ -1,10 +1,12 @@
 import { lazy } from 'react'
-import AllTours from '../Pages/Admin/AllTours'
+import AllBookings from '../Pages/Admin/AllBookings'
 
 const Analytics = lazy(() => import('@/Pages/Admin/Analytics'))
 const AddTour = lazy(() => import('@/Pages/Admin/AddTour'))
 const AddTourType = lazy(() => import('@/Pages/Admin/AddTourType'))
 const AddDivision = lazy(() => import('@/Pages/Admin/AddDivision'))
+const AllTours = lazy(() => import('@/Pages/Admin/AllTours'))
+const AllUsers = lazy(() => import('@/Pages/Admin/AllUsers'))
 
 export const adminSidebarItems = [
 	{
@@ -14,6 +16,16 @@ export const adminSidebarItems = [
 				title: 'Analytics',
 				url: '/admin/analytics',
 				component: Analytics,
+			},
+		],
+	},
+	{
+		title: 'User Management',
+		items: [
+			{
+				title: 'All Users',
+				url: '/admin/users',
+				component: AllUsers,
 			},
 		],
 	},
@@ -40,6 +52,16 @@ export const adminSidebarItems = [
 				title: 'Add Tour',
 				url: '/admin/add-tour',
 				component: AddTour,
+			},
+		],
+	},
+	{
+		title: 'Booking Management',
+		items: [
+			{
+				title: 'All Bookings',
+				url: '/admin/all-bookings',
+				component: AllBookings,
 			},
 		],
 	},

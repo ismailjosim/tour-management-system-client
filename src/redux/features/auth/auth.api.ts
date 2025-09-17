@@ -40,6 +40,14 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ['USER'],
 		}),
+		getAllUsers: builder.query({
+			query: (params) => ({
+				url: '/user',
+				method: 'GET',
+				params,
+			}),
+			providesTags: ['USER'],
+		}),
 
 		sendOTP: builder.mutation<IResponse<null>, ISendOTP>({
 			query: (userInfo) => ({
@@ -63,6 +71,14 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ['USER'],
 		}),
+		updateUserInfoViaAdmin: builder.mutation({
+			query: ({ userId, ...userInfo }) => ({
+				url: `/user/${userId}`,
+				method: 'PATCH',
+				data: userInfo,
+			}),
+			invalidatesTags: ['USER'],
+		}),
 	}),
 })
 
@@ -74,4 +90,6 @@ export const {
 	useUserInfoQuery,
 	useLogoutMutation,
 	useUpdateProfileMutation,
+	useGetAllUsersQuery,
+	useUpdateUserInfoViaAdminMutation,
 } = authApi
