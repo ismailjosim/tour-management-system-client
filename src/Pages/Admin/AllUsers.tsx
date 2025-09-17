@@ -161,7 +161,7 @@ const AllUsers = () => {
 		{
 			key: 'picture',
 			header: 'Avatar',
-			className: 'font-medium',
+			className: 'font-medium hidden sm:table-cell',
 			render: (picture: string | undefined, item: IUser) => (
 				<div className='font-medium'>
 					<Avatar className='h-10 w-10'>
@@ -186,7 +186,7 @@ const AllUsers = () => {
 						{name}
 					</div>
 					<div
-						className='text-sm text-muted-foreground truncate max-w-[150px]'
+						className='text-sm text-muted-foreground truncate max-w-[150px] hidden sm:table-cell'
 						title={item.email}
 					>
 						{item.email}
@@ -244,21 +244,30 @@ const AllUsers = () => {
 			className: 'hidden md:table-cell',
 			render: (phone: string | undefined, item: IUser) => (
 				<div className='hidden md:table-cell'>
-					<div className='text-sm'>
-						{phone && (
-							<div className='truncate max-w-[120px]' title={phone}>
-								{phone}
-							</div>
-						)}
-						{item.address && (
-							<div
-								className='text-muted-foreground truncate max-w-[120px]'
-								title={item.address}
-							>
-								{item.address}
-							</div>
-						)}
-					</div>
+					{item.address && item.phone ? (
+						<div className='text-sm'>
+							{phone && (
+								<div className='truncate' title={phone}>
+									{phone}
+								</div>
+							)}
+							{item.address && (
+								<div
+									className='text-muted-foreground truncate'
+									title={item.address}
+								>
+									{item.address}
+								</div>
+							)}
+						</div>
+					) : (
+						<div
+							className='text-muted-foreground truncate'
+							title='Info Not Found'
+						>
+							Info Not Found
+						</div>
+					)}
 				</div>
 			),
 		},

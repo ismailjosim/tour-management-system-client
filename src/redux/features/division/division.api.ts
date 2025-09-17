@@ -25,6 +25,14 @@ export const divisionApi = baseApi.injectEndpoints({
 			}),
 			providesTags: ['DIVISION'],
 		}),
+		updateDivision: builder.mutation({
+			query: ({ divisionId, ...divisionInfo }) => ({
+				url: `/division/${divisionId}`,
+				method: 'PATCH',
+				data: divisionInfo,
+			}),
+			invalidatesTags: ['DIVISION'],
+		}),
 	}),
 })
 
@@ -32,4 +40,5 @@ export const {
 	useAddDivisionMutation,
 	useRemoveDivisionMutation,
 	useGetDivisionsQuery,
+	useUpdateDivisionMutation,
 } = divisionApi

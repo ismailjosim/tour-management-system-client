@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	Dialog,
 	DialogContent,
@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -23,28 +22,62 @@ import z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { useAddTourTypeMutation } from '@/redux/features/Tour/tour.api'
+import {
+	useAddTourTypeMutation,
+	useUpdateTourTypeMutation,
+} from '@/redux/features/Tour/tour.api'
 import type { ApiError } from '@/types'
 import { tourTypeSchema } from '@/Schema/zodValidationSchemas'
 
-const AddTourModal = () => {
+interface AddTourModalProps {
+	tourTypeId?: string
+	initialName?: string
+	triggerButton?: React.ReactNode
+}
+
+const AddTourModal = ({
+	tourTypeId,
+	initialName = '',
+	triggerButton,
+}: AddTourModalProps) => {
 	const [open, setOpen] = useState(false)
 	const [addTourType] = useAddTourTypeMutation()
+	const [updateTourType] = useUpdateTourTypeMutation()
+
+	const isEditMode = Boolean(tourTypeId)
 
 	const form = useForm<z.infer<typeof tourTypeSchema>>({
 		resolver: zodResolver(tourTypeSchema),
 		defaultValues: {
-			name: '',
+			name: initialName,
 		},
 	})
 
+	useEffect(() => {
+		if (isEditMode) {
+			form.reset({ name: initialName })
+		}
+	}, [initialName, isEditMode])
+
 	const onSubmit = async (data: z.infer<typeof tourTypeSchema>) => {
 		try {
-			const result = await addTourType({ name: data.name }).unwrap()
-			if (result.success) {
-				toast.success(result.message)
-				form.reset()
-				setOpen(false)
+			if (isEditMode && tourTypeId) {
+				const formInfo = {
+					id: tourTypeId,
+					name: data.name,
+				}
+				const result = await updateTourType(formInfo).unwrap()
+				if (result.success) {
+					toast.success(result.message)
+					setOpen(false)
+				}
+			} else {
+				const result = await addTourType({ name: data.name }).unwrap()
+				if (result.success) {
+					toast.success(result.message)
+					form.reset()
+					setOpen(false)
+				}
 			}
 		} catch (error) {
 			const apiError = error as ApiError
@@ -54,14 +87,20 @@ const AddTourModal = () => {
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button variant='default'>Add Tour Type</Button>
-			</DialogTrigger>
+			{triggerButton ? (
+				<DialogTrigger asChild>{triggerButton}</DialogTrigger>
+			) : (
+				<DialogTrigger asChild>
+					<Button variant='default'>Add Tour Type</Button>
+				</DialogTrigger>
+			)}
 			<DialogContent className='sm:max-w-[425px]'>
 				<DialogHeader>
-					<DialogTitle>Add New Tour Type</DialogTitle>
+					<DialogTitle>
+						{isEditMode ? 'Edit Tour Type' : 'Add New Tour Type'}
+					</DialogTitle>
 					<DialogDescription>
-						Fill in the details to add a new tour type.
+						Fill in the details to {isEditMode ? 'update' : 'add'} a tour type.
 					</DialogDescription>
 				</DialogHeader>
 
@@ -76,14 +115,13 @@ const AddTourModal = () => {
 									<FormControl>
 										<Input placeholder='Enter Tour Type Name' {...field} />
 									</FormControl>
-									<FormDescription />
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 
 						<Button className='w-full' type='submit'>
-							Submit
+							{isEditMode ? 'Update' : 'Submit'}
 						</Button>
 					</form>
 				</Form>
