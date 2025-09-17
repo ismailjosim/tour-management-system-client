@@ -262,7 +262,7 @@ const AllUsers = () => {
 						</div>
 					) : (
 						<div
-							className='text-muted-foreground truncate'
+							className='text-muted-foreground truncate max-w-[120px]'
 							title='Info Not Found'
 						>
 							Info Not Found
@@ -297,11 +297,7 @@ const AllUsers = () => {
 					<div className='text-right'>
 						<div className='flex items-center justify-end gap-2'>
 							{/* View Details (always enabled) */}
-							<UserDetailsModal
-								user={item}
-								getRoleBadgeVariant={getRoleBadgeVariant}
-								getStatusBadgeVariant={getStatusBadgeVariant}
-							>
+							<UserDetailsModal user={item}>
 								<Button size='sm' variant='outline'>
 									<EyeIcon className='h-4 w-4' />
 								</Button>

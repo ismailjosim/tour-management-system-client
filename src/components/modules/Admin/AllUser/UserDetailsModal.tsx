@@ -25,24 +25,40 @@ import type { IUser, IAuth, IsActive, Role } from '@/types/auth.type'
 
 type UserDetailsModalProps = {
 	user: IUser
-	getRoleBadgeVariant: (
-		role: Role,
-	) => 'default' | 'secondary' | 'destructive' | 'outline'
-	getStatusBadgeVariant: (
-		status: IsActive,
-	) => 'default' | 'secondary' | 'destructive' | 'outline'
 	children: ReactNode
 }
 
-const UserDetailsModal = ({
-	user,
-	getRoleBadgeVariant,
-	getStatusBadgeVariant,
-	children,
-}: UserDetailsModalProps) => {
+const UserDetailsModal = ({ user, children }: UserDetailsModalProps) => {
 	const formatAuthProviders = (auths?: IAuth[]) => {
 		if (!auths || auths.length === 0) return 'Email/Password'
 		return auths.map((auth) => auth.provider).join(', ')
+	}
+	const getRoleBadgeVariant = (role: Role) => {
+		switch (role) {
+			case 'ADMIN':
+				return 'destructive'
+			case 'SUPER_ADMIN':
+				return 'destructive'
+			case 'GUIDE':
+				return 'default'
+			case 'USER':
+				return 'secondary'
+			default:
+				return 'outline'
+		}
+	}
+
+	const getStatusBadgeVariant = (status: IsActive) => {
+		switch (status) {
+			case 'ACTIVE':
+				return 'default'
+			case 'INACTIVE':
+				return 'secondary'
+			case 'BLOCKED':
+				return 'destructive'
+			default:
+				return 'outline'
+		}
 	}
 
 	return (
