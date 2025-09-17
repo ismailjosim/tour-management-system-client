@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import AllBookings from '../Pages/Admin/AllBookings'
 
 const Analytics = lazy(() => import('@/Pages/Admin/Analytics'))
 const AddTour = lazy(() => import('@/Pages/Admin/AddTour'))
@@ -51,6 +52,16 @@ export const adminSidebarItems = [
 				title: 'Add Tour',
 				url: '/admin/add-tour',
 				component: AddTour,
+			},
+		],
+	},
+	{
+		title: 'Booking Management',
+		items: [
+			{
+				title: 'All Bookings',
+				url: '/admin/all-bookings',
+				component: AllBookings,
 			},
 		],
 	},
