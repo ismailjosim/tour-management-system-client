@@ -7,6 +7,7 @@ import DashboardLayout from '../components/layout/DashboardLayout'
 import generateRoutes from '../utils/generateRoutes'
 import { adminSidebarItems } from './adminSidebarItems'
 import { userSidebarItems } from './userSidebarItems'
+import { guideSidebarItems } from './guideSidebarItems'
 
 // * Pages Import
 import Home from '../Pages/Home'
@@ -77,9 +78,13 @@ const router = createBrowserRouter([
 	},
 	{
 		Component: withAuth(DashboardLayout, role.USER as TRole),
-
 		path: '/user',
 		children: [...generateRoutes(userSidebarItems)],
+	},
+	{
+		Component: withAuth(DashboardLayout, role.GUIDE as TRole),
+		path: '/guide',
+		children: [...generateRoutes(guideSidebarItems)],
 	},
 	{
 		Component: Login,
