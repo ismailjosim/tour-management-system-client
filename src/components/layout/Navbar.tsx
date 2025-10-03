@@ -50,6 +50,7 @@ const navLinks = [
 	{ label: 'Dashboard', href: '/admin', role: role.ADMIN },
 	{ label: 'Dashboard', href: '/admin', role: role.SUPER_ADMIN },
 	{ label: 'Dashboard', href: '/user', role: role.USER },
+	{ label: 'Dashboard', href: '/guide', role: role.GUIDE },
 ]
 
 const Header: React.FC = () => {
