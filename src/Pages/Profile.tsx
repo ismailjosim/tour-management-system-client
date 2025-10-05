@@ -31,10 +31,9 @@ const Profile: React.FC = () => {
 	const userData = data?.data
 
 	/** Handlers */
-	const handleEditToggle = async () => {
+	const handleUpdateProfile = async () => {
 		if (isEditing) {
 			try {
-				// API কল
 				const res = await updateProfile({
 					id: userData?._id,
 					...editData,
@@ -58,6 +57,16 @@ const Profile: React.FC = () => {
 				})
 			}
 			setIsEditing(true)
+		}
+	}
+	const handleEditToggle = () => {
+		setIsEditing(!isEditing)
+		if (userData) {
+			setEditData({
+				name: userData.name,
+				phone: userData.phone,
+				address: userData.address,
+			})
 		}
 	}
 
@@ -154,7 +163,7 @@ const Profile: React.FC = () => {
 							isEditing={isEditing}
 							editData={editData}
 							handleInputChange={handleInputChange}
-							handleEditToggle={handleEditToggle}
+							handleUpdateProfile={handleUpdateProfile}
 						/>
 						<AccountInfo userData={userData} />
 					</div>

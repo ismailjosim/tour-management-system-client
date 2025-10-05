@@ -5,11 +5,13 @@ import { useFileUpload } from '../hooks/use-file-upload'
 interface ISingleImageUploaderProps {
 	onChange: (file: File | null) => void
 	initialImage?: string | null // URL of the existing image
+	showInfo?: boolean
 }
 
 export default function SingleImageUploader({
 	onChange,
 	initialImage = null,
+	showInfo = false,
 }: ISingleImageUploaderProps) {
 	const maxSizeMB = 5
 	const maxSize = maxSizeMB * 1024 * 1024 // 5MB
@@ -82,12 +84,16 @@ export default function SingleImageUploader({
 							<div className='bg-background mb-2 flex h-11 w-11 items-center justify-center rounded-full border'>
 								<ImageUpIcon className='h-4 w-4 opacity-60' />
 							</div>
-							<p className='mb-1.5 text-sm font-medium'>
-								Drop your image here or click to browse
-							</p>
-							<p className='text-muted-foreground text-xs'>
-								Max size: {maxSizeMB}MB
-							</p>
+							{!showInfo && (
+								<div>
+									<p className='mb-1.5 text-sm font-medium'>
+										Drop your image here or click to browse
+									</p>
+									<p className='text-muted-foreground text-xs'>
+										Max size: {maxSizeMB}MB
+									</p>
+								</div>
+							)}
 						</div>
 					)}
 				</div>

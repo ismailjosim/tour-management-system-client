@@ -13,7 +13,7 @@ interface Props {
 	handleInputChange: (
 		field: keyof EditFormData,
 	) => (e: React.ChangeEvent<HTMLInputElement>) => void
-	handleEditToggle: () => void
+	handleUpdateProfile: () => void
 }
 
 const PersonalInfo: React.FC<Props> = ({
@@ -21,7 +21,7 @@ const PersonalInfo: React.FC<Props> = ({
 	isEditing,
 	editData,
 	handleInputChange,
-	handleEditToggle,
+	handleUpdateProfile,
 }) => {
 	return (
 		<Card className='shadow-lg border'>
@@ -96,7 +96,7 @@ const PersonalInfo: React.FC<Props> = ({
 
 				{isEditing && (
 					<div className='flex justify-end pt-4 border-t'>
-						<Button onClick={handleEditToggle}>
+						<Button onClick={handleUpdateProfile}>
 							<Save className='w-4 h-4 mr-2' />
 							Save Changes
 						</Button>

@@ -71,6 +71,14 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ['USER'],
 		}),
+		updateUserProfilePicture: builder.mutation({
+			query: ({ id, ...userInfo }) => ({
+				url: `/user/me/picture/${id}`,
+				method: 'PATCH',
+				data: userInfo,
+			}),
+			invalidatesTags: ['USER'],
+		}),
 		updateUserInfoViaAdmin: builder.mutation({
 			query: ({ userId, ...userInfo }) => ({
 				url: `/user/${userId}`,
@@ -92,4 +100,5 @@ export const {
 	useUpdateProfileMutation,
 	useGetAllUsersQuery,
 	useUpdateUserInfoViaAdminMutation,
+	useUpdateUserProfilePictureMutation,
 } = authApi

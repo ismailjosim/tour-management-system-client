@@ -12,7 +12,7 @@ import {
 	SidebarFooter,
 } from '@/components/ui/sidebar'
 import { useTheme } from '@/hooks/useTheme'
-import { Link, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import logoBlack from '@/assets/images/site-logo-dark.png'
 import logoWhile from '@/assets/images/site-logo-light.png'
 import { getSidebarItems } from '@/utils/getSidebarItems'
@@ -95,13 +95,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarFooter>
 				<div className='flex items-center border rounded-2xl justify-between gap-2 px-2 py-3'>
 					{/* Avatar */}
-					<Avatar className='h-8 w-8'>
-						{user?.picture ? (
-							<AvatarImage src={user.picture} alt={user.name} />
-						) : (
-							<AvatarFallback>{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
-						)}
-					</Avatar>
+					<NavLink to='/profile'>
+						<Avatar className='h-8 w-8'>
+							{user?.picture ? (
+								<AvatarImage src={user.picture} alt={user.name} />
+							) : (
+								<AvatarFallback>{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
+							)}
+						</Avatar>
+					</NavLink>
 
 					{/* Dark/Light Toggle */}
 					<ModeToggle />
