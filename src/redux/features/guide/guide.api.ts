@@ -8,6 +8,7 @@ export const guideApi = baseApi.injectEndpoints({
 				method: 'POST',
 				data: guideData,
 			}),
+			invalidatesTags: ['GUIDE'],
 		}),
 		approveOrRejectGuide: builder.mutation({
 			query: ({ guideId, ...params }) => ({
@@ -15,11 +16,20 @@ export const guideApi = baseApi.injectEndpoints({
 				method: 'PATCH',
 				params,
 			}),
+			invalidatesTags: ['GUIDE'],
 		}),
 
 		getAllGuides: builder.query({
 			query: (params) => ({
 				url: `/guide`,
+				method: 'GET',
+				params,
+			}),
+			providesTags: ['GUIDE'],
+		}),
+		getMyGuideApplication: builder.query({
+			query: (params) => ({
+				url: `/guide/me/profile`,
 				method: 'GET',
 				params,
 			}),
@@ -32,4 +42,5 @@ export const {
 	useApplyGuideMutation,
 	useApproveOrRejectGuideMutation,
 	useGetAllGuidesQuery,
+	useGetMyGuideApplicationQuery,
 } = guideApi
