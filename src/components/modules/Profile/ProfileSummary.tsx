@@ -40,10 +40,6 @@ const ProfileSummary = ({ userData }: { userData: any }) => {
 			try {
 				const formData = new FormData()
 				formData.append('file', image)
-
-				console.log('File:', image)
-				console.log('FormData entries:', Array.from(formData.entries()))
-
 				const res = await updateUserProfilePicture({
 					id: userData?._id,
 					formData,
