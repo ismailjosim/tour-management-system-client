@@ -1,3 +1,4 @@
+import ApplyGuide from '../Pages/User/ApplyGuide'
 import Bookings from '../Pages/User/Bookings'
 
 export const userSidebarItems = [
@@ -8,6 +9,11 @@ export const userSidebarItems = [
 				title: 'Bookings',
 				url: '/user/bookings',
 				component: Bookings,
+			},
+			{
+				title: 'Apply Guide',
+				url: '/user/guide',
+				component: ApplyGuide,
 			},
 		],
 	},
