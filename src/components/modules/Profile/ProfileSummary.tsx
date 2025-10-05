@@ -40,7 +40,6 @@ const ProfileSummary = ({ userData }: { userData: any }) => {
 			try {
 				const formData = new FormData()
 				formData.append('file', image)
-
 				const res = await updateUserProfilePicture({
 					id: userData?._id,
 					formData,
@@ -49,7 +48,6 @@ const ProfileSummary = ({ userData }: { userData: any }) => {
 				if (res.success || res.statusCode === 201) {
 					toast.success(res.message || 'Profile picture updated successfully')
 
-					// Optional: Update the local image immediately
 					if (res.data?.picture) {
 						userData.picture = res.data.picture
 					}
@@ -68,7 +66,7 @@ const ProfileSummary = ({ userData }: { userData: any }) => {
 	}
 
 	return (
-		<Card className='shadow-lg border'>
+		<Card className='shadow-lg border '>
 			<CardContent className='relative pt-6 text-center space-y-4'>
 				{/* Edit / Cancel Toggle */}
 				<Button
@@ -81,7 +79,9 @@ const ProfileSummary = ({ userData }: { userData: any }) => {
 				</Button>
 
 				{/* Avatar / Uploader */}
-				<div className='relative w-24 h-24 mx-auto'>
+				<div
+					className={`relative h-24 mx-auto ${isEditing ? 'w-full' : 'w-24'}`}
+				>
 					{isEditing ? (
 						<SingleImageUploader
 							showInfo

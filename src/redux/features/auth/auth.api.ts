@@ -72,10 +72,10 @@ export const authApi = baseApi.injectEndpoints({
 			invalidatesTags: ['USER'],
 		}),
 		updateUserProfilePicture: builder.mutation({
-			query: ({ id, ...userInfo }) => ({
+			query: ({ id, formData }) => ({
 				url: `/user/me/picture/${id}`,
 				method: 'PATCH',
-				data: userInfo,
+				data: formData,
 			}),
 			invalidatesTags: ['USER'],
 		}),
