@@ -1,5 +1,4 @@
 import { lazy } from 'react'
-
 const Analytics = lazy(() => import('@/Pages/Admin/Analytics'))
 const AddTour = lazy(() => import('@/Pages/Admin/AddTour'))
 const AddTourType = lazy(() => import('@/Pages/Admin/AddTourType'))
@@ -7,6 +6,7 @@ const AddDivision = lazy(() => import('@/Pages/Admin/AddDivision'))
 const AllTours = lazy(() => import('@/Pages/Admin/AllTours'))
 const AllUsers = lazy(() => import('@/Pages/Admin/AllUsers'))
 const AllBookings = lazy(() => import('@/Pages/Admin/AllBookings'))
+const GuideRequest = lazy(() => import('@/Pages/Admin/GuideRequest'))
 
 export const adminSidebarItems = [
 	{
@@ -26,6 +26,11 @@ export const adminSidebarItems = [
 				title: 'All Users',
 				url: '/admin/users',
 				component: AllUsers,
+			},
+			{
+				title: 'Guide Request',
+				url: '/admin/guide-request',
+				component: GuideRequest,
 			},
 		],
 	},
