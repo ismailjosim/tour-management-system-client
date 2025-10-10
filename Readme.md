@@ -14,13 +14,13 @@
 
 ## 🖼️ Preview
 
-![Traveler Dashboard](./public/screenshot.png)
+![Traveler Dashboard](https://raw.githubusercontent.com/ismailjosim/tour-management-system-client/main/public/admin-dashboard.png)
 
 ---
 
 ## 🔗 Related Repositories
 
-- **Backend API:** [Traveler Server](https://github.com/ismailjosim/tour-management-system-server.git)
+- **Backend API GitHub Repo:** [Traveler Server](https://github.com/ismailjosim/tour-management-system-server.git)
 
 ---
 
@@ -97,6 +97,8 @@ cd tour-management-system-client
 npm install
 # or
 yarn install
+# or
+bun install
 ```
 
 ### 3️⃣ Configure Environment
@@ -104,10 +106,8 @@ yarn install
 Create a `.env` file at the project root:
 
 ```env
-VITE_API_URL=https://your-backend-api.com/api
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-VITE_GOOGLE_MAPS_API_KEY=your_maps_api_key
-VITE_STRIPE_PUBLIC_KEY=your_stripe_key
+# VITE_BASE_URL=server-live-link/api/v1
+VITE_BASE_URL=http://localhost:5000/api/v1
 ```
 
 > ⚠️ All variables must start with `VITE_` to be accessible in the app.
@@ -116,6 +116,10 @@ VITE_STRIPE_PUBLIC_KEY=your_stripe_key
 
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+bun dev
 ```
 
 Open ➜ [http://localhost:5173](http://localhost:5173)
@@ -124,6 +128,10 @@ Open ➜ [http://localhost:5173](http://localhost:5173)
 
 ```bash
 npm run build
+# or
+yarn run build
+# or
+bun run build
 ```
 
 The build output will be in the `dist/` directory.
@@ -134,7 +142,7 @@ The build output will be in the `dist/` directory.
 
 ```
 src/
-├── assets/                  # Static assets
+├── assets/                  # Static images will show here
 ├── components/
 │   ├── layout/              # Shared layout components
 │   ├── modules/             # Dashboard & feature modules
@@ -150,7 +158,7 @@ src/
 │   └── features/            # Feature slices (auth, tours, etc.)
 ├── routes/                  # Application routes
 ├── schemas/                 # Zod validation schemas
-├── styles/                  # Global & Tailwind styles
+├── styles/                  # custom CSS styling
 ├── types/                   # TypeScript types
 ├── utils/                   # Helper utilities
 ├── App.tsx                  # Root component
@@ -180,8 +188,8 @@ src/
 ## 🔐 Authentication Flow
 
 1. User logs in or registers via form
-2. Server issues a JWT token
-3. Token stored in `localStorage`
+2. Server issues JWT token [accessToken & refreshToken]
+3. Token stored in `Cookie`
 4. Axios interceptors attach the token to every request
 5. Protected routes validate session and redirect unauthenticated users
 
@@ -215,10 +223,7 @@ src/
 
 - [ ] Progressive Web App (PWA) support
 - [ ] i18n (Multi-language)
-- [ ] Social login (Google, Facebook)
-- [ ] 360° virtual tour preview
-- [ ] Real-time notifications (WebSocket)
-- [ ] AI-based tour recommendations
+- [ ] Social login (Google)
 
 ---
 
