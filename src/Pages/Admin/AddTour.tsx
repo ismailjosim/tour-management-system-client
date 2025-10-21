@@ -29,6 +29,7 @@ import TourGuestInfo from '@/components/modules/Admin/Tour/TourGuestInfo'
 import TourDatePickers from '@/components/modules/Admin/Tour/TourDatePickers'
 import TourDescriptionImages from '@/components/modules/Admin/Tour/TourDescriptionImages'
 import TourDynamicFields from '@/components/modules/Admin/Tour/TourDynamicFields'
+import LocationInput from '@/components/modules/map/LocationInput'
 
 export default function AddTour() {
 	const [images, setImages] = useState<(File | FileMetadata)[]>([])
@@ -41,6 +42,7 @@ export default function AddTour() {
 	})
 	const [addTour] = useAddTourMutation()
 
+	// Create dropdown options
 	const divisionOptions = divisionData?.data?.map(
 		(item: { _id: string; name: string }) => ({
 			value: item._id,
@@ -55,6 +57,7 @@ export default function AddTour() {
 		}),
 	)
 
+	// React Hook Form setup
 	const form = useForm<z.infer<typeof addTourSchema>>({
 		resolver: zodResolver(addTourSchema),
 		defaultValues: {
@@ -74,6 +77,8 @@ export default function AddTour() {
 			minAge: '',
 			division: '',
 			tourType: '',
+			departureLocationInMap: { title: '', lat: 0, lng: 0 },
+			arrivalLocationInMap: { title: '', lat: 0, lng: 0 },
 		},
 	})
 
@@ -85,6 +90,7 @@ export default function AddTour() {
 			return
 		}
 
+		// Construct clean tour data
 		const tourData = {
 			...data,
 			costFrom: Number(data.costFrom),
@@ -98,6 +104,7 @@ export default function AddTour() {
 			tourPlan: data.tourPlan.filter((i) => i.value).map((i) => i.value),
 		}
 
+		// Attach to FormData
 		const formData = new FormData()
 		formData.append('data', JSON.stringify(tourData))
 		images.forEach((img) => formData.append('files', img as File))
@@ -105,14 +112,17 @@ export default function AddTour() {
 		try {
 			const res = await addTour(formData).unwrap()
 			if (res.success) {
-				toast.success('Tour created', { id: toastId })
+				toast.success('Tour created successfully!', { id: toastId })
 				form.reset()
+				setImages([])
 			} else {
 				toast.error('Something went wrong', { id: toastId })
 			}
 		} catch (error) {
 			const apiError = error as ApiError
-			toast.error(apiError.data.message, { id: toastId })
+			toast.error(apiError.data?.message || 'Error creating tour', {
+				id: toastId,
+			})
 		}
 	}
 
@@ -123,6 +133,7 @@ export default function AddTour() {
 					<CardTitle>Add New Tour</CardTitle>
 					<CardDescription>Add a new tour to the system</CardDescription>
 				</CardHeader>
+
 				<CardContent>
 					<Form {...form}>
 						<form
@@ -130,20 +141,56 @@ export default function AddTour() {
 							className='space-y-5'
 							onSubmit={form.handleSubmit(handleSubmit)}
 						>
+							{/* Basic Info */}
 							<TourBasicInfo form={form} />
+
+							{/* Departure Location Map */}
+							<div className='space-y-2'>
+								<label className='block text-sm font-medium'>
+									Departure Location (Map)
+								</label>
+								<LocationInput
+									onSelect={(location) => {
+										form.setValue('departureLocationInMap', location)
+									}}
+									defaultValue={form.watch('departureLocationInMap')}
+								/>
+							</div>
+
+							{/* Arrival Location Map */}
+							<div className='space-y-2'>
+								<label className='block text-sm font-medium'>
+									Arrival Location (Map)
+								</label>
+								<LocationInput
+									onSelect={(location) => {
+										form.setValue('arrivalLocationInMap', location)
+									}}
+									defaultValue={form.watch('arrivalLocationInMap')}
+								/>
+							</div>
+
+							{/* Select Options */}
 							<TourSelectOptions
 								form={form}
 								divisionOptions={divisionOptions}
 								divisionLoading={divisionLoading}
 								tourTypeOptions={tourTypeOptions}
 							/>
+
+							{/* Guest & Date Info */}
 							<TourGuestInfo form={form} />
 							<TourDatePickers form={form} />
+
+							{/* Dynamic Fields */}
 							<TourDynamicFields form={form} />
+
+							{/* Images */}
 							<TourDescriptionImages form={form} setImages={setImages} />
 						</form>
 					</Form>
 				</CardContent>
+
 				<CardFooter className='flex justify-end'>
 					<Button type='submit' form='add-tour-form'>
 						Create Tour

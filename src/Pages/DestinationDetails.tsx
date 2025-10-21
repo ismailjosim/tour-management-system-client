@@ -328,7 +328,10 @@ const DestinationDetails: React.FC = () => {
 						{/* Map Section */}
 						<div className='dark:bg-gray-800 p-5 rounded-md space-y-5'>
 							<h3 className='text-2xl font-semibold'>Map Direction</h3>
-							<MapRender />
+							<MapRender
+								departureLocationInMap={data?.data?.departureLocationInMap}
+								arrivalLocationInMap={data?.data?.arrivalLocationInMap}
+							/>
 						</div>
 
 						{/* Reviews */}

@@ -9,23 +9,32 @@ interface LocationPoint {
 	title?: string
 }
 
-interface ContactMapProps {
+interface MapProps {
 	origin?: LocationPoint
 	destination?: LocationPoint
+	departureLocationInMap?: LocationPoint
+	arrivalLocationInMap?: LocationPoint
 	zoom?: number
 	height?: string
 	width?: string
 }
 
-const MapRender: React.FC<ContactMapProps> = ({
-	origin = { lat: 23.8103, lng: 90.4125, title: 'Dhaka' },
-	destination = { lat: 21.4272, lng: 92.0058, title: "Cox's Bazar" },
+const MapRender: React.FC<MapProps> = ({
+	origin,
+	destination,
+	departureLocationInMap,
+	arrivalLocationInMap,
 	zoom = 7,
-	height = '400px',
+	height = '500px',
 	width = '100%',
 }) => {
-	const centerLat = (origin.lat + destination.lat) / 2
-	const centerLng = (origin.lng + destination.lng) / 2
+	const originPoint = departureLocationInMap ||
+		origin || { lat: 23.8103, lng: 90.4125, title: 'Dhaka' }
+	const destinationPoint = arrivalLocationInMap ||
+		destination || { lat: 21.4272, lng: 92.0058, title: "Cox's Bazar" }
+
+	const centerLat = (originPoint.lat + destinationPoint.lat) / 2
+	const centerLng = (originPoint.lng + destinationPoint.lng) / 2
 
 	return (
 		<div className='w-full' style={{ height, width }}>
@@ -42,22 +51,22 @@ const MapRender: React.FC<ContactMapProps> = ({
 
 				{/* Origin Marker */}
 				<CustomMarker
-					position={[origin.lat, origin.lng]}
+					position={[originPoint.lat, originPoint.lng]}
 					label='A'
 					bgColor='#4285f4'
 				/>
 
 				{/* Destination Marker */}
 				<CustomMarker
-					position={[destination.lat, destination.lng]}
+					position={[destinationPoint.lat, destinationPoint.lng]}
 					label='B'
 					bgColor='#ea4335'
 				/>
 
 				{/* Route */}
 				<RouteLine
-					origin={[origin.lat, origin.lng]}
-					destination={[destination.lat, destination.lng]}
+					origin={[originPoint.lat, originPoint.lng]}
+					destination={[destinationPoint.lat, destinationPoint.lng]}
 				/>
 			</MapContainer>
 		</div>

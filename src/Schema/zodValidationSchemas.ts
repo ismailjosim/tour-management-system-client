@@ -75,6 +75,7 @@ export const OTPSchema = z.object({
 		message: 'Your OTP must be 6 characters.',
 	}),
 })
+
 export const divisionSchema = z.object({
 	name: z.string().min(5, { message: 'Tour Type Name is required.' }),
 	description: z.string().optional(),
@@ -97,4 +98,19 @@ export const addTourSchema = z.object({
 	minAge: z.string().min(1, 'Minimum age is required'),
 	division: z.string().min(1, 'Division is required'),
 	tourType: z.string().min(1, 'Tour type is required'),
+	// Make map locations optional or required based on your needs
+	departureLocationInMap: z
+		.object({
+			title: z.string().min(1, 'Departure location title is required'),
+			lat: z.number(),
+			lng: z.number(),
+		})
+		.optional(),
+	arrivalLocationInMap: z
+		.object({
+			title: z.string().min(1, 'Arrival location title is required'),
+			lat: z.number(),
+			lng: z.number(),
+		})
+		.optional(),
 })
