@@ -27,7 +27,6 @@ import TourBasicInfo from '@/components/modules/Admin/Tour/TourBasicInfo'
 import TourSelectOptions from '@/components/modules/Admin/Tour/TourSelectOptions'
 import TourGuestInfo from '@/components/modules/Admin/Tour/TourGuestInfo'
 import TourDatePickers from '@/components/modules/Admin/Tour/TourDatePickers'
-import TourDescriptionImages from '@/components/modules/Admin/Tour/TourDescriptionImages'
 import TourDynamicFields from '@/components/modules/Admin/Tour/TourDynamicFields'
 import LocationInput from '@/components/modules/map/LocationInput'
 
@@ -186,7 +185,6 @@ export default function AddTour() {
 							<TourDynamicFields form={form} />
 
 							{/* Images */}
-							<TourDescriptionImages form={form} setImages={setImages} />
 						</form>
 					</Form>
 				</CardContent>
