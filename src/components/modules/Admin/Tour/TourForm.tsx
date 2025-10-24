@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Card,
 	CardContent,
@@ -6,6 +7,14 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
+import {
+	FormField,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormMessage,
+} from '@/components/ui/form'
+import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,17 +28,18 @@ import { useGetDivisionsQuery } from '@/redux/features/division/division.api'
 import {
 	useAddTourMutation,
 	useGetTourTypesQuery,
+	useUpdateTourMutation,
 } from '@/redux/features/Tour/tour.api'
 import type { ApiError } from '@/types'
-import type { FileMetadata } from '@/hooks/use-file-upload'
+
 import { addTourSchema } from '@/Schema/zodValidationSchemas'
 import TourBasicInfo from '@/components/modules/Admin/Tour/TourBasicInfo'
 import TourSelectOptions from '@/components/modules/Admin/Tour/TourSelectOptions'
 import TourGuestInfo from '@/components/modules/Admin/Tour/TourGuestInfo'
 import TourDatePickers from '@/components/modules/Admin/Tour/TourDatePickers'
-import TourDescriptionImages from '@/components/modules/Admin/Tour/TourDescriptionImages'
 import TourDynamicFields from '@/components/modules/Admin/Tour/TourDynamicFields'
 import LocationInput from '@/components/modules/map/LocationInput'
+import MultipleImageUploader from '../../../MultipleImageUploader'
 
 interface TourFormProps {
 	mode: 'create' | 'edit'
@@ -38,7 +48,7 @@ interface TourFormProps {
 }
 
 export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
-	const [images, setImages] = useState<(File | FileMetadata)[]>([])
+	const [images, setImages] = useState<(string | File)[]>([])
 
 	const { data: divisionData, isLoading: divisionLoading } =
 		useGetDivisionsQuery({ limit: 1000, fields: '_id,name' })
@@ -49,20 +59,18 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 	const [addTour] = useAddTourMutation()
 	const [updateTour] = useUpdateTourMutation()
 
-	// Create dropdown options
-	const divisionOptions = divisionData?.data?.map(
-		(item: { _id: string; name: string }) => ({
+	// Dropdown options
+	const divisionOptions =
+		divisionData?.data?.map((item: { _id: string; name: string }) => ({
 			value: item._id,
 			label: item.name,
-		}),
-	)
+		})) || []
 
-	const tourTypeOptions = tourTypeData?.data?.map(
-		(tourType: { _id: string; name: string }) => ({
+	const tourTypeOptions =
+		tourTypeData?.data?.map((tourType: { _id: string; name: string }) => ({
 			value: tourType._id,
 			label: tourType.name,
-		}),
-	)
+		})) || []
 
 	// React Hook Form setup
 	const form = useForm<z.infer<typeof addTourSchema>>({
@@ -89,7 +97,7 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 		},
 	})
 
-	// Populate form with initial data in edit mode
+	// Populate form in edit mode
 	useEffect(() => {
 		if (mode === 'edit' && initialData) {
 			form.reset({
@@ -133,14 +141,9 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 				},
 			})
 
-			// Set existing images if available
-			if (initialData.images?.length) {
-				setImages(
-					initialData.images.map((url: string) => ({
-						url,
-						name: url.split('/').pop(),
-					})),
-				)
+			// ✅ Set existing image URLs for edit mode
+			if (Array.isArray(initialData.images) && initialData.images.length > 0) {
+				setImages(initialData.images)
 			}
 		}
 	}, [mode, initialData, form])
@@ -155,7 +158,6 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 			return
 		}
 
-		// Construct clean tour data
 		const tourData = {
 			...data,
 			costFrom: Number(data.costFrom),
@@ -169,11 +171,10 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 			tourPlan: data.tourPlan.filter((i) => i.value).map((i) => i.value),
 		}
 
-		// Attach to FormData
 		const formData = new FormData()
 		formData.append('data', JSON.stringify(tourData))
 
-		// Only append new File objects (not existing URLs)
+		// Only append new File uploads
 		images.forEach((img) => {
 			if (img instanceof File) {
 				formData.append('files', img)
@@ -233,7 +234,6 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 							className='space-y-5'
 							onSubmit={form.handleSubmit(handleSubmit)}
 						>
-							{/* Basic Info */}
 							<TourBasicInfo form={form} />
 
 							{/* Departure Location Map */}
@@ -262,7 +262,6 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 								/>
 							</div>
 
-							{/* Select Options */}
 							<TourSelectOptions
 								form={form}
 								divisionOptions={divisionOptions}
@@ -270,19 +269,34 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 								tourTypeOptions={tourTypeOptions}
 							/>
 
-							{/* Guest & Date Info */}
 							<TourGuestInfo form={form} />
 							<TourDatePickers form={form} />
-
-							{/* Dynamic Fields */}
 							<TourDynamicFields form={form} />
-
-							{/* Images */}
-							<TourDescriptionImages
-								form={form}
-								setImages={setImages}
-								images={images}
-							/>
+							<div className='flex sm:flex-row flex-col gap-5 items-stretch'>
+								<FormField
+									control={form.control}
+									name='description'
+									render={({ field }) => (
+										<FormItem className='flex-1'>
+											<FormLabel>Description</FormLabel>
+											<FormControl>
+												<Textarea {...field} className='h-[205px]' />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<div className='flex-1 mt-5'>
+									<MultipleImageUploader
+										onChange={setImages}
+										initialImages={
+											mode === 'edit' && initialData?.images
+												? initialData.images
+												: []
+										}
+									/>
+								</div>
+							</div>
 						</form>
 					</Form>
 				</CardContent>
