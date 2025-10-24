@@ -124,7 +124,7 @@ const AllTours = () => {
 							</Link>
 						</Button>
 						<Button size='sm' variant='outline' asChild>
-							<Link to={`/admin/edit-tour/${item._id}`}>
+							<Link to={`/admin/edit-tour/${item.slug}`}>
 								<Edit className='h-4 w-4' />
 							</Link>
 						</Button>

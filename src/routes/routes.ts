@@ -28,6 +28,7 @@ import CancelPayment from '../Pages/Payment/CancelPayment'
 import Contact from '../Pages/Contact'
 import FAQs from '../Pages/FAQs'
 import Profile from '../Pages/Profile'
+import EditTour from '../Pages/Admin/EditTour'
 
 const router = createBrowserRouter([
 	{
@@ -74,7 +75,13 @@ const router = createBrowserRouter([
 			role.SUPER_ADMIN as TRole,
 		]),
 		path: '/admin',
-		children: [...generateRoutes(adminSidebarItems)],
+		children: [
+			...generateRoutes(adminSidebarItems),
+			{
+				path: 'edit-tour/:slug',
+				Component: EditTour,
+			},
+		],
 	},
 	{
 		Component: withAuth(DashboardLayout, role.USER as TRole),
