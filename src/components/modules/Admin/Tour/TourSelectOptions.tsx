@@ -38,8 +38,9 @@ export default function TourSelectOptions({
 						<FormLabel>Division</FormLabel>
 						<Select
 							onValueChange={field.onChange}
-							defaultValue={field.value}
+							value={field.value || undefined}
 							disabled={divisionLoading}
+							key={`division-${field.value}`}
 						>
 							<FormControl>
 								<SelectTrigger className='w-full'>
@@ -66,7 +67,11 @@ export default function TourSelectOptions({
 				render={({ field }) => (
 					<FormItem className='flex-1'>
 						<FormLabel>Tour Type</FormLabel>
-						<Select onValueChange={field.onChange} defaultValue={field.value}>
+						<Select
+							onValueChange={field.onChange}
+							value={field.value || undefined}
+							key={`tourType-${field.value}`}
+						>
 							<FormControl>
 								<SelectTrigger className='w-full'>
 									<SelectValue placeholder='Select tour type' />

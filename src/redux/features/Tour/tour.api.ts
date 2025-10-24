@@ -59,10 +59,10 @@ export const tourApi = baseApi.injectEndpoints({
 			providesTags: ['TOUR'],
 		}),
 		updateTour: builder.mutation({
-			query: ({ id, ...tourInfo }) => ({
+			query: ({ id, data }) => ({
 				url: `/tour/${id}`,
 				method: 'PATCH',
-				data: tourInfo,
+				data,
 			}),
 			invalidatesTags: ['TOUR'],
 		}),
