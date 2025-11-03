@@ -33,6 +33,25 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: ['USER'],
 		}),
+		forgotPassword: builder.mutation({
+			query: (email: string) => ({
+				url: `/auth/forgot-password`,
+				method: 'POST',
+				data: { email },
+			}),
+			invalidatesTags: ['USER'],
+		}),
+		resetPassword: builder.mutation({
+			query: ({ id, newPassword, token }) => ({
+				url: '/auth/reset-password',
+				method: 'POST',
+				data: { id, newPassword },
+				headers: {
+					Authorization: token,
+				},
+			}),
+		}),
+
 		userInfo: builder.query<IUserInfo<IUser>, undefined>({
 			query: () => ({
 				url: '/user/me',
@@ -101,4 +120,6 @@ export const {
 	useGetAllUsersQuery,
 	useUpdateUserInfoViaAdminMutation,
 	useUpdateUserProfilePictureMutation,
+	useForgotPasswordMutation,
+	useResetPasswordMutation,
 } = authApi

@@ -29,6 +29,8 @@ import Contact from '../Pages/Contact'
 import FAQs from '../Pages/FAQs'
 import Profile from '../Pages/Profile'
 import EditTour from '../Pages/Admin/EditTour'
+import ForgotPassword from '../Pages/ForgotPassword'
+import ResetPassword from '../Pages/ResetPassword'
 
 const router = createBrowserRouter([
 	{
@@ -100,6 +102,14 @@ const router = createBrowserRouter([
 	{
 		Component: Register,
 		path: '/register',
+	},
+	{
+		Component: ForgotPassword,
+		path: '/forgot-password',
+	},
+	{
+		Component: ResetPassword,
+		path: '/reset-password',
 	},
 	{
 		Component: Verify,
