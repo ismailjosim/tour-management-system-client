@@ -16,7 +16,6 @@ const BookTour = () => {
 	const { data } = useGetSingleTourQuery(slug)
 	const [addBooking] = useAddBookingMutation()
 
-	// Cast the data to the defined ApiResponse interface
 	const apiResponse = data as IResponse<IDestination> | undefined
 	const tour = apiResponse?.data
 
@@ -27,7 +26,7 @@ const BookTour = () => {
 	if (!tour) {
 		return (
 			<div className='min-h-screen bg-gray-950 dark:bg-gray-950 flex items-center justify-center text-white'>
-				Booking info...
+				Loading booking info...
 			</div>
 		)
 	}
@@ -58,30 +57,40 @@ const BookTour = () => {
 	}
 
 	const handleBookNow = async () => {
-		if (data) {
-			const toastId = toast.loading('Booking Processing...')
-			const bookingData = {
-				tour: _id,
-				guestCount,
-			}
-			try {
-				const res = await addBooking(bookingData).unwrap()
-				if (res.success) {
-					const paymentUrl = res?.data?.paymentUrl
-					// option 01: open new tab
-					// window.open(paymentUrl)
+		if (!data) return
 
-					// option 02:
-					document.location.href = paymentUrl
+		const toastId = toast.loading('Processing booking...')
+		const bookingData = {
+			tour: _id,
+			guestCount,
+		}
 
-					toast.success('Tour created', { id: toastId })
-				} else {
-					toast.error('Something went wrong', { id: toastId })
-				}
-			} catch (error) {
-				const apiError = error as ApiError
-				toast.error(apiError.data.message)
+		try {
+			const res = await addBooking(bookingData).unwrap()
+
+			if (res.success && res.data?.paymentUrl) {
+				// Store payment session data before redirecting
+				sessionStorage.setItem(
+					'payment_state',
+					JSON.stringify({
+						bookingId: res.data.booking._id,
+						transactionId: res.data.booking.payment.transactionId,
+						amount: res.data.booking.payment.amount,
+						timestamp: Date.now(),
+						tourTitle: res.data.booking.tour.title,
+					}),
+				)
+
+				toast.success('Redirecting to payment gateway...', { id: toastId })
+
+				// Redirect to payment gateway
+				window.location.href = res.data.paymentUrl
+			} else {
+				toast.error('Payment URL not received', { id: toastId })
 			}
+		} catch (error) {
+			const apiError = error as ApiError
+			toast.error(apiError.data?.message || 'Booking failed', { id: toastId })
 		}
 	}
 

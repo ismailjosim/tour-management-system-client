@@ -31,6 +31,8 @@ import Profile from '../Pages/Profile'
 import EditTour from '../Pages/Admin/EditTour'
 import ForgotPassword from '../Pages/ForgotPassword'
 import ResetPassword from '../Pages/ResetPassword'
+import withGuest from '../utils/withGuest'
+import { withPaymentGuard } from '../utils/withPaymentGuard'
 
 const router = createBrowserRouter([
 	{
@@ -96,19 +98,19 @@ const router = createBrowserRouter([
 		children: [...generateRoutes(guideSidebarItems)],
 	},
 	{
-		Component: Login,
+		Component: withGuest(Login),
 		path: '/login',
 	},
 	{
-		Component: Register,
+		Component: withGuest(Register),
 		path: '/register',
 	},
 	{
-		Component: ForgotPassword,
+		Component: withGuest(ForgotPassword),
 		path: '/forgot-password',
 	},
 	{
-		Component: ResetPassword,
+		Component: withGuest(ResetPassword),
 		path: '/reset-password',
 	},
 	{
@@ -120,15 +122,15 @@ const router = createBrowserRouter([
 		path: '/unauthorized',
 	},
 	{
-		Component: SuccessPayment,
+		Component: withPaymentGuard(SuccessPayment),
 		path: '/payment/success',
 	},
 	{
-		Component: FailPayment,
+		Component: withPaymentGuard(FailPayment),
 		path: '/payment/fail',
 	},
 	{
-		Component: CancelPayment,
+		Component: withPaymentGuard(CancelPayment),
 		path: '/payment/cancel',
 	},
 	{

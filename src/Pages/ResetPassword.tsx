@@ -71,15 +71,14 @@ const ResetPassword = ({ className }: React.HTMLAttributes<HTMLDivElement>) => {
 			token,
 		}
 
-		console.log('🚀 Sending payload:', payload)
-
 		try {
 			const result = await resetPassword(payload).unwrap()
-			console.log('✅ Success:', result)
-			toast.success(result.message)
-			navigate('/login')
+
+			if (result.success) {
+				toast.success(result.message)
+				navigate('/login')
+			}
 		} catch (error) {
-			console.error('❌ Error:', error)
 			const apiError = error as ApiError
 			toast.error(apiError?.data?.message || 'Failed to reset password')
 		}
