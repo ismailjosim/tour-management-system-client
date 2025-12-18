@@ -34,6 +34,13 @@ const LocationInput: React.FC<LocationInputProps> = ({
 		defaultValue || null,
 	)
 
+	// Sync with defaultValue when it changes (important for edit mode)
+	useEffect(() => {
+		if (defaultValue && defaultValue.title) {
+			setSelectedLocation(defaultValue)
+		}
+	}, [defaultValue])
+
 	// Debounce search
 	useEffect(() => {
 		const trimmed = query.trim()

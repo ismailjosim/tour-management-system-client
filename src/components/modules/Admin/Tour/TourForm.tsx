@@ -158,6 +158,10 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 			return
 		}
 
+		const existingImages = images.filter(
+			(img): img is string => typeof img === 'string',
+		)
+
 		const tourData = {
 			...data,
 			costFrom: Number(data.costFrom),
@@ -169,6 +173,7 @@ export default function TourForm({ mode, initialData, tourId }: TourFormProps) {
 			excluded: data.excluded.filter((i) => i.value).map((i) => i.value),
 			amenities: data.amenities.filter((i) => i.value).map((i) => i.value),
 			tourPlan: data.tourPlan.filter((i) => i.value).map((i) => i.value),
+			images: existingImages,
 		}
 
 		const formData = new FormData()
