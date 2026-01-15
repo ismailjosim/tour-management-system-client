@@ -33,6 +33,8 @@ import ForgotPassword from '@/Pages/ForgotPassword'
 import ResetPassword from '@/Pages/ResetPassword'
 import withGuest from '@/utils/withGuest'
 import { withPaymentGuard } from '@/utils/withPaymentGuard'
+import Settings from '../Pages/Settings'
+import Support from '../Pages/Support'
 
 const router = createBrowserRouter([
 	{
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
 			{
 				path: 'profile',
 				Component: withAuth(Profile),
+			},
+			{
+				path: 'settings',
+				Component: withAuth(Settings),
+			},
+			{
+				path: 'support',
+				Component: withAuth(Support),
 			},
 		],
 	},

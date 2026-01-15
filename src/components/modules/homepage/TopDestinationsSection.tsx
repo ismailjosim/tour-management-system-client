@@ -1,6 +1,6 @@
 import { useGetAllToursQuery } from '@/redux/features/Tour/tour.api'
 import SectionHeading from '@/utils/SectionHeading'
-import DestinationLoading from '@/utils/DestinationLoading'
+import DestinationCardSkeleton from '@/utils/DestinationCardSkeleton'
 import Error from '@/utils/Error'
 import DestinationCard from '../Destination/DestinationGridCard'
 import ButtonNavigate from '@/utils/ButtonNavigate'
@@ -14,40 +14,39 @@ const heading = {
 		'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
 }
 
+const SKELETON_COUNT = 6
+
 const TopDestinationsSection = () => {
 	const { isLoading, data, isError } = useGetAllToursQuery({ limit: 6 })
 
 	let content
+
 	if (isLoading) {
-		content = <DestinationLoading />
-	}
-	if (!isLoading && isError) {
-		content = <Error message='No Videos Found!' />
-	}
-	if (!isLoading && !isError && data?.data?.length === 0) {
-		content = <Error message='No Videos Found!' />
+		content = Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+			<DestinationCardSkeleton key={index} />
+		))
+	} else if (isError || !data?.data?.length) {
+		content = <Error message='No destinations found!' />
 	} else {
-		content = (
-			<>
-				{data?.data?.map((item: IDestination) => (
-					<DestinationCard item={item} key={item._id} />
-				))}
-			</>
-		)
+		content = data.data.map((item: IDestination) => (
+			<DestinationCard key={item._id} item={item} />
+		))
 	}
 
 	return (
 		<div>
 			<SectionHeading heading={heading} />
+
 			<div className='container mx-auto grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10'>
 				{content}
 			</div>
-			<div className='text-center my-10'>
+
+			<div className='my-10 text-center'>
 				<ButtonNavigate
-					btnText={'View All'}
-					destination={'/destinations'}
+					btnText='View All'
+					destination='/destinations'
 					size='lg'
-				></ButtonNavigate>
+				/>
 			</div>
 		</div>
 	)
