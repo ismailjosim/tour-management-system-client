@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ArrowUpRight, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -47,7 +46,7 @@ const ratingDistribution = [
 	{ star: 1, count: 1, pct: 1 },
 ]
 
-function StarRow({ count, filled }: { count: number; filled: boolean }) {
+function StarRow({ count }: { count: number }) {
 	return (
 		<div className='flex gap-0.5'>
 			{Array.from({ length: 5 }).map((_, i) => (
@@ -84,7 +83,7 @@ export function RecentReviews() {
 				<div className='flex gap-6 p-4 rounded-lg bg-[#252830] mb-4'>
 					<div className='text-center'>
 						<p className='text-4xl font-bold text-white'>4.8</p>
-						<StarRow count={5} filled />
+						<StarRow count={5} />
 						<p className='text-xs text-zinc-500 mt-1'>94 reviews</p>
 					</div>
 					<div className='flex-1 space-y-1'>
@@ -113,7 +112,7 @@ export function RecentReviews() {
 								<p className='text-sm font-semibold text-white'>
 									{review.name}
 								</p>
-								<StarRow count={review.rating} filled />
+								<StarRow count={review.rating} />
 							</div>
 							<p className='text-xs text-zinc-400 leading-relaxed'>
 								{review.comment}
