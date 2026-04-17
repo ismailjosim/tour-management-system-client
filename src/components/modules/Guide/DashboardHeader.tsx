@@ -36,7 +36,7 @@ export function DashboardHeader({
 	return (
 		<>
 			{/* Top bar */}
-			<header className='sticky top-0 z-10 bg-[#16181f]/95 backdrop-blur border-b border-[#2a2d35] px-6 py-3 flex items-center justify-between'>
+			<header className='sticky top-0 z-10 backdrop-blur border-b border-[#2a2d35] px-6 py-3 flex items-center justify-between'>
 				<div className='flex items-center gap-3'>
 					<Avatar className='w-9 h-9 border-2 border-teal-600'>
 						{avatarUrl && <AvatarImage src={avatarUrl} alt={name} />}

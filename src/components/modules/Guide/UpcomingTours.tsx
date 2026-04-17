@@ -48,35 +48,38 @@ const upcomingTours: Tour[] = [
 	},
 ]
 
+// Updated config to use Tailwind classes that play nice with light/dark variables
 const statusConfig = {
 	confirmed: {
 		dot: 'bg-emerald-500',
-		badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+		badge:
+			'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
 		label: 'Confirmed',
 	},
 	pending: {
 		dot: 'bg-amber-500',
-		badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+		badge:
+			'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
 		label: 'Pending',
 	},
 	cancelled: {
 		dot: 'bg-red-500',
-		badge: 'bg-red-500/10 text-red-400 border-red-500/20',
+		badge: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20',
 		label: 'Cancelled',
 	},
 }
 
 export function UpcomingTours() {
 	return (
-		<Card className='bg-[#1e2128] border-[#2a2d35]'>
+		<Card className='bg-card border-border'>
 			<CardHeader className='flex flex-row items-center justify-between pb-4'>
-				<CardTitle className='text-white text-base font-semibold'>
+				<CardTitle className='text-foreground text-base font-semibold'>
 					Upcoming Tours
 				</CardTitle>
 				<Button
 					variant='ghost'
 					size='sm'
-					className='text-zinc-400 hover:text-white text-xs gap-1 h-7 px-2'
+					className='text-muted-foreground hover:text-foreground hover:bg-muted text-xs gap-1 h-7 px-2'
 				>
 					See all <ArrowUpRight className='w-3 h-3' />
 				</Button>
@@ -87,23 +90,20 @@ export function UpcomingTours() {
 					return (
 						<div
 							key={tour.id}
-							className='flex items-center gap-3 p-3 rounded-lg bg-[#252830] hover:bg-[#2a2d37] transition-colors duration-150 cursor-pointer'
+							className='flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-150 cursor-pointer border border-transparent hover:border-border'
 						>
 							<div
-								className={cn(
-									'w-2 h-2 rounded-full flex-shrink-0 mt-0.5',
-									config.dot,
-								)}
+								className={cn('w-2 h-2 rounded-full flex-shrink-0', config.dot)}
 							/>
 							<div className='flex-1 min-w-0'>
-								<p className='text-sm font-medium text-white truncate'>
+								<p className='text-sm font-medium text-foreground truncate'>
 									{tour.name}
 								</p>
 								<div className='flex items-center gap-2 mt-0.5'>
-									<span className='text-xs text-zinc-500'>
+									<span className='text-xs text-muted-foreground'>
 										{tour.date} · {tour.time}
 									</span>
-									<span className='flex items-center gap-1 text-xs text-zinc-500'>
+									<span className='flex items-center gap-1 text-xs text-muted-foreground'>
 										<Users className='w-3 h-3' />
 										{tour.guests}
 									</span>
@@ -111,7 +111,10 @@ export function UpcomingTours() {
 							</div>
 							<Badge
 								variant='outline'
-								className={cn('text-[10px] px-2 py-0.5 shrink-0', config.badge)}
+								className={cn(
+									'text-[10px] px-2 py-0.5 shrink-0 font-medium',
+									config.badge,
+								)}
 							>
 								{config.label}
 							</Badge>

@@ -48,14 +48,14 @@ const ratingDistribution = [
 
 function StarRow({ count }: { count: number }) {
 	return (
-		<div className='flex gap-0.5'>
+		<div className='flex gap-0.5 justify-center'>
 			{Array.from({ length: 5 }).map((_, i) => (
 				<Star
 					key={i}
 					className={`w-3 h-3 ${
 						i < count
-							? 'fill-amber-400 text-amber-400'
-							: 'fill-zinc-700 text-zinc-700'
+							? 'fill-secondary text-secondary'
+							: 'fill-muted text-muted-foreground/30'
 					}`}
 				/>
 			))}
@@ -65,32 +65,34 @@ function StarRow({ count }: { count: number }) {
 
 export function RecentReviews() {
 	return (
-		<Card className='bg-[#1e2128] border-[#2a2d35]'>
+		<Card className='bg-card border-border'>
 			<CardHeader className='flex flex-row items-center justify-between pb-4'>
-				<CardTitle className='text-white text-base font-semibold'>
+				<CardTitle className='text-foreground text-base font-semibold'>
 					Recent Reviews
 				</CardTitle>
 				<Button
 					variant='ghost'
 					size='sm'
-					className='text-zinc-400 hover:text-white text-xs gap-1 h-7 px-2'
+					className='text-muted-foreground hover:text-foreground hover:bg-muted text-xs gap-1 h-7 px-2'
 				>
 					See all <ArrowUpRight className='w-3 h-3' />
 				</Button>
 			</CardHeader>
 			<CardContent>
 				{/* Rating summary */}
-				<div className='flex gap-6 p-4 rounded-lg bg-[#252830] mb-4'>
+				<div className='flex gap-6 p-4 rounded-lg bg-muted/50 mb-4 border border-border/50'>
 					<div className='text-center'>
-						<p className='text-4xl font-bold text-white'>4.8</p>
+						<p className='text-4xl font-bold text-foreground'>4.8</p>
 						<StarRow count={5} />
-						<p className='text-xs text-zinc-500 mt-1'>94 reviews</p>
+						<p className='text-xs text-muted-foreground mt-1'>94 reviews</p>
 					</div>
-					<div className='flex-1 space-y-1'>
+					<div className='flex-1 space-y-1.5'>
 						{ratingDistribution.map(({ star, pct }) => (
 							<div key={star} className='flex items-center gap-2'>
-								<span className='text-xs text-zinc-500 w-3'>{star}</span>
-								<div className='flex-1 h-1.5 bg-[#1e2128] rounded-full overflow-hidden'>
+								<span className='text-xs text-muted-foreground w-3'>
+									{star}
+								</span>
+								<div className='flex-1 h-1.5 bg-background rounded-full overflow-hidden'>
 									<div
 										className='h-full bg-amber-400 rounded-full transition-all duration-500'
 										style={{ width: `${pct}%` }}
@@ -106,19 +108,19 @@ export function RecentReviews() {
 					{reviews.map((review) => (
 						<div
 							key={review.id}
-							className='p-3 rounded-lg bg-[#252830] space-y-1.5'
+							className='p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors border border-transparent hover:border-border'
 						>
-							<div className='flex items-center justify-between'>
-								<p className='text-sm font-semibold text-white'>
+							<div className='flex items-center justify-between mb-1'>
+								<p className='text-sm font-semibold text-foreground'>
 									{review.name}
 								</p>
 								<StarRow count={review.rating} />
 							</div>
-							<p className='text-xs text-zinc-400 leading-relaxed'>
+							<p className='text-xs text-muted-foreground leading-relaxed'>
 								{review.comment}
 							</p>
-							<p className='text-[10px] text-zinc-600'>
-								{review.tour} · {review.date}
+							<p className='text-[10px] text-muted-foreground/60 mt-2 font-medium uppercase tracking-wider'>
+								{review.tour} • {review.date}
 							</p>
 						</div>
 					))}

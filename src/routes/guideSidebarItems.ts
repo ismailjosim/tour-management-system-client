@@ -1,6 +1,7 @@
+
 import { lazy } from 'react'
 
-const OverviewStats = lazy(() => import('@/Pages/Guide/OverviewStats'))
+const GuideOverviewPage = lazy(() => import('@/Pages/Guide/GuideOverviewPage'))
 const MyTours = lazy(() => import('@/Pages/Guide/MyTours'))
 const Schedule = lazy(() => import('@/Pages/Guide/Schedule'))
 const Earnings = lazy(() => import('@/Pages/Guide/Earnings'))
@@ -13,7 +14,7 @@ export const guideSidebarItems = [
 			{
 				title: 'Overview Stats',
 				url: '/guide/overview',
-				component: OverviewStats,
+				component: GuideOverviewPage,
 			},
 			{
 				title: 'My Tours',
