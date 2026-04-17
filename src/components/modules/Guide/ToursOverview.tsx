@@ -41,25 +41,41 @@ const tours: TourOverview[] = [
 		earnings: '৳45,400',
 		status: 'paused',
 	},
+	{
+		id: '5',
+		name: 'Rangamati hill trail',
+		bookings: 18,
+		earnings: '৳37,800',
+		status: 'draft',
+	},
+	{
+		id: '6',
+		name: "Cox's Bazar sunset cruise",
+		bookings: 61,
+		earnings: '৳45,400',
+		status: 'paused',
+	},
 ]
 
+// Updated config to support light mode readability
 const statusConfig = {
-	live: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-	draft: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
-	paused: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+	live: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+	draft: 'bg-muted text-muted-foreground border-border',
+	paused:
+		'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
 }
 
 export function ToursOverview() {
 	return (
-		<Card className='bg-[#1e2128] border-[#2a2d35]'>
+		<Card className='bg-card border-border'>
 			<CardHeader className='flex flex-row items-center justify-between pb-4'>
-				<CardTitle className='text-white text-base font-semibold'>
+				<CardTitle className='text-foreground text-base font-semibold'>
 					My Tours Overview
 				</CardTitle>
 				<Button
 					variant='ghost'
 					size='sm'
-					className='text-zinc-400 hover:text-white text-xs gap-1 h-7 px-2'
+					className='text-muted-foreground hover:text-foreground hover:bg-muted text-xs gap-1 h-7 px-2'
 				>
 					Manage <ArrowUpRight className='w-3 h-3' />
 				</Button>
@@ -68,20 +84,20 @@ export function ToursOverview() {
 				{tours.map((tour) => (
 					<div
 						key={tour.id}
-						className='flex items-center justify-between p-3 rounded-lg bg-[#252830] hover:bg-[#2a2d37] transition-colors cursor-pointer'
+						className='flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors cursor-pointer border border-transparent hover:border-border'
 					>
 						<div className='min-w-0'>
-							<p className='text-sm font-medium text-white truncate'>
+							<p className='text-sm font-medium text-foreground truncate'>
 								{tour.name}
 							</p>
-							<p className='text-xs text-zinc-500 mt-0.5'>
+							<p className='text-xs text-muted-foreground mt-0.5'>
 								{tour.bookings} bookings · {tour.earnings}
 							</p>
 						</div>
 						<Badge
 							variant='outline'
 							className={cn(
-								'text-[10px] px-2 py-0.5 capitalize shrink-0 ml-3',
+								'text-[10px] px-2 py-0.5 capitalize shrink-0 ml-3 font-medium',
 								statusConfig[tour.status],
 							)}
 						>
@@ -92,7 +108,7 @@ export function ToursOverview() {
 
 				<Button
 					variant='outline'
-					className='w-full mt-2 border-[#2a2d35] bg-transparent text-zinc-400 hover:text-white hover:bg-[#252830] text-xs h-9 gap-1'
+					className='w-full mt-2 border-border bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted text-xs h-9 gap-1 transition-all'
 				>
 					View all bookings <ArrowUpRight className='w-3 h-3' />
 				</Button>
