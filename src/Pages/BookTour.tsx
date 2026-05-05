@@ -67,6 +67,7 @@ const BookTour = () => {
 
 		try {
 			const res = await addBooking(bookingData).unwrap()
+			console.log({ res })
 
 			if (res.success && res.data?.paymentUrl) {
 				// Store payment session data before redirecting
@@ -82,6 +83,7 @@ const BookTour = () => {
 				)
 
 				toast.success('Redirecting to payment gateway...', { id: toastId })
+				console.log({ paymentUrl: res.data.paymentUrl })
 
 				// Redirect to payment gateway
 				window.location.href = res.data.paymentUrl
