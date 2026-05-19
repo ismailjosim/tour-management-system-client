@@ -47,8 +47,8 @@ axiosInstance.interceptors.response.use(
 
     // * For everything means for every reject
     if (
-      error.response.status === 500 &&
-      error.response.data.message === 'jwt expired' &&
+      error.response?.status === 500 &&
+      error.response?.data?.message === 'jwt expired' &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
