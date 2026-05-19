@@ -1,4 +1,4 @@
-// import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MapPin, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,16 +10,70 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/hooks/useTheme';
+import { useGetDivisionsQuery } from '@/redux/features/division/division.api';
+import { useGetTourTypesQuery } from '@/redux/features/Tour/tour.api';
+import { useNavigate } from 'react-router';
 // import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 // import { Calendar } from '@/components/ui/calendar';
 // import { format } from 'date-fns';
 import shapeLight from '@/assets/images/shapeLight.png';
 import shapeDark from '@/assets/images/shapeDark.png';
 
+interface SearchOption {
+  value: string;
+  label: string;
+}
+
 const HolidayForm: React.FC = () => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedTourType, setSelectedTourType] = useState('');
   // const [startDate, setStartDate] = useState<Date | undefined>(new Date());
   // const [endDate, setEndDate] = useState<Date | undefined>(new Date());
+
+  const { data: divisionData, isLoading: divisionLoading } = useGetDivisionsQuery({
+    limit: 1000,
+    fields: '_id,name',
+  });
+
+  const { data: tourTypeData, isLoading: tourTypeLoading } = useGetTourTypesQuery({
+    limit: 1000,
+    fields: '_id,name',
+  });
+
+  const divisionOptions = useMemo<SearchOption[]>(
+    () =>
+      divisionData?.data?.map((item: { _id: string; name: string }) => ({
+        value: item._id,
+        label: item.name,
+      })) || [],
+    [divisionData]
+  );
+
+  const tourTypeOptions = useMemo<SearchOption[]>(
+    () =>
+      tourTypeData?.data?.map((item: { _id: string; name: string }) => ({
+        value: item._id,
+        label: item.name,
+      })) || [],
+    [tourTypeData]
+  );
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (selectedDivision) {
+      params.set('division', selectedDivision);
+    }
+
+    if (selectedTourType) {
+      params.set('tourType', selectedTourType);
+    }
+
+    const queryString = params.toString();
+    navigate(queryString ? `/destinations?${queryString}` : '/destinations');
+  };
 
   return (
     <div className="relative z-10 pt-10">
@@ -40,36 +94,50 @@ const HolidayForm: React.FC = () => {
 
         {/* Destination Select */}
         <div className="w-full flex-1">
-          <Select>
+          <Select
+            value={selectedDivision}
+            onValueChange={setSelectedDivision}
+            disabled={divisionLoading}
+          >
             <SelectTrigger className="border-primary w-full border">
               <SelectValue placeholder="Select Division" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="USA">USA</SelectItem>
-              <SelectItem value="Argentina">Argentina</SelectItem>
-              <SelectItem value="Belgium">Belgium</SelectItem>
-              <SelectItem value="Canada">Canada</SelectItem>
-              <SelectItem value="Denmark">Denmark</SelectItem>
+              {divisionOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         {/* Travel Type Select */}
         <div className="w-full flex-1">
-          <Select>
+          <Select
+            value={selectedTourType}
+            onValueChange={setSelectedTourType}
+            disabled={tourTypeLoading}
+          >
             <SelectTrigger className="border-primary w-full border">
               <SelectValue placeholder="Select Tour Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="single">Single Tour</SelectItem>
-              <SelectItem value="family">Family Tour</SelectItem>
+              {tourTypeOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
 
         {/* Search button */}
         <div className="w-full flex-1 sm:pr-5">
-          <Button className="flex w-full cursor-pointer gap-1 text-white transition-all duration-300">
+          <Button
+            className="flex w-full cursor-pointer gap-1 text-white transition-all duration-300"
+            onClick={handleSearch}
+          >
             <Search />
             <span>Search Now</span>
           </Button>

@@ -14,11 +14,11 @@ const Home = () => {
     <>
       <HeroSection />
       <QuickSearchSection />
-      <FeaturedSection />
       <TopDestinationsSection />
-      <GallerySection />
       <ActivitySection />
+      <FeaturedSection />
       <TopDealSection />
+      <GallerySection />
       <ReviewSection />
       <CTASection />
       <PartnerSection />
