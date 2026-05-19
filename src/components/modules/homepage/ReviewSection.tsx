@@ -3,6 +3,7 @@ import SectionHeading from '../../../utils/SectionHeading'
 import type { HeadingProps, ReviewContent } from '../../../types/home.type'
 import CustomSlider from './CustomSlider'
 import TestimonialCard from './TestimonialCard'
+import { useGetAllReviewsQuery } from '../../../redux/features/review/review.api'
 
 const heading: HeadingProps = {
 	subHeading: "CLIENT'S REVIEWS",
@@ -13,61 +14,27 @@ const heading: HeadingProps = {
 }
 
 const ReviewSection: React.FC = () => {
-	const contents: ReviewContent[] = [
-		{
-			name: 'Sarah Johnson',
-			post: 'Travel Blogger',
-			details:
-				'An absolutely incredible experience! The attention to detail and personalized service exceeded all my expectations. Every moment of the journey was perfectly planned.',
-			avatar:
-				'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400',
-			rating: 5,
-		},
-		{
-			name: 'Michael Chen',
-			post: 'Photographer',
-			details:
-				'The landscapes were breathtaking and the cultural immersion was authentic. This trip opened my eyes to new perspectives and created memories that will last forever.',
-			avatar:
-				'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-			rating: 5,
-		},
-		{
-			name: 'Emma Rodriguez',
-			post: 'Adventure Enthusiast',
-			details:
-				'From the moment I booked until the end of the trip, everything was seamless. The guides were knowledgeable and the accommodations were top-notch.',
-			avatar:
-				'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-			rating: 4,
-		},
-		{
-			name: 'David Thompson',
-			post: 'Business Executive',
-			details:
-				'Perfect blend of relaxation and adventure. The itinerary was well-balanced and allowed for both exploration and rest. Highly recommend for anyone seeking quality travel.',
-			avatar:
-				'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
-			rating: 5,
-		},
-		{
-			name: 'Lisa Park',
-			post: 'Teacher',
-			details:
-				'Educational and fun! The historical sites were fascinating and our guide made everything come alive. My family and I learned so much about the local culture.',
-			avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
-			rating: 4,
-		},
-		{
-			name: 'James Wilson',
-			post: 'Retired Engineer',
-			details:
-				'Exceptional service from start to finish. The level of organization and care put into every detail was remarkable. This was truly a once-in-a-lifetime experience.',
-			avatar:
-				'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400',
-			rating: 5,
-		},
-	]
+	const { data, isLoading, isError } = useGetAllReviewsQuery({
+		limit: 6,
+		sort: '-createdAt',
+	})
+
+	const contents: ReviewContent[] =
+		data?.data?.data?.map((review) => {
+			const name = review.user?.name || 'Anonymous Traveler'
+
+			return {
+				name,
+				post: review.tour?.title || review.tour?.location || 'Traveler',
+				details: review.comments,
+				avatar:
+					review.user?.picture ||
+					`https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(
+						name || review._id,
+					)}`,
+				rating: review.rating,
+			}
+		}) || []
 
 	return (
 		<section className='py-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 transition-colors duration-300'>
@@ -75,20 +42,34 @@ const ReviewSection: React.FC = () => {
 				<SectionHeading heading={heading} />
 
 				<div className='mb-20'>
-					<CustomSlider
-						className='w-full mx-auto'
-						autoplay={true}
-						autoplaySpeed={6000}
-						slidesToShow={3}
-					>
-						{contents.map((content, idx) => (
-							<TestimonialCard
-								key={`testimonial-${idx}`}
-								content={content}
-								index={idx}
-							/>
-						))}
-					</CustomSlider>
+					{isLoading ? (
+						<p className='text-center text-gray-500 dark:text-gray-300'>
+							Loading reviews...
+						</p>
+					) : isError ? (
+						<p className='text-center text-red-500 dark:text-red-300'>
+							Failed to load reviews.
+						</p>
+					) : contents.length > 0 ? (
+						<CustomSlider
+							className='w-full mx-auto'
+							autoplay={true}
+							autoplaySpeed={6000}
+							slidesToShow={3}
+						>
+							{contents.map((content, idx) => (
+								<TestimonialCard
+									key={`${content.name}-${idx}`}
+									content={content}
+									index={idx}
+								/>
+							))}
+						</CustomSlider>
+					) : (
+						<p className='text-center text-gray-500 dark:text-gray-300'>
+							No traveler reviews yet.
+						</p>
+					)}
 				</div>
 			</div>
 		</section>

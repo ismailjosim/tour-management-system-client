@@ -1,4 +1,6 @@
 import { baseApi } from '../../app/baseApi'
+import type { HomepageReview, PaginatedData } from '../../../types/home.type'
+import type { IResponse } from '../../../types'
 
 export const reviewApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
@@ -9,6 +11,17 @@ export const reviewApi = baseApi.injectEndpoints({
 				data: reviewData,
 			}),
 			invalidatesTags: ['REVIEWS'],
+		}),
+		getAllReviews: builder.query<
+			IResponse<PaginatedData<HomepageReview>>,
+			Record<string, string | number> | undefined
+		>({
+			query: (params) => ({
+				url: '/review',
+				method: 'GET',
+				params,
+			}),
+			providesTags: ['REVIEWS'],
 		}),
 		getSpecificTourReviews: builder.query({
 			query: ({ tourId, ...params }) => ({
@@ -21,5 +34,8 @@ export const reviewApi = baseApi.injectEndpoints({
 	}),
 })
 
-export const { useAddReviewMutation, useGetSpecificTourReviewsQuery } =
-	reviewApi
+export const {
+	useAddReviewMutation,
+	useGetAllReviewsQuery,
+	useGetSpecificTourReviewsQuery,
+} = reviewApi
