@@ -1,125 +1,127 @@
 import type {
-	ILogin,
-	ILoginResult,
-	ILogoutResponse,
-	IResponse,
-	ISendOTP,
-	IUserInfo,
-	IVerifyOTP,
-} from '../../../types'
-import type { IUser } from '../../../types/auth.type'
-import { baseApi } from '../../app/baseApi'
+  ILogin,
+  ILoginResult,
+  ILogoutResponse,
+  IResponse,
+  ISendOTP,
+  IUserInfo,
+  IVerifyOTP,
+} from '../../../types';
+import type { IUser } from '../../../types/auth.type';
+import { baseApi } from '../../app/baseApi';
 
 export const authApi = baseApi.injectEndpoints({
-	endpoints: (builder) => ({
-		register: builder.mutation({
-			query: (userInfo) => ({
-				url: '/user/register',
-				method: 'POST',
-				data: userInfo,
-			}),
-		}),
-		login: builder.mutation<ILoginResult, ILogin>({
-			query: (userInfo) => ({
-				url: '/auth/login',
-				method: 'POST',
-				data: userInfo,
-			}),
-		}),
-		logout: builder.mutation<ILogoutResponse, undefined>({
-			query: () => ({
-				url: '/auth/logout',
-				method: 'POST',
-			}),
-			invalidatesTags: ['USER'],
-		}),
-		forgotPassword: builder.mutation({
-			query: (email: string) => ({
-				url: `/auth/forgot-password`,
-				method: 'POST',
-				data: { email },
-			}),
-			invalidatesTags: ['USER'],
-		}),
-		resetPassword: builder.mutation({
-			query: ({ id, newPassword, token }) => ({
-				url: '/auth/reset-password',
-				method: 'POST',
-				data: { id, newPassword },
-				headers: {
-					Authorization: token,
-				},
-			}),
-		}),
+  endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (userInfo) => ({
+        url: '/user/register',
+        method: 'POST',
+        data: userInfo,
+      }),
+    }),
+    login: builder.mutation<ILoginResult, ILogin>({
+      query: (userInfo) => ({
+        url: '/auth/login',
+        method: 'POST',
+        data: userInfo,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    logout: builder.mutation<ILogoutResponse, undefined>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    forgotPassword: builder.mutation({
+      query: (email: string) => ({
+        url: `/auth/forgot-password`,
+        method: 'POST',
+        data: { email },
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    resetPassword: builder.mutation({
+      query: ({ id, newPassword, token }) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        data: { id, newPassword },
+        headers: {
+          Authorization: token,
+        },
+      }),
+    }),
 
-		userInfo: builder.query<IUserInfo<IUser>, undefined>({
-			query: () => ({
-				url: '/user/me',
-				method: 'GET',
-			}),
-			providesTags: ['USER'],
-		}),
-		getAllUsers: builder.query({
-			query: (params) => ({
-				url: '/user',
-				method: 'GET',
-				params,
-			}),
-			providesTags: ['USER'],
-		}),
+    userInfo: builder.query<IUserInfo<IUser>, undefined>({
+      query: () => ({
+        url: '/user/me',
+        method: 'GET',
+      }),
+      providesTags: ['USER'],
+    }),
+    getAllUsers: builder.query({
+      query: (params) => ({
+        url: '/user',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['USER'],
+    }),
 
-		sendOTP: builder.mutation<IResponse<null>, ISendOTP>({
-			query: (userInfo) => ({
-				url: '/otp/send',
-				method: 'POST',
-				data: userInfo,
-			}),
-		}),
-		verifyOTP: builder.mutation<IResponse<null>, IVerifyOTP>({
-			query: (userInfo) => ({
-				url: '/otp/verify',
-				method: 'POST',
-				data: userInfo,
-			}),
-		}),
-		updateProfile: builder.mutation({
-			query: ({ id, ...userInfo }) => ({
-				url: `/user/${id}`,
-				method: 'PATCH',
-				data: userInfo,
-			}),
-			invalidatesTags: ['USER'],
-		}),
-		updateUserProfilePicture: builder.mutation({
-			query: ({ id, formData }) => ({
-				url: `/user/me/picture/${id}`,
-				method: 'PATCH',
-				data: formData,
-			}),
-			invalidatesTags: ['USER'],
-		}),
-		updateUserInfoViaAdmin: builder.mutation({
-			query: ({ userId, ...userInfo }) => ({
-				url: `/user/${userId}`,
-				method: 'PATCH',
-				data: userInfo,
-			}),
-			invalidatesTags: ['USER'],
-		}),
-	}),
-})
+    sendOTP: builder.mutation<IResponse<null>, ISendOTP>({
+      query: (userInfo) => ({
+        url: '/otp/send',
+        method: 'POST',
+        data: userInfo,
+      }),
+    }),
+    verifyOTP: builder.mutation<IResponse<null>, IVerifyOTP>({
+      query: (userInfo) => ({
+        url: '/otp/verify',
+        method: 'POST',
+        data: userInfo,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    updateProfile: builder.mutation({
+      query: ({ id, ...userInfo }) => ({
+        url: `/user/${id}`,
+        method: 'PATCH',
+        data: userInfo,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    updateUserProfilePicture: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/user/me/picture/${id}`,
+        method: 'PATCH',
+        data: formData,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    updateUserInfoViaAdmin: builder.mutation({
+      query: ({ userId, ...userInfo }) => ({
+        url: `/user/${userId}`,
+        method: 'PATCH',
+        data: userInfo,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+  }),
+});
 
 export const {
-	useRegisterMutation,
-	useLoginMutation,
-	useSendOTPMutation,
-	useVerifyOTPMutation,
-	useUserInfoQuery,
-	useLogoutMutation,
-	useUpdateProfileMutation,
-	useGetAllUsersQuery,
-	useUpdateUserInfoViaAdminMutation,
-	useUpdateUserProfilePictureMutation,
-	useForgotPasswordMutation,
-	useResetPasswordMutation,
-} = authApi
+  useRegisterMutation,
+  useLoginMutation,
+  useSendOTPMutation,
+  useVerifyOTPMutation,
+  useUserInfoQuery,
+  useLogoutMutation,
+  useUpdateProfileMutation,
+  useGetAllUsersQuery,
+  useUpdateUserInfoViaAdminMutation,
+  useUpdateUserProfilePictureMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+} = authApi;

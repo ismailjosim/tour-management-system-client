@@ -1,19 +1,15 @@
-import L, { DivIcon } from 'leaflet'
-import { Marker } from 'react-leaflet'
+import L, { DivIcon } from 'leaflet';
+import { Marker } from 'react-leaflet';
 
 interface RouteInfoLabelProps {
-	position: [number, number]
-	distance: string
-	duration: string
+  position: [number, number];
+  distance: string;
+  duration: string;
 }
 
-const RouteInfoLabel = ({
-	position,
-	distance,
-	duration,
-}: RouteInfoLabelProps) => {
-	const icon: DivIcon = L.divIcon({
-		html: `
+const RouteInfoLabel = ({ position, distance, duration }: RouteInfoLabelProps) => {
+  const icon: DivIcon = L.divIcon({
+    html: `
       <div style="
         background: white;
         padding: 6px 12px;
@@ -30,11 +26,11 @@ const RouteInfoLabel = ({
         <div style="color: #666; font-size: 11px; font-weight: normal;">${distance}</div>
       </div>
     `,
-		iconSize: [100, 40],
-		iconAnchor: [50, 20],
-		className: 'route-info-label',
-	})
+    iconSize: [100, 40],
+    iconAnchor: [50, 20],
+    className: 'route-info-label',
+  });
 
-	return <Marker position={position} icon={icon} />
-}
-export default RouteInfoLabel
+  return <Marker position={position} icon={icon} />;
+};
+export default RouteInfoLabel;

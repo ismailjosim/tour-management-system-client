@@ -1,15 +1,15 @@
-import React from "react"
+import React from 'react';
 
 interface ErrorProps {
-    message: string
+  message: string;
 }
 
 const Error: React.FC<ErrorProps> = ({ message }) => {
-    return (
-        <div className="w-full flex items-center justify-center h-10 max-w-7xl mx-auto p-2 text-error bg-red-100 col-span-12">
-            {message}
-        </div>
-    )
-}
+  return (
+    <div className="text-error col-span-12 mx-auto flex h-10 w-full max-w-7xl items-center justify-center bg-red-100 p-2">
+      {message}
+    </div>
+  );
+};
 
-export default Error
+export default Error;

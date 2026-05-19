@@ -185,7 +185,8 @@ body {
   0% {
     left: 0;
     transform: translateX(0%);
-    box-shadow: -5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
+    box-shadow:
+      -5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
       -10px 0 0 -2px color-mix(in srgb, var(--primary) 80%, transparent),
       -15px 0 0 -4px color-mix(in srgb, var(--primary) 60%, transparent),
       -20px 0 0 -6px color-mix(in srgb, var(--primary) 40%, transparent),
@@ -195,7 +196,8 @@ body {
   49% {
     left: 100%;
     transform: translateX(-100%);
-    box-shadow: -5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
+    box-shadow:
+      -5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
       -10px 0 0 -2px color-mix(in srgb, var(--primary) 80%, transparent),
       -15px 0 0 -4px color-mix(in srgb, var(--primary) 60%, transparent),
       -20px 0 0 -6px color-mix(in srgb, var(--primary) 40%, transparent),
@@ -205,7 +207,8 @@ body {
   51% {
     left: 100%;
     transform: translateX(-100%);
-    box-shadow: 5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
+    box-shadow:
+      5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
       10px 0 0 -2px color-mix(in srgb, var(--primary) 80%, transparent),
       15px 0 0 -4px color-mix(in srgb, var(--primary) 60%, transparent),
       20px 0 0 -6px color-mix(in srgb, var(--primary) 40%, transparent),
@@ -215,7 +218,8 @@ body {
   100% {
     left: 0;
     transform: translateX(0%);
-    box-shadow: 5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
+    box-shadow:
+      5px 0 0 -1px color-mix(in srgb, var(--primary) 90%, transparent),
       10px 0 0 -2px color-mix(in srgb, var(--primary) 80%, transparent),
       15px 0 0 -4px color-mix(in srgb, var(--primary) 60%, transparent),
       20px 0 0 -6px color-mix(in srgb, var(--primary) 40%, transparent),

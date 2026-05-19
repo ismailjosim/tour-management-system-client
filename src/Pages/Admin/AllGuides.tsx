@@ -1,5 +1,5 @@
 const AllGuides = () => {
-	return <div>This is AllGuides component</div>
-}
+  return <div>This is AllGuides component</div>;
+};
 
-export default AllGuides
+export default AllGuides;

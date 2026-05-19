@@ -1,10 +1,9 @@
-import { Outlet } from "react-router";
-
+import { Outlet } from 'react-router';
 
 export default function AdminLayout() {
-    return (
-        <>
-            <Outlet />
-        </>
-    )
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 }
