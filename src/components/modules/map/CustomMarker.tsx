@@ -1,15 +1,15 @@
-import L, { DivIcon } from 'leaflet'
-import { Marker } from 'react-leaflet'
+import L, { DivIcon } from 'leaflet';
+import { Marker } from 'react-leaflet';
 
 interface CustomMarkerProps {
-	position: [number, number]
-	label: string
-	bgColor: string
+  position: [number, number];
+  label: string;
+  bgColor: string;
 }
 
 const CustomMarker = ({ position, label, bgColor }: CustomMarkerProps) => {
-	const icon: DivIcon = L.divIcon({
-		html: `<div style="
+  const icon: DivIcon = L.divIcon({
+    html: `<div style="
         background: ${bgColor};
         color: white;
         border-radius: 50%;
@@ -25,10 +25,10 @@ const CustomMarker = ({ position, label, bgColor }: CustomMarkerProps) => {
       ">
         ${label}
       </div>`,
-		iconSize: [24, 24],
-		iconAnchor: [12, 12],
-	})
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+  });
 
-	return <Marker position={position} icon={icon} />
-}
-export default CustomMarker
+  return <Marker position={position} icon={icon} />;
+};
+export default CustomMarker;

@@ -1,5 +1,5 @@
 const MyTours = () => {
-	return <div>This is MyTours component</div>
-}
+  return <div>This is MyTours component</div>;
+};
 
-export default MyTours
+export default MyTours;

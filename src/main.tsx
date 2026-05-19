@@ -1,15 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
 
-import { RouterProvider } from 'react-router'
-import router from './routes/routes.ts'
-import { Provider as ReduxProvider } from 'react-redux'
-import { store } from './redux/app/store.ts'
-import { ThemeProvider } from './Providers/theme.provider.tsx'
-import { Toaster } from './components/ui/sonner.tsx'
-
-
+import { RouterProvider } from 'react-router';
+import router from './routes/routes.ts';
+import { Provider as ReduxProvider } from 'react-redux';
+import { store } from './redux/app/store.ts';
+import { ThemeProvider } from './Providers/theme.provider.tsx';
+import { Toaster } from './components/ui/sonner.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,5 +17,5 @@ createRoot(document.getElementById('root')!).render(
         <Toaster richColors />
       </ReduxProvider>
     </ThemeProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);

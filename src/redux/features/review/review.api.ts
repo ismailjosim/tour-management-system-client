@@ -1,41 +1,38 @@
-import { baseApi } from '../../app/baseApi'
-import type { HomepageReview, PaginatedData } from '../../../types/home.type'
-import type { IResponse } from '../../../types'
+import { baseApi } from '../../app/baseApi';
+import type { HomepageReview, PaginatedData } from '../../../types/home.type';
+import type { IResponse } from '../../../types';
 
 export const reviewApi = baseApi.injectEndpoints({
-	endpoints: (builder) => ({
-		addReview: builder.mutation({
-			query: (reviewData) => ({
-				url: '/review/create-review',
-				method: 'POST',
-				data: reviewData,
-			}),
-			invalidatesTags: ['REVIEWS'],
-		}),
-		getAllReviews: builder.query<
-			IResponse<PaginatedData<HomepageReview>>,
-			Record<string, string | number> | undefined
-		>({
-			query: (params) => ({
-				url: '/review',
-				method: 'GET',
-				params,
-			}),
-			providesTags: ['REVIEWS'],
-		}),
-		getSpecificTourReviews: builder.query({
-			query: ({ tourId, ...params }) => ({
-				url: `/review/${tourId}`,
-				method: 'GET',
-				params,
-			}),
-			providesTags: ['REVIEWS'],
-		}),
-	}),
-})
+  endpoints: (builder) => ({
+    addReview: builder.mutation({
+      query: (reviewData) => ({
+        url: '/review/create-review',
+        method: 'POST',
+        data: reviewData,
+      }),
+      invalidatesTags: ['REVIEWS'],
+    }),
+    getAllReviews: builder.query<
+      IResponse<PaginatedData<HomepageReview>>,
+      Record<string, string | number> | undefined
+    >({
+      query: (params) => ({
+        url: '/review',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['REVIEWS'],
+    }),
+    getSpecificTourReviews: builder.query({
+      query: ({ tourId, ...params }) => ({
+        url: `/review/${tourId}`,
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['REVIEWS'],
+    }),
+  }),
+});
 
-export const {
-	useAddReviewMutation,
-	useGetAllReviewsQuery,
-	useGetSpecificTourReviewsQuery,
-} = reviewApi
+export const { useAddReviewMutation, useGetAllReviewsQuery, useGetSpecificTourReviewsQuery } =
+  reviewApi;

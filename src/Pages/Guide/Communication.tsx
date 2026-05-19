@@ -1,5 +1,5 @@
 const Communication = () => {
-	return <div>This is Communication component</div>
-}
+  return <div>This is Communication component</div>;
+};
 
-export default Communication
+export default Communication;
