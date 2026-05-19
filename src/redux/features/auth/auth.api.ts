@@ -25,6 +25,7 @@ export const authApi = baseApi.injectEndpoints({
 				method: 'POST',
 				data: userInfo,
 			}),
+			invalidatesTags: ['USER'],
 		}),
 		logout: builder.mutation<ILogoutResponse, undefined>({
 			query: () => ({
@@ -81,6 +82,7 @@ export const authApi = baseApi.injectEndpoints({
 				method: 'POST',
 				data: userInfo,
 			}),
+			invalidatesTags: ['USER'],
 		}),
 		updateProfile: builder.mutation({
 			query: ({ id, ...userInfo }) => ({

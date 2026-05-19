@@ -45,7 +45,12 @@ const OTP_SLOT_CLASSES =
 const Verify = () => {
 	const location = useLocation()
 	const navigate = useNavigate()
-	const [email] = useState(location.state)
+	const state = location.state as
+		| string
+		| { email?: string; from?: Location }
+		| null
+	const email = typeof state === 'string' ? state : state?.email
+	const fromLocation = typeof state === 'string' ? undefined : state?.from
 	const [confirm, setConfirm] = useState(false)
 	const [timer, setTimer] = useState(120)
 
@@ -74,6 +79,8 @@ const Verify = () => {
 
 	// ---------------- Handlers ----------------
 	const handleSendOtp = async () => {
+		if (!email) return
+
 		const toastId = toast.loading('Sending OTP')
 		try {
 			const result = await sendOTP({ email }).unwrap()
@@ -89,12 +96,14 @@ const Verify = () => {
 	}
 
 	const onSubmit = async (data: z.infer<typeof OTPSchema>) => {
+		if (!email) return
+
 		const toastId = toast.loading('Verifying OTP')
 		try {
 			const res = await verifyOTP({ email, otp: data.pin }).unwrap()
 			if (res.success) {
 				toast.success(res.message, { id: toastId })
-				navigate('/login')
+				navigate('/login', { state: { from: fromLocation }, replace: true })
 			}
 		} catch (error) {
 			const apiError = error as ApiError
@@ -188,6 +197,7 @@ const Verify = () => {
 						<div className='mt-4 text-center'>
 							<Link
 								to='/login'
+								state={{ from: fromLocation }}
 								className='text-gray-400 hover:text-teal-500 transition-colors duration-200'
 							>
 								&larr; Back to Login

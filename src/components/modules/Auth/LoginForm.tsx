@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import {
 	Form,
@@ -29,14 +29,11 @@ export function LoginForm({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	const [login] = useLoginMutation()
 	const navigate = useNavigate()
-	// const location = useLocation()
-	// const from = location.state?.from || '/'
-
-	// const navigateNow = () => {
-	// 	setTimeout(() => {
-	// 		navigate(from, { replace: true })
-	// 	}, 1000)
-	// }
+	const location = useLocation()
+	const fromLocation = location.state?.from
+	const redirectPath = fromLocation
+		? `${fromLocation.pathname || '/'}${fromLocation.search || ''}${fromLocation.hash || ''}`
+		: '/'
 
 	const form = useForm<z.infer<typeof loginSchema>>({
 		resolver: zodResolver(loginSchema),
@@ -55,14 +52,16 @@ export function LoginForm({
 			const result = await login(userInfo).unwrap()
 			if (result.success) {
 				toast.success(result.message)
-				navigate('/')
+				navigate(redirectPath, { replace: true })
 			}
 		} catch (error) {
 			const apiError = error as ApiError
 			toast.error(apiError.data.message)
 
 			if ('status' in apiError && apiError.status === 401) {
-				navigate('/verify', { state: data.email })
+				navigate('/verify', {
+					state: { email: data.email, from: fromLocation },
+				})
 			}
 		}
 	}
@@ -130,7 +129,7 @@ export function LoginForm({
 				</div>
 				<Button
 					onClick={() =>
-						(document.location.href = `${config.baseUrl}/auth/google`)
+						(document.location.href = `${config.baseUrl}/auth/google?redirect=${encodeURIComponent(redirectPath)}`)
 					}
 					variant='outline'
 					className='w-full'
@@ -141,7 +140,11 @@ export function LoginForm({
 			</div>
 			<div className='text-center text-sm'>
 				Don&apos;t have an account?{' '}
-				<Link to={'/register'} className='underline underline-offset-4'>
+				<Link
+					to={'/register'}
+					state={{ from: fromLocation }}
+					className='underline underline-offset-4'
+				>
 					Register
 				</Link>
 			</div>

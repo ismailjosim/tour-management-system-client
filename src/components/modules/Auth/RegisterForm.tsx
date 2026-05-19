@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
 import {
 	Form,
@@ -26,6 +26,8 @@ export function RegisterForm({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	const [register] = useRegisterMutation()
 	const navigate = useNavigate()
+	const location = useLocation()
+	const fromLocation = location.state?.from
 	const form = useForm<z.infer<typeof registerSchema>>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
@@ -46,7 +48,9 @@ export function RegisterForm({
 			const result = await register(userInfo).unwrap()
 			if (result.success) {
 				toast.success(result.message)
-				navigate('/verify')
+				navigate('/verify', {
+					state: { email: data.email, from: fromLocation },
+				})
 			}
 		} catch (error) {
 			const apiError = error as ApiError
@@ -144,7 +148,11 @@ export function RegisterForm({
 			</div>
 			<div className='text-center text-sm'>
 				Already have account?{' '}
-				<Link to={'/login'} className='underline underline-offset-4'>
+				<Link
+					to={'/login'}
+					state={{ from: fromLocation }}
+					className='underline underline-offset-4'
+				>
 					Login
 				</Link>
 			</div>
