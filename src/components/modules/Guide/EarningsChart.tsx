@@ -18,42 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
-
-const earningsData6m = [
-  { month: 'Nov', amount: 14000 },
-  { month: 'Dec', amount: 18000 },
-  { month: 'Jan', amount: 11000 },
-  { month: 'Feb', amount: 21000 },
-  { month: 'Mar', amount: 19000 },
-  { month: 'Apr', amount: 24200 },
-];
-
-const earningsData3m = [
-  { month: 'Feb', amount: 21000 },
-  { month: 'Mar', amount: 19000 },
-  { month: 'Apr', amount: 24200 },
-];
-
-const earningsData12m = [
-  { month: 'May', amount: 9000 },
-  { month: 'Jun', amount: 12000 },
-  { month: 'Jul', amount: 15500 },
-  { month: 'Aug', amount: 17000 },
-  { month: 'Sep', amount: 13000 },
-  { month: 'Oct', amount: 16000 },
-  { month: 'Nov', amount: 14000 },
-  { month: 'Dec', amount: 18000 },
-  { month: 'Jan', amount: 11000 },
-  { month: 'Feb', amount: 21000 },
-  { month: 'Mar', amount: 19000 },
-  { month: 'Apr', amount: 24200 },
-];
-
-const dataMap: Record<string, typeof earningsData6m> = {
-  '3m': earningsData3m,
-  '6m': earningsData6m,
-  '12m': earningsData12m,
-};
+import type { GuideEarnings } from '@/types/guide';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -70,10 +35,15 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function EarningsChart() {
+type EarningsChartProps = {
+  earnings?: GuideEarnings;
+  isLoading?: boolean;
+};
+
+export function EarningsChart({ earnings, isLoading = false }: EarningsChartProps) {
   const [range, setRange] = useState('6m');
-  const data = dataMap[range];
-  // const currentMonth = data[data.length - 1].month
+  const rangeLength = Number(range.replace('m', ''));
+  const data = (earnings?.monthlyEarnings ?? []).slice(-rangeLength);
 
   return (
     <Card className="bg-card border-border flex h-full justify-between">
@@ -92,33 +62,41 @@ export function EarningsChart() {
         </Select>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={data} barSize={28}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-            <XAxis
-              dataKey="month"
-              tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(v) => `৳${(v / 1000).toFixed(0)}k`}
-              width={40}
-            />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: 'var(--muted)', fillOpacity: 0.4 }}
-            />
-            <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
-              {data.map((entry, index) => (
-                <Cell key={entry.month} fill={`var(--chart-${(index % 5) + 1})`} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+        {isLoading && <p className="text-muted-foreground text-sm">Loading earnings...</p>}
+        {!isLoading && data.length === 0 && (
+          <div className="text-muted-foreground flex h-[220px] items-center justify-center text-sm">
+            No paid completed bookings yet.
+          </div>
+        )}
+        {!isLoading && data.length > 0 && (
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={data} barSize={28}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis
+                dataKey="month"
+                tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `৳${(v / 1000).toFixed(0)}k`}
+                width={40}
+              />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: 'var(--muted)', fillOpacity: 0.4 }}
+              />
+              <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
+                {data.map((entry, index) => (
+                  <Cell key={entry.month} fill={`var(--chart-${(index % 5) + 1})`} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );

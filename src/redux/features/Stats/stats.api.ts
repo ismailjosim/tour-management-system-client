@@ -1,4 +1,5 @@
 import { baseApi } from '../../app/baseApi';
+import type { ApiResponse, GuideStats } from '@/types/guide';
 
 const statsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -30,6 +31,13 @@ const statsApi = baseApi.injectEndpoints({
       }),
       providesTags: ['STATS'],
     }),
+    getGuideStats: builder.query<ApiResponse<GuideStats>, void>({
+      query: () => ({
+        url: '/stats/guide/me',
+        method: 'GET',
+      }),
+      providesTags: ['STATS', 'GUIDE'],
+    }),
   }),
 });
 
@@ -38,4 +46,5 @@ export const {
   useGetPaymentStatsQuery,
   useGetTourStatsQuery,
   useGetUserStatsQuery,
+  useGetGuideStatsQuery,
 } = statsApi;
