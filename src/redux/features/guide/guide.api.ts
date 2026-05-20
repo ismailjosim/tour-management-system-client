@@ -86,6 +86,13 @@ export const guideApi = baseApi.injectEndpoints({
       }),
       providesTags: ['GUIDE', 'REVIEWS'],
     }),
+    getAvailableGuidesForTour: builder.query({
+      query: (tourId) => ({
+        url: `/guide/available/${tourId}`,
+        method: 'GET',
+      }),
+      providesTags: ['GUIDE'],
+    }),
   }),
 });
 
@@ -100,4 +107,5 @@ export const {
   useGetMyGuideScheduleQuery,
   useGetMyGuideEarningsQuery,
   useGetMyGuideReviewsQuery,
+  useGetAvailableGuidesForTourQuery,
 } = guideApi;

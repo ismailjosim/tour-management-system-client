@@ -6,10 +6,11 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Add a request interceptor
+// Request interceptor - cookies are automatically sent with credentials: true
 axiosInstance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    // Tokens are sent via httpOnly cookies automatically
+    // No need to manually add Authorization header
     return config;
   },
   function (error) {
@@ -36,6 +37,12 @@ const processQueue = (error: unknown) => {
   pendingQueue = [];
 };
 
+const handleLogout = () => {
+  // Tokens are cleared by backend (httpOnly cookies)
+  // Just redirect to login
+  window.location.href = '/login';
+};
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -44,6 +51,12 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry: boolean;
     };
+
+    // Handle authentication errors
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      handleLogout();
+      return Promise.reject(error);
+    }
 
     // * For everything means for every reject
     if (
@@ -66,6 +79,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (err) {
         processQueue(err);
+        handleLogout();
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

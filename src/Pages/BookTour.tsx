@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,17 +8,26 @@ import type { ApiError, IDestination, IResponse } from '../types';
 import { useParams } from 'react-router';
 import { useGetSingleTourQuery } from '../redux/features/Tour/tour.api';
 import { useAddBookingMutation } from '../redux/features/booking/booking.api';
+import { useGetAvailableGuidesForTourQuery } from '../redux/features/guide/guide.api';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
 const BookTour = () => {
   const [guestCount, setGuestCount] = useState(1);
+  const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
   const { slug } = useParams<{ slug: string }>();
   const { data } = useGetSingleTourQuery(slug);
   const [addBooking] = useAddBookingMutation();
 
   const apiResponse = data as IResponse<IDestination> | undefined;
   const tour = apiResponse?.data;
+
+  // Fetch available guides for the tour
+  const { data: guidesResponse } = useGetAvailableGuidesForTourQuery(tour?._id || '', {
+    skip: !tour?._id,
+  });
+
+  const availableGuides = guidesResponse?.data || [];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,10 +70,15 @@ const BookTour = () => {
     if (!data) return;
 
     const toastId = toast.loading('Processing booking...');
-    const bookingData = {
+    const bookingData: any = {
       tour: _id,
       guestCount,
     };
+
+    // Include guide if selected
+    if (selectedGuide) {
+      bookingData.guide = selectedGuide;
+    }
 
     try {
       const res = await addBooking(bookingData).unwrap();
@@ -187,6 +202,73 @@ const BookTour = () => {
                 <CardTitle className="text-center text-2xl">Booking Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Select Your Local Guide */}
+                <div className="space-y-3">
+                  <h4 className="text-lg font-semibold">Select Your Local Guide</h4>
+                  {availableGuides.length > 0 ? (
+                    <div className="max-h-48 space-y-2 overflow-y-auto">
+                      {/* Optional: No Guide Option */}
+                      <div
+                        onClick={() => setSelectedGuide(null)}
+                        className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
+                          selectedGuide === null
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                            : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                        }`}
+                      >
+                        <p className="font-medium text-gray-700 dark:text-gray-300">
+                          Let us assign a guide
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          We'll match you with an available guide
+                        </p>
+                      </div>
+
+                      {/* Guide Options */}
+                      {availableGuides.map((guide: any) => (
+                        <div
+                          key={guide._id}
+                          onClick={() => setSelectedGuide(guide._id)}
+                          className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
+                            selectedGuide === guide._id
+                              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                              : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {guide.user?.picture && (
+                              <img
+                                src={guide.user.picture}
+                                alt={guide.user.name}
+                                className="h-10 w-10 rounded-full object-cover"
+                              />
+                            )}
+                            <div className="flex-1">
+                              <p className="font-medium text-gray-700 dark:text-gray-300">
+                                {guide.user?.name}
+                              </p>
+                              {guide.bio && (
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  {guide.bio.substring(0, 50)}...
+                                </p>
+                              )}
+                              {guide.experience && (
+                                <p className="text-xs text-gray-400 dark:text-gray-500">
+                                  {guide.experience} years experience
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      No guides available for this tour. We'll assign one from our team.
+                    </p>
+                  )}
+                </div>
+
                 {/* Number of Guests */}
                 <div className="space-y-3">
                   <h4 className="text-lg font-semibold">Number of Guests</h4>

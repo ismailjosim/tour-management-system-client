@@ -48,6 +48,7 @@ export function LoginForm({ className, ...props }: React.HTMLAttributes<HTMLDivE
     try {
       const result = await login(userInfo).unwrap();
       if (result.success) {
+        // Token is stored in httpOnly cookie by the backend
         toast.success(result.message);
         navigate(redirectPath, { replace: true });
       }
