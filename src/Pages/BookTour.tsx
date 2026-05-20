@@ -92,6 +92,20 @@ const BookTour = () => {
       }
     } catch (error) {
       const apiError = error as ApiError;
+      console.error('Booking error:', apiError);
+      // navigate profile page if user profile is not updated Phone and address is required for booking
+      if (
+        apiError.status === 400 &&
+        apiError.data?.message.includes('Please Update Your Profile to Book a Tour')
+      ) {
+        toast.error('Please update your profile with phone and address to proceed with booking', {
+          id: toastId,
+        });
+        setTimeout(() => {
+          window.location.href = '/profile';
+        }, 3000);
+        return;
+      }
       toast.error(apiError.data?.message || 'Booking failed', { id: toastId });
     }
   };

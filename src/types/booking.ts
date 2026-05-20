@@ -5,7 +5,9 @@ export type Booking = {
     email: string;
   };
   tour: {
+    _id?: string;
     title: string;
+    slug?: string;
     images: string[];
     location: string;
     costFrom: number;
