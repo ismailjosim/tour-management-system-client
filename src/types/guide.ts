@@ -91,6 +91,8 @@ export type GuideReview = {
   tour?: GuideTour;
   rating: number;
   comments: string;
+  guideRating?: number;
+  guideComments?: string;
   createdAt?: string;
 };
 

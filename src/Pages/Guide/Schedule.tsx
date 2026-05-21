@@ -2,6 +2,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,13 +16,36 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useGetMyGuideScheduleQuery } from '@/redux/features/guide/guide.api';
+import {
+  useGetMyGuideScheduleQuery,
+  useUpdateMyGuideBookingStatusMutation,
+} from '@/redux/features/guide/guide.api';
 import { CalendarClock, Mail, MapPin, Phone, Users } from 'lucide-react';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
+
+const guideStatusOptions = [
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'IN_PROGRESS', label: 'In progress' },
+  { value: 'COMPLETE', label: 'Complete' },
+  { value: 'REJECTED', label: 'Rejected' },
+];
 
 const Schedule = () => {
   const { data, isLoading, isError } = useGetMyGuideScheduleQuery();
+  const [updateBookingStatus, { isLoading: isUpdating }] = useUpdateMyGuideBookingStatusMutation();
   const bookings = data?.data ?? [];
+
+  const handleStatusChange = async (bookingId: string, status: string) => {
+    const toastId = toast.loading('Updating booking status...');
+
+    try {
+      await updateBookingStatus({ bookingId, status }).unwrap();
+      toast.success('Booking status updated', { id: toastId });
+    } catch {
+      toast.error('Could not update booking status', { id: toastId });
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -54,6 +84,7 @@ const Schedule = () => {
                   <TableHead>Guest</TableHead>
                   <TableHead>Start</TableHead>
                   <TableHead>Guests</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead>Payment</TableHead>
                   <TableHead className="text-right">Contact</TableHead>
                 </TableRow>
@@ -89,6 +120,24 @@ const Schedule = () => {
                         <Users className="h-4 w-4" />
                         {booking.guestCount ?? 0}
                       </span>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={booking.status ?? 'PENDING'}
+                        disabled={isUpdating}
+                        onValueChange={(status) => handleStatusChange(booking._id, status)}
+                      >
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {guideStatusOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">{booking.payment?.status ?? 'UNPAID'}</Badge>

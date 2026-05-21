@@ -19,19 +19,29 @@ import type { ApiError } from '../../../types';
 
 interface AddReviewButtonProps {
   tourId: string;
+  guideId?: string;
+  guideName?: string;
 }
 
-const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId }) => {
+const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guideName }) => {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState<number>(0);
   const [comments, setComments] = useState<string>('');
+  const [guideRating, setGuideRating] = useState<number>(0);
+  const [guideComments, setGuideComments] = useState<string>('');
 
   const [addReview, { isLoading }] = useAddReviewMutation();
   const { data } = useUserInfoQuery(undefined);
+  const hasGuide = Boolean(guideId);
 
   const handleSubmit = async () => {
     if (rating === 0 || !comments.trim()) {
-      toast('Please provide a rating and comment.');
+      toast('Please provide a tour rating and comment.');
+      return;
+    }
+
+    if (hasGuide && (guideRating === 0 || !guideComments.trim())) {
+      toast('Please provide a guide rating and comment.');
       return;
     }
 
@@ -40,14 +50,23 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId }) => {
       user: data?.data?._id,
       rating,
       comments,
+      ...(hasGuide
+        ? {
+            guideRating,
+            guideComments,
+          }
+        : {}),
     };
 
     try {
       const res = await addReview(formData).unwrap();
       if (res.statusCode === 201) {
-        toast.success(res.success);
+        toast.success(res.message ?? 'Review submitted successfully');
         setOpen(false);
         setComments('');
+        setRating(0);
+        setGuideComments('');
+        setGuideRating(0);
       }
     } catch (error) {
       const apiError = error as ApiError;
@@ -61,18 +80,20 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="secondary">
-          Add Review
+          Add Reviews
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Add Your Review</DialogTitle>
-          <DialogDescription>Share your experience with this tour.</DialogDescription>
+          <DialogDescription>
+            Share your experience with this tour{hasGuide ? ' and guide.' : '.'}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-          <div>
-            <Label>Rating</Label>
+          <div className="space-y-2 rounded-md border p-4">
+            <Label>Tour Rating</Label>
             <div className="flex flex-col items-center gap-3">
               <Rating value={rating} onValueChange={setRating}>
                 {Array.from({ length: 5 }).map((_, index) => (
@@ -84,9 +105,34 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId }) => {
           </div>
 
           <div>
-            <Label>Comments</Label>
+            <Label>Tour Comments</Label>
             <Textarea rows={4} value={comments} onChange={(e) => setComments(e.target.value)} />
           </div>
+
+          {hasGuide && (
+            <div className="space-y-4 rounded-md border p-4">
+              <div>
+                <Label>Guide Rating{guideName ? ` for ${guideName}` : ''}</Label>
+                <div className="flex flex-col items-center gap-3">
+                  <Rating value={guideRating} onValueChange={setGuideRating}>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <RatingButton className="text-yellow-500" key={index} />
+                    ))}
+                  </Rating>
+                  <span className="text-muted-foreground text-xs">{guideRating}/5</span>
+                </div>
+              </div>
+
+              <div>
+                <Label>Guide Comments</Label>
+                <Textarea
+                  rows={4}
+                  value={guideComments}
+                  onChange={(e) => setGuideComments(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <DialogFooter>

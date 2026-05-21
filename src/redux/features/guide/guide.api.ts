@@ -72,6 +72,17 @@ export const guideApi = baseApi.injectEndpoints({
       }),
       providesTags: ['GUIDE', 'BOOKING'],
     }),
+    updateMyGuideBookingStatus: builder.mutation<
+      ApiResponse<GuideBooking>,
+      { bookingId: string; status: string }
+    >({
+      query: ({ bookingId, status }) => ({
+        url: `/guide/me/bookings/${bookingId}/status`,
+        method: 'PATCH',
+        data: { status },
+      }),
+      invalidatesTags: ['GUIDE', 'BOOKING'],
+    }),
     getMyGuideEarnings: builder.query<ApiResponse<GuideEarnings>, void>({
       query: () => ({
         url: `/guide/me/earnings`,
@@ -105,6 +116,7 @@ export const {
   useGetMyGuideToursQuery,
   useGetMyGuideBookingsQuery,
   useGetMyGuideScheduleQuery,
+  useUpdateMyGuideBookingStatusMutation,
   useGetMyGuideEarningsQuery,
   useGetMyGuideReviewsQuery,
   useGetAvailableGuidesForTourQuery,

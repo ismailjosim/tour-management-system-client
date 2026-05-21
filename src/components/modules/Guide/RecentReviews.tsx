@@ -73,7 +73,7 @@ export function RecentReviews({ reviews, isLoading = false }: RecentReviewsProps
         <div className="space-y-3">
           {isLoading && <p className="text-muted-foreground text-sm">Loading reviews...</p>}
           {!isLoading && (reviews?.reviews ?? []).length === 0 && (
-            <p className="text-muted-foreground text-sm">No reviews for assigned tours yet.</p>
+            <p className="text-muted-foreground text-sm">No guide reviews yet.</p>
           )}
           {!isLoading &&
             (reviews?.reviews ?? []).slice(0, 3).map((review) => (
@@ -85,9 +85,11 @@ export function RecentReviews({ reviews, isLoading = false }: RecentReviewsProps
                   <p className="text-foreground text-sm font-semibold">
                     {review.user?.name ?? 'Traveler'}
                   </p>
-                  <StarRow count={review.rating} />
+                  <StarRow count={review.guideRating ?? review.rating} />
                 </div>
-                <p className="text-muted-foreground text-xs leading-relaxed">{review.comments}</p>
+                <p className="text-muted-foreground text-xs leading-relaxed">
+                  {review.guideComments ?? review.comments}
+                </p>
                 <p className="text-muted-foreground/60 mt-2 text-[10px] font-medium tracking-wider uppercase">
                   {review.tour?.title ?? 'Tour'} •{' '}
                   {review.createdAt ? format(new Date(review.createdAt), 'MMM dd') : 'Recent'}

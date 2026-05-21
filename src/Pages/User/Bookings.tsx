@@ -75,6 +75,9 @@ const Bookings = () => {
   const canReview = (booking: Booking) =>
     booking.status === 'COMPLETE' && booking.payment?.status === 'PAID';
 
+  const getReviewableGuide = (booking: Booking) =>
+    booking.guide?.role === 'GUIDE' ? booking.guide : undefined;
+
   const columns = [
     {
       key: 'tour',
@@ -136,30 +139,40 @@ const Bookings = () => {
       key: 'actions',
       header: 'Actions',
       className: 'text-right',
-      render: (_: any, item: Booking) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button size="sm" variant="outline" asChild>
-            <Link to={`/destination/${item.tour?.slug || item.tour?._id}`}>View Tour</Link>
-          </Button>
-          {canPay(item) && item.payment?.status !== 'PAID' && (
-            <Button
-              size="sm"
-              onClick={() => handlePayNow(item)}
-              disabled={isPaymentLoading}
-              className="text-white"
-            >
-              <CreditCard className="h-4 w-4" />
-              Pay Now
+      render: (_: any, item: Booking) => {
+        const guide = getReviewableGuide(item);
+
+        return (
+          <div className="flex items-center justify-end gap-2">
+            <Button size="sm" variant="outline" asChild>
+              <Link to={`/destination/${item.tour?.slug || item.tour?._id}`}>View Tour</Link>
             </Button>
-          )}
-          {canReview(item) && <AddReviewButton tourId={item.tour?._id || ''} />}
-          <DeleteConfirmation onConfirm={() => handleDelete(item._id)}>
-            <Button size="sm" variant="destructive">
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </DeleteConfirmation>
-        </div>
-      ),
+            {canPay(item) && item.payment?.status !== 'PAID' && (
+              <Button
+                size="sm"
+                onClick={() => handlePayNow(item)}
+                disabled={isPaymentLoading}
+                className="text-white"
+              >
+                <CreditCard className="h-4 w-4" />
+                Pay Now
+              </Button>
+            )}
+            {canReview(item) && (
+              <AddReviewButton
+                tourId={item.tour?._id || ''}
+                guideId={guide?._id}
+                guideName={guide?.name}
+              />
+            )}
+            <DeleteConfirmation onConfirm={() => handleDelete(item._id)}>
+              <Button size="sm" variant="destructive">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </DeleteConfirmation>
+          </div>
+        );
+      },
     },
   ];
 
