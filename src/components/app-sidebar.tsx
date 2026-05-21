@@ -36,14 +36,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const handleLogout = async () => {
     try {
+      // Reset API state immediately
+      dispatch(authApi.util.resetApiState());
+
+      // Call logout endpoint to clear cookies on backend
       const { data } = await logout(undefined);
+
       if (data?.success) {
         toast.success(data.message);
-        dispatch(authApi.util.resetApiState());
+        // Redirect to login page after successful logout
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 500);
+      } else {
+        toast.error('Logout failed. Please try again.');
       }
     } catch (error) {
       const apiError = error as ApiError;
-      toast.error(apiError.data.message);
+      toast.error(apiError?.data?.message || 'Logout failed');
+      // Reset API state on error
+      dispatch(authApi.util.resetApiState());
     }
   };
 

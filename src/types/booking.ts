@@ -4,8 +4,18 @@ export type Booking = {
     name: string;
     email: string;
   };
+  guide?: {
+    _id?: string;
+    name?: string;
+    email?: string;
+    phone?: string;
+    picture?: string;
+    role?: string;
+  };
   tour: {
+    _id?: string;
     title: string;
+    slug?: string;
     images: string[];
     location: string;
     costFrom: number;

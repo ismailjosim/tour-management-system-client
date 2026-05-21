@@ -6,7 +6,7 @@ const AddDivision = lazy(() => import('@/Pages/Admin/AddDivision'));
 const AllTours = lazy(() => import('@/Pages/Admin/AllTours'));
 const AllUsers = lazy(() => import('@/Pages/Admin/AllUsers'));
 const AllBookings = lazy(() => import('@/Pages/Admin/AllBookings'));
-const GuideRequest = lazy(() => import('@/Pages/Admin/GuideRequest'));
+const GuideManagement = lazy(() => import('@/Pages/Admin/GuideManagement'));
 
 export const adminSidebarItems = [
   {
@@ -28,9 +28,9 @@ export const adminSidebarItems = [
         component: AllUsers,
       },
       {
-        title: 'Guide Request',
-        url: '/admin/guide-request',
-        component: GuideRequest,
+        title: 'Guide Management',
+        url: '/admin/guides',
+        component: GuideManagement,
       },
     ],
   },

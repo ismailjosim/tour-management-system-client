@@ -10,7 +10,7 @@ export const reviewApi = baseApi.injectEndpoints({
         method: 'POST',
         data: reviewData,
       }),
-      invalidatesTags: ['REVIEWS'],
+      invalidatesTags: ['REVIEWS', 'GUIDE'],
     }),
     getAllReviews: builder.query<
       IResponse<PaginatedData<HomepageReview>>,

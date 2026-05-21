@@ -1,9 +1,7 @@
+import GuideOverviewPage from './GuideOverviewPage';
+
 const OverviewStats = () => {
-  return (
-    <section>
-      <h3>Show Overview for Guide</h3>
-    </section>
-  );
+  return <GuideOverviewPage />;
 };
 
 export default OverviewStats;
