@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { format } from 'date-fns';
-import { CheckCircle2, CreditCard, Trash2 } from 'lucide-react';
+import { CheckCircle2, CreditCard, Eye, Trash2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 
@@ -17,6 +17,7 @@ import {
   useRemoveBookingMutation,
 } from '../../redux/features/booking/booking.api';
 import AddReviewButton from '../../components/modules/booking/AddReviewButton';
+import UserBookingDetailsModal from '../../components/modules/booking/UserBookingDetailsModal';
 import type { ApiError } from '@/types';
 import type { Booking } from '@/types/booking';
 
@@ -164,6 +165,14 @@ const Bookings = () => {
 
         return (
           <div className="flex items-center justify-end gap-2">
+            <UserBookingDetailsModal
+              booking={item}
+              trigger={
+                <Button size="sm" variant="outline" aria-label="View booking details">
+                  <Eye className="h-4 w-4" />
+                </Button>
+              }
+            />
             <Button size="sm" variant="outline" asChild>
               <Link to={`/destination/${item.tour?.slug || item.tour?._id}`}>View Tour</Link>
             </Button>

@@ -11,6 +11,10 @@ export type Booking = {
     phone?: string;
     picture?: string;
     role?: string;
+    rating?: number;
+    averageRating?: number;
+    reviewCount?: number;
+    totalReviews?: number;
   };
   tour: {
     _id?: string;

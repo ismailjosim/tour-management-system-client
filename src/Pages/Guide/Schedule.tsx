@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useGetMyGuideScheduleQuery } from '@/redux/features/guide/guide.api';
+import { useGetMyGuideBookingsQuery } from '@/redux/features/guide/guide.api';
 import {
   useApproveOrRejectBookingMutation,
   useCompleteBookingMutation,
@@ -17,12 +17,13 @@ import {
 import { CalendarClock, Check, CheckCircle2, Mail, MapPin, Phone, X, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import type { GuideBooking } from '@/types/guide';
 
 const Schedule = () => {
-  const { data, isLoading, isError } = useGetMyGuideScheduleQuery();
+  const { data, isLoading, isError } = useGetMyGuideBookingsQuery({ limit: 50 });
   const [approveOrRejectBooking, { isLoading: isApproving }] = useApproveOrRejectBookingMutation();
   const [completeBooking, { isLoading: isCompleting }] = useCompleteBookingMutation();
-  const bookings = data?.data ?? [];
+  const bookings = ((data as any)?.data?.data ?? data?.data ?? []) as GuideBooking[];
 
   const handleApproval = async (bookingId: string, approved: boolean) => {
     const toastId = toast.loading(approved ? 'Approving booking...' : 'Rejecting booking...');

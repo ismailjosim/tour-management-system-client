@@ -25,6 +25,14 @@ export const bookingApi = baseApi.injectEndpoints({
       }),
       providesTags: ['BOOKING'],
     }),
+    getGuidePendingApprovals: builder.query({
+      query: (params) => ({
+        url: '/booking/guide/pending-approvals',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['BOOKING', 'GUIDE'],
+    }),
     removeBooking: builder.mutation({
       query: (bookingId) => ({
         url: `/booking/${bookingId}`,
@@ -63,6 +71,7 @@ export const {
   useApproveOrRejectBookingMutation,
   useCompleteBookingMutation,
   useGetAllBookingsQuery,
+  useGetGuidePendingApprovalsQuery,
   useGetMyBookingsQuery,
   useInitiatePaymentMutation,
   useRemoveBookingMutation,
