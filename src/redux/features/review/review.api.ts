@@ -12,6 +12,14 @@ export const reviewApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['REVIEWS', 'GUIDE'],
     }),
+    addGuideRating: builder.mutation({
+      query: ({ reviewId, guideRating, guideComments }) => ({
+        url: `/review/${reviewId}/guide-rating`,
+        method: 'PATCH',
+        data: { guideRating, guideComments },
+      }),
+      invalidatesTags: ['REVIEWS', 'GUIDE'],
+    }),
     getAllReviews: builder.query<
       IResponse<PaginatedData<HomepageReview>>,
       Record<string, string | number> | undefined
@@ -34,5 +42,9 @@ export const reviewApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useAddReviewMutation, useGetAllReviewsQuery, useGetSpecificTourReviewsQuery } =
-  reviewApi;
+export const {
+  useAddGuideRatingMutation,
+  useAddReviewMutation,
+  useGetAllReviewsQuery,
+  useGetSpecificTourReviewsQuery,
+} = reviewApi;

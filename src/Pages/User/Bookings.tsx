@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { format } from 'date-fns';
-import { CreditCard, Trash2 } from 'lucide-react';
+import { CheckCircle2, CreditCard, Trash2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 
@@ -12,6 +12,7 @@ import DataTable from '../../utils/DataTable';
 import DataPagination from '../../utils/DataPagination';
 import {
   useGetMyBookingsQuery,
+  useCompleteBookingMutation,
   useInitiatePaymentMutation,
   useRemoveBookingMutation,
 } from '../../redux/features/booking/booking.api';
@@ -29,6 +30,7 @@ const Bookings = () => {
 
   const [removeBooking] = useRemoveBookingMutation();
   const [initiatePayment, { isLoading: isPaymentLoading }] = useInitiatePaymentMutation();
+  const [completeBooking, { isLoading: isCompleting }] = useCompleteBookingMutation();
 
   const handleDelete = async (id: string) => {
     return removeBooking(id).unwrap();
@@ -75,8 +77,26 @@ const Bookings = () => {
   const canReview = (booking: Booking) =>
     booking.status === 'COMPLETE' && booking.payment?.status === 'PAID';
 
+  const canComplete = (booking: Booking) =>
+    booking.payment?.status === 'PAID' &&
+    booking.status !== 'COMPLETE' &&
+    !booking.userCompleted &&
+    (!booking.tour?.startDate || new Date(booking.tour.startDate).getTime() <= Date.now());
+
   const getReviewableGuide = (booking: Booking) =>
     booking.guide?.role === 'GUIDE' ? booking.guide : undefined;
+
+  const handleComplete = async (bookingId: string) => {
+    const toastId = toast.loading('Marking tour complete...');
+
+    try {
+      await completeBooking({ bookingId, completedBy: 'user' }).unwrap();
+      toast.success('Tour marked complete from your side', { id: toastId });
+    } catch (error) {
+      const apiError = error as ApiError;
+      toast.error(apiError.data?.message || 'Could not complete tour', { id: toastId });
+    }
+  };
 
   const columns = [
     {
@@ -160,10 +180,22 @@ const Bookings = () => {
             )}
             {canReview(item) && (
               <AddReviewButton
+                bookingId={item._id}
                 tourId={item.tour?._id || ''}
                 guideId={guide?._id}
                 guideName={guide?.name}
               />
+            )}
+            {canComplete(item) && (
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => handleComplete(item._id)}
+                disabled={isCompleting}
+              >
+                <CheckCircle2 className="h-4 w-4" />
+                Complete
+              </Button>
             )}
             <DeleteConfirmation onConfirm={() => handleDelete(item._id)}>
               <Button size="sm" variant="destructive">

@@ -2,13 +2,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
   Table,
   TableBody,
   TableCell,
@@ -16,34 +9,44 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useGetMyGuideScheduleQuery } from '@/redux/features/guide/guide.api';
 import {
-  useGetMyGuideScheduleQuery,
-  useUpdateMyGuideBookingStatusMutation,
-} from '@/redux/features/guide/guide.api';
-import { CalendarClock, Mail, MapPin, Phone, Users } from 'lucide-react';
+  useApproveOrRejectBookingMutation,
+  useCompleteBookingMutation,
+} from '@/redux/features/booking/booking.api';
+import { CalendarClock, Check, CheckCircle2, Mail, MapPin, Phone, X, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
-const guideStatusOptions = [
-  { value: 'PENDING', label: 'Pending' },
-  { value: 'IN_PROGRESS', label: 'In progress' },
-  { value: 'COMPLETE', label: 'Complete' },
-  { value: 'REJECTED', label: 'Rejected' },
-];
-
 const Schedule = () => {
   const { data, isLoading, isError } = useGetMyGuideScheduleQuery();
-  const [updateBookingStatus, { isLoading: isUpdating }] = useUpdateMyGuideBookingStatusMutation();
+  const [approveOrRejectBooking, { isLoading: isApproving }] = useApproveOrRejectBookingMutation();
+  const [completeBooking, { isLoading: isCompleting }] = useCompleteBookingMutation();
   const bookings = data?.data ?? [];
 
-  const handleStatusChange = async (bookingId: string, status: string) => {
-    const toastId = toast.loading('Updating booking status...');
+  const handleApproval = async (bookingId: string, approved: boolean) => {
+    const toastId = toast.loading(approved ? 'Approving booking...' : 'Rejecting booking...');
 
     try {
-      await updateBookingStatus({ bookingId, status }).unwrap();
-      toast.success('Booking status updated', { id: toastId });
+      await approveOrRejectBooking({
+        bookingId,
+        approved,
+        rejectionReason: approved ? undefined : 'Guide rejected the booking',
+      }).unwrap();
+      toast.success(approved ? 'Booking approved' : 'Booking rejected', { id: toastId });
     } catch {
-      toast.error('Could not update booking status', { id: toastId });
+      toast.error('Could not update booking approval', { id: toastId });
+    }
+  };
+
+  const handleComplete = async (bookingId: string) => {
+    const toastId = toast.loading('Marking tour complete...');
+
+    try {
+      await completeBooking({ bookingId, completedBy: 'guide' }).unwrap();
+      toast.success('Tour marked complete from your side', { id: toastId });
+    } catch {
+      toast.error('Could not complete tour', { id: toastId });
     }
   };
 
@@ -86,7 +89,7 @@ const Schedule = () => {
                   <TableHead>Guests</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Payment</TableHead>
-                  <TableHead className="text-right">Contact</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -122,28 +125,54 @@ const Schedule = () => {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Select
-                        value={booking.status ?? 'PENDING'}
-                        disabled={isUpdating}
-                        onValueChange={(status) => handleStatusChange(booking._id, status)}
-                      >
-                        <SelectTrigger className="w-[140px]">
-                          <SelectValue placeholder="Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {guideStatusOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <div className="space-y-1">
+                        <Badge variant="secondary">{booking.status ?? 'PENDING'}</Badge>
+                        {booking.guideApprovalStatus && (
+                          <p className="text-muted-foreground text-xs">
+                            Guide: {booking.guideApprovalStatus}
+                          </p>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline">{booking.payment?.status ?? 'UNPAID'}</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-2">
+                        {booking.guideApprovalStatus === 'PENDING' && (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleApproval(booking._id, true)}
+                              disabled={isApproving}
+                            >
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleApproval(booking._id, false)}
+                              disabled={isApproving}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
+                        {booking.payment?.status === 'PAID' &&
+                          booking.status !== 'COMPLETE' &&
+                          !booking.guideCompleted &&
+                          (!booking.tour?.startDate ||
+                            new Date(booking.tour.startDate).getTime() <= Date.now()) && (
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              onClick={() => handleComplete(booking._id)}
+                              disabled={isCompleting}
+                            >
+                              <CheckCircle2 className="h-4 w-4" />
+                            </Button>
+                          )}
                         {booking.user?.email && (
                           <Button size="sm" variant="outline" asChild>
                             <a href={`mailto:${booking.user.email}`}>

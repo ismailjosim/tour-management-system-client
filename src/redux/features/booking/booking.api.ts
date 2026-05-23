@@ -39,11 +39,29 @@ export const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['BOOKING'],
     }),
+    approveOrRejectBooking: builder.mutation({
+      query: ({ bookingId, approved, rejectionReason }) => ({
+        url: `/booking/${bookingId}/guide-approval`,
+        method: 'PATCH',
+        data: { approved, rejectionReason },
+      }),
+      invalidatesTags: ['BOOKING', 'GUIDE'],
+    }),
+    completeBooking: builder.mutation({
+      query: ({ bookingId, completedBy }) => ({
+        url: `/booking/${bookingId}/complete`,
+        method: 'PATCH',
+        data: { completedBy },
+      }),
+      invalidatesTags: ['BOOKING', 'GUIDE'],
+    }),
   }),
 });
 
 export const {
   useAddBookingMutation,
+  useApproveOrRejectBookingMutation,
+  useCompleteBookingMutation,
   useGetAllBookingsQuery,
   useGetMyBookingsQuery,
   useInitiatePaymentMutation,
