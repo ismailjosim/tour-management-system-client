@@ -52,18 +52,10 @@ axiosInstance.interceptors.response.use(
       _retry: boolean;
     };
 
-    // Handle authentication errors
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      handleLogout();
-      return Promise.reject(error);
-    }
+    const isExpiredAccessToken =
+      error.response?.status === 401 && error.response?.data?.message === 'jwt expired';
 
-    // * For everything means for every reject
-    if (
-      error.response?.status === 500 &&
-      error.response?.data?.message === 'jwt expired' &&
-      !originalRequest._retry
-    ) {
+    if (isExpiredAccessToken && !originalRequest._retry) {
       originalRequest._retry = true;
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -85,6 +77,12 @@ axiosInstance.interceptors.response.use(
         isRefreshing = false;
       }
     }
+
+    if (error.response?.status === 401) {
+      handleLogout();
+      return Promise.reject(error);
+    }
+
     return Promise.reject(error);
   }
 );

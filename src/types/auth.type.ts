@@ -53,8 +53,8 @@ export interface ILoginResult {
 }
 
 export interface ILoginData {
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
   user: IUser;
 }
 

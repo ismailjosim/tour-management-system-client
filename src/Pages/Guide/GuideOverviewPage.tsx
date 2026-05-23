@@ -1,6 +1,7 @@
 // import { DashboardHeader } from '@/components/modules/Guide/DashboardHeader'
 import { EarningsChart } from '@/components/modules/Guide/EarningsChart';
 import { RecentReviews } from '@/components/modules/Guide/RecentReviews';
+import { PendingApprovals } from '@/components/modules/Guide/PendingApprovals';
 import { StatsCard } from '@/components/modules/Guide/StatsCard';
 import { ToursOverview } from '@/components/modules/Guide/ToursOverview';
 import { UpcomingTours } from '@/components/modules/Guide/UpcomingTours';
@@ -99,6 +100,8 @@ export default function GuideOverviewPage() {
             <UpcomingTours bookings={scheduleResponse?.data} isLoading={isScheduleLoading} />
           </div>
         </div>
+
+        <PendingApprovals />
 
         {/* Reviews + Tours overview */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
