@@ -41,6 +41,10 @@ export type GuideBooking = {
   payment?: GuidePayment;
   guestCount?: number;
   status?: string;
+  guideApprovalStatus?: string;
+  userCompleted?: boolean;
+  guideCompleted?: boolean;
+  rejectionReason?: string;
   createdAt?: string;
   updatedAt?: string;
 };

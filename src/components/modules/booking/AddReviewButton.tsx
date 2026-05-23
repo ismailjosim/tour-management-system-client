@@ -18,17 +18,21 @@ import { Rating, RatingButton } from '../../ui/shadcn-io/rating';
 import type { ApiError } from '../../../types';
 
 interface AddReviewButtonProps {
+  bookingId: string;
   tourId: string;
   guideId?: string;
   guideName?: string;
 }
 
-const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guideName }) => {
+const AddReviewButton: React.FC<AddReviewButtonProps> = ({
+  bookingId,
+  tourId,
+  guideId,
+  guideName,
+}) => {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState<number>(0);
   const [comments, setComments] = useState<string>('');
-  const [guideRating, setGuideRating] = useState<number>(0);
-  const [guideComments, setGuideComments] = useState<string>('');
 
   const [addReview, { isLoading }] = useAddReviewMutation();
   const { data } = useUserInfoQuery(undefined);
@@ -40,22 +44,13 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guid
       return;
     }
 
-    if (hasGuide && (guideRating === 0 || !guideComments.trim())) {
-      toast('Please provide a guide rating and comment.');
-      return;
-    }
-
     const formData = {
+      bookingId,
       tour: tourId,
       user: data?.data?._id,
+      ...(hasGuide ? { guide: guideId } : {}),
       rating,
       comments,
-      ...(hasGuide
-        ? {
-            guideRating,
-            guideComments,
-          }
-        : {}),
     };
 
     try {
@@ -65,8 +60,6 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guid
         setOpen(false);
         setComments('');
         setRating(0);
-        setGuideComments('');
-        setGuideRating(0);
       }
     } catch (error) {
       const apiError = error as ApiError;
@@ -87,7 +80,8 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guid
         <DialogHeader>
           <DialogTitle>Add Your Review</DialogTitle>
           <DialogDescription>
-            Share your experience with this tour{hasGuide ? ' and guide.' : '.'}
+            Share your experience with this tour
+            {hasGuide ? ` and ${guideName ?? 'your guide'}.` : '.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -112,24 +106,10 @@ const AddReviewButton: React.FC<AddReviewButtonProps> = ({ tourId, guideId, guid
           {hasGuide && (
             <div className="space-y-4 rounded-md border p-4">
               <div>
-                <Label>Guide Rating{guideName ? ` for ${guideName}` : ''}</Label>
-                <div className="flex flex-col items-center gap-3">
-                  <Rating value={guideRating} onValueChange={setGuideRating}>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <RatingButton className="text-yellow-500" key={index} />
-                    ))}
-                  </Rating>
-                  <span className="text-muted-foreground text-xs">{guideRating}/5</span>
-                </div>
-              </div>
-
-              <div>
-                <Label>Guide Comments</Label>
-                <Textarea
-                  rows={4}
-                  value={guideComments}
-                  onChange={(e) => setGuideComments(e.target.value)}
-                />
+                <Label>Guide</Label>
+                <p className="text-muted-foreground text-sm">
+                  This review will be linked to {guideName ?? 'your selected guide'}.
+                </p>
               </div>
             </div>
           )}

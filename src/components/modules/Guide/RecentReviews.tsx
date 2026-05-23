@@ -1,8 +1,21 @@
+import { useState } from 'react';
 import { ArrowUpRight, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import type { GuideReviews } from '@/types/guide';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Rating, RatingButton } from '@/components/ui/shadcn-io/rating';
+import { useAddGuideRatingMutation } from '@/redux/features/review/review.api';
+import type { GuideReview, GuideReviews } from '@/types/guide';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 function StarRow({ count }: { count: number }) {
   return (
@@ -27,6 +40,31 @@ type RecentReviewsProps = {
 export function RecentReviews({ reviews, isLoading = false }: RecentReviewsProps) {
   const ratingDistribution = reviews?.ratingDistribution ?? [];
   const totalReviews = reviews?.totalReviews ?? 0;
+  const [selectedReview, setSelectedReview] = useState<GuideReview | null>(null);
+  const [guideRating, setGuideRating] = useState(0);
+  const [guideComments, setGuideComments] = useState('');
+  const [addGuideRating, { isLoading: isSubmitting }] = useAddGuideRatingMutation();
+
+  const handleSubmitGuideRating = async () => {
+    if (!selectedReview || guideRating === 0 || !guideComments.trim()) {
+      toast.error('Please add a rating and feedback.');
+      return;
+    }
+
+    try {
+      await addGuideRating({
+        reviewId: selectedReview._id,
+        guideRating,
+        guideComments,
+      }).unwrap();
+      toast.success('Traveler feedback added');
+      setSelectedReview(null);
+      setGuideRating(0);
+      setGuideComments('');
+    } catch {
+      toast.error('Could not add traveler feedback');
+    }
+  };
 
   return (
     <Card className="bg-card border-border">
@@ -94,10 +132,56 @@ export function RecentReviews({ reviews, isLoading = false }: RecentReviewsProps
                   {review.tour?.title ?? 'Tour'} •{' '}
                   {review.createdAt ? format(new Date(review.createdAt), 'MMM dd') : 'Recent'}
                 </p>
+                {!review.guideRating && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="mt-3 h-7 text-xs"
+                    onClick={() => setSelectedReview(review)}
+                  >
+                    Rate Traveler
+                  </Button>
+                )}
               </div>
             ))}
         </div>
       </CardContent>
+      <Dialog
+        open={Boolean(selectedReview)}
+        onOpenChange={(open) => !open && setSelectedReview(null)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Rate Traveler</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Rating</Label>
+              <div className="flex items-center gap-3">
+                <Rating value={guideRating} onValueChange={setGuideRating}>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <RatingButton className="text-yellow-500" key={index} />
+                  ))}
+                </Rating>
+                <span className="text-muted-foreground text-xs">{guideRating}/5</span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Feedback</Label>
+              <Textarea
+                rows={4}
+                value={guideComments}
+                onChange={(event) => setGuideComments(event.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={handleSubmitGuideRating} disabled={isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Save Feedback'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
