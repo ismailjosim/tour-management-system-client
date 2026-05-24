@@ -76,7 +76,6 @@ export const EditProfileModal = ({ isOpen, onClose, guideProfile }: EditProfileM
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<UpdateProfileFormData>({
     resolver: zodResolver(updateProfileSchema),
