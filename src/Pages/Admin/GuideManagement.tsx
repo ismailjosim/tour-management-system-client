@@ -24,12 +24,17 @@ interface Guide {
     phone: string;
     picture: string;
   };
-  division: {
+  country?: string;
+  locationDivision?: string;
+  division?: {
     name: string;
     thumbnail: string;
     description: string;
   };
   nidPhoto: string;
+  nidFrontPhoto?: string;
+  nidBackPhoto?: string;
+  photo?: string;
   bio?: string;
   experience?: number;
   languages?: string[];
@@ -84,7 +89,7 @@ const GuideManagement = () => {
       render: (_: any, row: Guide) => (
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={row.user?.picture} alt={row.user?.name} />
+            <AvatarImage src={row.photo || row.user?.picture} alt={row.user?.name} />
             <AvatarFallback>{row.user?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
@@ -96,8 +101,8 @@ const GuideManagement = () => {
     },
     {
       key: 'division',
-      header: 'Region',
-      render: (_: any, row: Guide) => row.division?.name || 'N/A',
+      header: 'Location',
+      render: (_: any, row: Guide) => row.locationDivision || row.division?.name || 'N/A',
     },
     {
       key: 'experience',

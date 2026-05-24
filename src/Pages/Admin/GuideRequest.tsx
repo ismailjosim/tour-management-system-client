@@ -24,12 +24,17 @@ interface Guide {
     phone: string;
     picture: string;
   };
-  division: {
+  country?: string;
+  locationDivision?: string;
+  division?: {
     name: string;
     thumbnail: string;
     description: string;
   };
   nidPhoto: string;
+  nidFrontPhoto?: string;
+  nidBackPhoto?: string;
+  photo?: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   createdAt: string;
 }
@@ -63,10 +68,10 @@ const GuideRequest = () => {
       key: 'user',
       header: 'Guide',
       className: 'font-medium',
-      render: (user: Guide['user']) => (
+      render: (user: Guide['user'], item: Guide) => (
         <div className="flex items-center gap-3">
           <Avatar className="rounded-md">
-            <AvatarImage src={user.picture} alt={user.name} />
+            <AvatarImage src={item.photo || user.picture} alt={user.name} />
             <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
@@ -78,8 +83,10 @@ const GuideRequest = () => {
     },
     {
       key: 'division',
-      header: 'Division',
-      render: (division: Guide['division']) => <div className="font-medium">{division.name}</div>,
+      header: 'Location',
+      render: (division: Guide['division'], item: Guide) => (
+        <div className="font-medium">{item.locationDivision || division?.name || 'N/A'}</div>
+      ),
     },
     {
       key: 'status',

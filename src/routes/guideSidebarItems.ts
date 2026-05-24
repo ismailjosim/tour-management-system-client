@@ -5,6 +5,7 @@ const MyTours = lazy(() => import('@/Pages/Guide/MyTours'));
 const Schedule = lazy(() => import('@/Pages/Guide/Schedule'));
 const Earnings = lazy(() => import('@/Pages/Guide/Earnings'));
 const Communication = lazy(() => import('@/Pages/Guide/Communication'));
+const GuideProfile = lazy(() => import('@/Pages/Guide/Profile'));
 
 export const guideSidebarItems = [
   {
@@ -14,6 +15,11 @@ export const guideSidebarItems = [
         title: 'Overview Stats',
         url: '/guide/overview',
         component: GuideOverviewPage,
+      },
+      {
+        title: 'My Profile',
+        url: '/guide/profile',
+        component: GuideProfile,
       },
       {
         title: 'My Tours',

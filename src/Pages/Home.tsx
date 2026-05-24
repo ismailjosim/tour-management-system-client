@@ -8,6 +8,10 @@ import TopDealSection from '@/components/modules/homepage/TopDealSection';
 import ReviewSection from '@/components/modules/homepage/ReviewSection';
 import CTASection from '@/components/modules/homepage/CTASection';
 import PartnerSection from '@/components/modules/homepage/PartnerSection';
+import HowTravelerWorksSection from '@/components/modules/homepage/HowTravelerWorksSection';
+import WhyBookWithTravelerSection from '@/components/modules/homepage/WhyBookWithTravelerSection';
+import FeaturedGuidesSection from '@/components/modules/homepage/FeaturedGuidesSection';
+import StatsSection from '@/components/modules/homepage/StatsSection';
 
 const Home = () => {
   return (
@@ -15,6 +19,10 @@ const Home = () => {
       <HeroSection />
       <QuickSearchSection />
       <TopDestinationsSection />
+      <HowTravelerWorksSection />
+      <WhyBookWithTravelerSection />
+      <StatsSection />
+      <FeaturedGuidesSection />
       <ActivitySection />
       <FeaturedSection />
       <TopDealSection />
