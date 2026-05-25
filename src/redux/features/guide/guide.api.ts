@@ -104,6 +104,14 @@ export const guideApi = baseApi.injectEndpoints({
       }),
       providesTags: ['GUIDE'],
     }),
+    updateMyGuideProfile: builder.mutation({
+      query: (formData) => ({
+        url: '/guide/me/profile',
+        method: 'PATCH',
+        data: formData,
+      }),
+      invalidatesTags: ['GUIDE'],
+    }),
   }),
 });
 
@@ -120,4 +128,5 @@ export const {
   useGetMyGuideEarningsQuery,
   useGetMyGuideReviewsQuery,
   useGetAvailableGuidesForTourQuery,
+  useUpdateMyGuideProfileMutation,
 } = guideApi;

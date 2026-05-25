@@ -57,9 +57,9 @@ const GuideModal = ({ modalProps }: GuideModalProps) => {
               <div className="space-y-3 border-b pb-4">
                 <h3 className="text-lg font-semibold">Personal Information</h3>
                 <div className="flex items-center gap-4">
-                  {selectedGuide.user?.picture && (
+                  {(selectedGuide.photo || selectedGuide.user?.picture) && (
                     <img
-                      src={selectedGuide.user.picture}
+                      src={selectedGuide.photo || selectedGuide.user.picture}
                       alt={selectedGuide.user.name}
                       className="h-24 w-24 rounded-lg object-cover"
                     />
@@ -124,10 +124,20 @@ const GuideModal = ({ modalProps }: GuideModalProps) => {
 
               {/* Division Info */}
               <div className="space-y-3 border-b pb-4">
-                <h3 className="text-lg font-semibold">Division / Region</h3>
+                <h3 className="text-lg font-semibold">Location</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Country</p>
+                    <p className="font-semibold">{selectedGuide.country || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Division</p>
+                    <p className="font-semibold">
+                      {selectedGuide.locationDivision || selectedGuide.division?.name || 'N/A'}
+                    </p>
+                  </div>
+                </div>
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Division Name</p>
-                  <p className="mb-3 font-semibold">{selectedGuide.division?.name || 'N/A'}</p>
                   {selectedGuide.division?.thumbnail && (
                     <img
                       src={selectedGuide.division.thumbnail}
@@ -143,13 +153,30 @@ const GuideModal = ({ modalProps }: GuideModalProps) => {
               {/* NID Photo */}
               <div className="space-y-3">
                 <h3 className="text-lg font-semibold">NID Verification</h3>
-                {selectedGuide.nidPhoto && (
-                  <img
-                    src={selectedGuide.nidPhoto}
-                    alt="NID"
-                    className="h-48 w-full rounded-md object-cover"
-                  />
-                )}
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[
+                    {
+                      label: 'Front Side',
+                      image: selectedGuide.nidFrontPhoto || selectedGuide.nidPhoto,
+                    },
+                    { label: 'Back Side', image: selectedGuide.nidBackPhoto },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">{item.label}</p>
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={`NID ${item.label}`}
+                          className="h-48 w-full rounded-md object-cover"
+                        />
+                      ) : (
+                        <div className="bg-muted text-muted-foreground flex h-48 items-center justify-center rounded-md text-sm">
+                          Not uploaded
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

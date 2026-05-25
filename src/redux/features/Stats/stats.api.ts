@@ -1,8 +1,22 @@
 import { baseApi } from '../../app/baseApi';
 import type { ApiResponse, GuideStats } from '@/types/guide';
 
+export type HomepageStats = {
+  totalTours: number;
+  totalGuides: number;
+  totalDestinations: number;
+  happyTravelers: number;
+};
+
 const statsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getHomepageStats: builder.query<ApiResponse<HomepageStats>, void>({
+      query: () => ({
+        url: '/stats/homepage',
+        method: 'GET',
+      }),
+      providesTags: ['STATS'],
+    }),
     getUserStats: builder.query({
       query: () => ({
         url: '/stats/user',
@@ -47,4 +61,5 @@ export const {
   useGetTourStatsQuery,
   useGetUserStatsQuery,
   useGetGuideStatsQuery,
+  useGetHomepageStatsQuery,
 } = statsApi;

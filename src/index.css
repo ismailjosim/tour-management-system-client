@@ -5,8 +5,16 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* @custom-variant and @theme inline are valid for modern Tailwind, no changes needed here. */

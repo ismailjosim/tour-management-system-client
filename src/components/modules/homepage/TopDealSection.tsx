@@ -1,7 +1,12 @@
 import React, { type JSX } from 'react';
 
 import SectionHeading from '@/utils/SectionHeading';
-import bgImg from '@/assets/homepage/slide01.jpg';
+import santoriniImg from '@/assets/destinations/destination1.jpg';
+import baliImg from '@/assets/destinations/destination2.jpg';
+import swissImg from '@/assets/destinations/trending-large.jpg';
+import maldivesImg from '@/assets/destinations/trending5.jpg';
+import nepalImg from '@/assets/images/gallery03.jpg';
+import istanbulImg from '@/assets/images/gallery05.jpg';
 import { CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Star } from 'lucide-react';
@@ -31,70 +36,69 @@ const TopDealSection: React.FC = () => {
     headingOne: 'The Last',
     headingTwo: 'Minute Deals',
     describe:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+      'Grab limited-time escapes with handpicked stays, guided experiences, and flexible travel dates before these offers disappear.',
   };
 
-  // Mock data - replace with real data
   const deals: DealData[] = [
     {
       id: 1,
-      country: 'Norway',
-      title: 'Norway Lake',
+      country: 'Greece',
+      title: 'Santorini Sunset Escape',
       rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      reviewCount: 48,
+      price: 249,
+      duration: '5 Days Tour',
+      image: santoriniImg,
     },
     {
       id: 2,
-      country: 'Norway',
-      title: 'Norway Lake',
+      country: 'Indonesia',
+      title: 'Bali Beach Retreat',
       rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      reviewCount: 36,
+      price: 199,
+      duration: '4 Days Tour',
+      image: baliImg,
     },
     {
       id: 3,
-      country: 'Norway',
-      title: 'Norway Lake',
-      rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      country: 'Switzerland',
+      title: 'Alpine Rail Adventure',
+      rating: 4,
+      reviewCount: 29,
+      price: 320,
+      duration: '6 Days Tour',
+      image: swissImg,
     },
     {
       id: 4,
-      country: 'Norway',
-      title: 'Norway Lake',
+      country: 'Maldives',
+      title: 'Island Lagoon Getaway',
       rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      reviewCount: 52,
+      price: 410,
+      duration: '5 Days Tour',
+      image: maldivesImg,
     },
     {
       id: 5,
-      country: 'Norway',
-      title: 'Norway Lake',
-      rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      country: 'Nepal',
+      title: 'Himalayan Trail Break',
+      rating: 4,
+      reviewCount: 31,
+      price: 175,
+      duration: '7 Days Tour',
+      image: nepalImg,
     },
     {
       id: 6,
-      country: 'Norway',
-      title: 'Norway Lake',
+      country: 'Turkey',
+      title: 'Istanbul Culture Weekend',
       rating: 5,
-      reviewCount: 20,
-      price: 180,
-      duration: '9 Days Tours',
-      image: bgImg,
+      reviewCount: 27,
+      price: 145,
+      duration: '3 Days Tour',
+      image: istanbulImg,
     },
   ];
 

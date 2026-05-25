@@ -24,8 +24,13 @@ interface IDivision {
 interface IGuideApplication {
   _id: string;
   user: IUser;
-  division: IDivision;
+  country?: string;
+  locationDivision?: string;
+  division?: IDivision;
   nidPhoto: string;
+  nidFrontPhoto?: string;
+  nidBackPhoto?: string;
+  photo?: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   createdAt: string;
   updatedAt: string;
@@ -103,7 +108,20 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
       </Card>
     );
 
-  const { user, division, nidPhoto, status, _id, createdAt, updatedAt } = guideApplication;
+  const {
+    user,
+    country,
+    locationDivision,
+    division,
+    nidPhoto,
+    nidFrontPhoto,
+    nidBackPhoto,
+    photo,
+    status,
+    _id,
+    createdAt,
+    updatedAt,
+  } = guideApplication;
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('en-US', {
@@ -135,7 +153,7 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
             <div className="ml-5 flex items-center justify-center rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 p-8 md:w-1/3 dark:from-blue-900 dark:to-indigo-800">
               <div className="text-center">
                 <img
-                  src={user.picture}
+                  src={photo || user.picture}
                   alt={user.name}
                   className="border-card mx-auto h-40 w-40 rounded-full border-4 object-cover shadow-lg"
                 />
@@ -197,21 +215,32 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
 
         {/* Specialization & Timeline */}
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Division */}
+          {/* Location */}
           <Card className="overflow-hidden">
             <div className="bg-primary relative -top-6 rounded-t-lg px-6 py-4">
-              <h2 className="text-xl font-bold text-white">Tour Division</h2>
+              <h2 className="text-xl font-bold text-white">Guide Location</h2>
             </div>
             <CardContent>
-              <img
-                src={division.thumbnail}
-                alt={division.name}
-                className="mb-4 h-48 w-full rounded-lg object-cover shadow-md"
-              />
-              <h3 className="text-card-foreground mb-2 text-xl font-bold">{division.name}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {division.description}
+              {division?.thumbnail && (
+                <img
+                  src={division.thumbnail}
+                  alt={division.name}
+                  className="mb-4 h-48 w-full rounded-lg object-cover shadow-md"
+                />
+              )}
+              <p className="text-muted-foreground mb-1 text-sm">Country</p>
+              <p className="text-card-foreground mb-4 text-lg font-semibold">
+                {country || 'Not specified'}
               </p>
+              <p className="text-muted-foreground mb-1 text-sm">Division</p>
+              <h3 className="text-card-foreground mb-2 text-xl font-bold">
+                {locationDivision || division?.name || 'Not specified'}
+              </h3>
+              {division?.description && (
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {division.description}
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -253,18 +282,27 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
           </div>
           <CardContent>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {['Front Side', 'Back Side'].map((side) => (
+              {[
+                { label: 'Front Side', image: nidFrontPhoto || nidPhoto },
+                { label: 'Back Side', image: nidBackPhoto },
+              ].map((item) => (
                 <div
-                  key={side}
+                  key={item.label}
                   className="border-border hover:border-primary block rounded-xl border-2 border-dashed p-4 transition"
                 >
-                  <img
-                    src={nidPhoto}
-                    alt={`NID ${side}`}
-                    className="mx-auto h-full max-h-56 w-full cursor-pointer rounded-lg object-contain"
-                  />
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={`NID ${item.label}`}
+                      className="mx-auto h-full max-h-56 w-full cursor-pointer rounded-lg object-contain"
+                    />
+                  ) : (
+                    <div className="text-muted-foreground bg-muted flex h-56 items-center justify-center rounded-lg text-sm">
+                      Not uploaded
+                    </div>
+                  )}
                   <p className="text-muted-foreground mt-4 text-center text-sm font-semibold">
-                    National ID Card - {side}
+                    National ID Card - {item.label}
                   </p>
                 </div>
               ))}

@@ -9,11 +9,11 @@ interface IPros {
 
 export default function CommonLayout({ children }: IPros) {
   return (
-    <section className="flex min-h-screen flex-col">
+    <>
       <TopHeader />
       <Navbar />
       <div className="grow-1">{children}</div>
       <Footer />
-    </section>
+    </>
   );
 }

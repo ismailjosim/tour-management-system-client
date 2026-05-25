@@ -19,11 +19,23 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import type { GuideBooking } from '@/types/guide';
 
+type GuideBookingsResponse = { data?: GuideBooking[] } | { data?: { data?: GuideBooking[] } };
+
+const getGuideBookings = (response?: GuideBookingsResponse) => {
+  const responseData = response?.data;
+
+  if (Array.isArray(responseData)) {
+    return responseData;
+  }
+
+  return responseData?.data ?? [];
+};
+
 const Schedule = () => {
   const { data, isLoading, isError } = useGetMyGuideBookingsQuery({ limit: 50 });
   const [approveOrRejectBooking, { isLoading: isApproving }] = useApproveOrRejectBookingMutation();
   const [completeBooking, { isLoading: isCompleting }] = useCompleteBookingMutation();
-  const bookings = ((data as any)?.data?.data ?? data?.data ?? []) as GuideBooking[];
+  const bookings = getGuideBookings(data);
 
   const handleApproval = async (bookingId: string, approved: boolean) => {
     const toastId = toast.loading(approved ? 'Approving booking...' : 'Rejecting booking...');

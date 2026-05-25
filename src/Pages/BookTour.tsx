@@ -236,9 +236,9 @@ const BookTour = () => {
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            {guide.user?.picture && (
+                            {(guide.photo || guide.user?.picture) && (
                               <img
-                                src={guide.user.picture}
+                                src={guide.photo || guide.user.picture}
                                 alt={guide.user.name}
                                 className="h-10 w-10 rounded-full object-cover"
                               />

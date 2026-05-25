@@ -2,6 +2,8 @@ import { useGetPublicGuidesQuery } from '@/redux/features/guide/guide.api';
 
 interface PublicGuide {
   _id: string;
+  photo?: string;
+  locationDivision?: string;
   user?: {
     name?: string;
     picture?: string;
@@ -43,8 +45,10 @@ const TourGuideSection = () => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {guides.map((guide) => {
             const name = guide.user?.name || 'Traveler Guide';
-            const post = guide.division?.name ? `${guide.division.name} Guide` : 'Tour Guide';
+            const guideLocation = guide.locationDivision || guide.division?.name;
+            const post = guideLocation ? `${guideLocation} Guide` : 'Tour Guide';
             const pic =
+              guide.photo ||
               guide.user?.picture ||
               `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(name)}`;
 
