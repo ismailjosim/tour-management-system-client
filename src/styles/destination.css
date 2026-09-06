@@ -40,7 +40,7 @@
   bottom: 0;
   height: 0;
   width: 100%;
-  background: #029e9d;
+  background: var(--primary);
   transition: all ease-in-out 0.5s;
   z-index: -1;
 }
@@ -95,7 +95,7 @@
   border-top: 5px solid #fdc703;
   border-bottom: 5px solid #fdc703;
   position: relative;
-  background: linear-gradient(#029e9d 30px, transparent 0) no-repeat;
+  background: linear-gradient(var(--primary) 30px, transparent 0) no-repeat;
   background-size: 2px 40px;
   background-position: 50% 0px;
   animation: spinx 5s linear infinite;
@@ -128,29 +128,29 @@
 @keyframes lqt {
   0%,
   100% {
-    background-image: linear-gradient(#029e9d 40px, transparent 0);
+    background-image: linear-gradient(var(--primary) 40px, transparent 0);
     background-position: 0% 0px;
   }
 
   50% {
-    background-image: linear-gradient(#029e9d 40px, transparent 0);
+    background-image: linear-gradient(var(--primary) 40px, transparent 0);
     background-position: 0% 40px;
   }
 
   50.1% {
-    background-image: linear-gradient(#029e9d 40px, transparent 0);
+    background-image: linear-gradient(var(--primary) 40px, transparent 0);
     background-position: 0% -40px;
   }
 }
 
 @keyframes lqb {
   0% {
-    background-image: linear-gradient(#029e9d 40px, transparent 0);
+    background-image: linear-gradient(var(--primary) 40px, transparent 0);
     background-position: 0 40px;
   }
 
   100% {
-    background-image: linear-gradient(#029e9d 40px, transparent 0);
+    background-image: linear-gradient(var(--primary) 40px, transparent 0);
     background-position: 0 -40px;
   }
 }
@@ -176,6 +176,6 @@
 
 /* style.css */
 .active {
-  background-color: #029e9d !important;
+  background-color: var(--primary) !important;
   color: white !important;
 }

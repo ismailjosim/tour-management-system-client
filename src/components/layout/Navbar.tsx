@@ -4,6 +4,7 @@ import {
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
 import { Skeleton } from '@/components/ui/skeleton';
+import { motion } from 'framer-motion';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -165,9 +166,11 @@ const Header: React.FC = () => {
             <NavigationMenuList className="gap-4">
               {filteredNavLinks().map(({ label, href }) => (
                 <NavigationMenuItem key={href}>
-                  <NavLink className={'rounded-md p-2 px-3'} to={href}>
-                    {label}
-                  </NavLink>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <NavLink className={'rounded-md p-2 px-3'} to={href}>
+                      {label}
+                    </NavLink>
+                  </motion.div>
                 </NavigationMenuItem>
               ))}
               {renderUserSection()}

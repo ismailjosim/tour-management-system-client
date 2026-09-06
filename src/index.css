@@ -62,7 +62,7 @@ body {
   --radius: 0.65rem;
 
   /* Light Theme Colors (based on your custom theme) */
-  --background: hsl(0, 0%, 100%);
+  --background: hsl(0, 0%, 98%);
   --foreground: hsl(210, 31%, 22%);
   /* Your 'accent' color for text */
 
@@ -72,7 +72,7 @@ body {
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(210, 31%, 22%);
 
-  --primary: hsl(179, 97%, 31%);
+  --primary: hsl(14, 65%, 57%);
   --primary-foreground: hsl(0, 0%, 100%);
   /* White text on primary background */
 
@@ -91,7 +91,7 @@ body {
   --border: hsl(0, 0%, 85%);
   /* A light border color */
   --input: hsl(0, 0%, 85%);
-  --ring: hsl(179, 97%, 31%);
+  --ring: hsl(14, 65%, 57%);
 
   /* Sidebar colors - Adjust as needed */
   --sidebar: hsl(0, 0%, 100%);
@@ -118,17 +118,17 @@ body {
 
 .dark {
   /* Dark Theme Colors */
-  --background: hsl(210, 31%, 22%);
+  --background: hsl(217, 22%, 19%);
   --foreground: hsl(0, 0%, 100%);
 
-  --card: hsl(210, 31%, 18%);
+  --card: hsl(219, 27%, 15%);
   /* A darker shade of accent */
   --card-foreground: hsl(0, 0%, 100%);
 
-  --popover: hsl(210, 31%, 18%);
+  --popover: hsl(219, 27%, 15%);
   --popover-foreground: hsl(0, 0%, 100%);
 
-  --primary: hsl(179, 97%, 31%);
+  --primary: hsl(14, 65%, 57%);
   --primary-foreground: hsl(0, 0%, 100%);
 
   --secondary: hsl(47, 98%, 50%);
@@ -141,9 +141,9 @@ body {
   --accent-foreground: hsl(0, 0%, 100%);
 
   --destructive: hsl(353, 87%, 56%);
-  --border: hsl(210, 31%, 30%);
-  --input: hsl(210, 31%, 30%);
-  --ring: hsl(179, 97%, 31%);
+  --border: hsl(219, 27%, 25%);
+  --input: hsl(219, 27%, 25%);
+  --ring: hsl(14, 65%, 57%);
 
   /* Sidebar colors - Adjust as needed */
   --sidebar: hsl(210, 31%, 18%);

@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 
 const BookTour = () => {
+  const [step, setStep] = useState(1);
   const [guestCount, setGuestCount] = useState(1);
   const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
   const { slug } = useParams<{ slug: string }>();
@@ -133,7 +134,7 @@ const BookTour = () => {
           <div className="space-y-10 lg:col-span-2">
             {/* Main Image */}
             <div className="overflow-hidden rounded-lg shadow-2xl dark:shadow-none">
-              <img src={images[0]} alt={title} className="h-[500px] w-full object-cover" />
+              <img src={images[0]} alt={title} className="h-125 w-full object-cover" />
             </div>
 
             {/* Title and Description */}
@@ -199,128 +200,170 @@ const BookTour = () => {
           <div className="lg:col-span-1">
             <Card className="self-start bg-white text-gray-900 shadow-lg lg:sticky lg:top-8 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
               <CardHeader>
-                <CardTitle className="text-center text-2xl">Booking Details</CardTitle>
+                <CardTitle className="text-center text-2xl">
+                  {step === 1 ? 'Step 1: Trip Details' : 'Step 2: Review & Payment'}
+                </CardTitle>
+                <div className="mt-4 flex items-center justify-center gap-2">
+                  <div
+                    className={`h-2 w-12 rounded-full ${step >= 1 ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}
+                  ></div>
+                  <div
+                    className={`h-2 w-12 rounded-full ${step >= 2 ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}
+                  ></div>
+                </div>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Select Your Local Guide */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-semibold">Select Your Local Guide</h4>
-                  {availableGuides.length > 0 ? (
-                    <div className="max-h-48 space-y-2 overflow-y-auto">
-                      {/* Optional: No Guide Option */}
-                      <div
-                        onClick={() => setSelectedGuide(null)}
-                        className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
-                          selectedGuide === null
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                            : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
-                        }`}
-                      >
-                        <p className="font-medium text-gray-700 dark:text-gray-300">
-                          Let us assign a guide
-                        </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          We'll match you with an available guide
-                        </p>
-                      </div>
-
-                      {/* Guide Options */}
-                      {availableGuides.map((guide: any) => (
-                        <div
-                          key={guide._id}
-                          onClick={() => setSelectedGuide(guide._id)}
-                          className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
-                            selectedGuide === guide._id
-                              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                              : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            {(guide.photo || guide.user?.picture) && (
-                              <img
-                                src={guide.photo || guide.user.picture}
-                                alt={guide.user.name}
-                                className="h-10 w-10 rounded-full object-cover"
-                              />
-                            )}
-                            <div className="flex-1">
-                              <p className="font-medium text-gray-700 dark:text-gray-300">
-                                {guide.user?.name}
-                              </p>
-                              {guide.bio && (
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                  {guide.bio.substring(0, 50)}...
-                                </p>
-                              )}
-                              {guide.experience && (
-                                <p className="text-xs text-gray-400 dark:text-gray-500">
-                                  {guide.experience} years experience
-                                </p>
-                              )}
-                            </div>
+                {step === 1 && (
+                  <>
+                    {/* Select Your Local Guide */}
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-semibold">Select Your Local Guide</h4>
+                      {availableGuides.length > 0 ? (
+                        <div className="max-h-48 space-y-2 overflow-y-auto">
+                          {/* Optional: No Guide Option */}
+                          <div
+                            onClick={() => setSelectedGuide(null)}
+                            className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
+                              selectedGuide === null
+                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                                : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                            }`}
+                          >
+                            <p className="font-medium text-gray-700 dark:text-gray-300">
+                              Let us assign a guide
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              We'll match you with an available guide
+                            </p>
                           </div>
+
+                          {/* Guide Options */}
+                          {availableGuides.map((guide: any) => (
+                            <div
+                              key={guide._id}
+                              onClick={() => setSelectedGuide(guide._id)}
+                              className={`cursor-pointer rounded-lg border-2 p-3 transition-all ${
+                                selectedGuide === guide._id
+                                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                                  : 'border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                {(guide.photo || guide.user?.picture) && (
+                                  <img
+                                    src={guide.photo || guide.user.picture}
+                                    alt={guide.user.name}
+                                    className="h-10 w-10 rounded-full object-cover"
+                                  />
+                                )}
+                                <div className="flex-1">
+                                  <p className="font-medium text-gray-700 dark:text-gray-300">
+                                    {guide.user?.name}
+                                  </p>
+                                  {guide.bio && (
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                      {guide.bio.substring(0, 50)}...
+                                    </p>
+                                  )}
+                                  {guide.experience && (
+                                    <p className="text-xs text-gray-400 dark:text-gray-500">
+                                      {guide.experience} years experience
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          No guides available for this tour. We'll assign one from our team.
+                        </p>
+                      )}
                     </div>
-                  ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      No guides available for this tour. We'll assign one from our team.
-                    </p>
-                  )}
-                </div>
 
-                {/* Number of Guests */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-semibold">Number of Guests</h4>
-                  <div className="flex items-center space-x-2">
+                    {/* Number of Guests */}
+                    <div className="space-y-3">
+                      <h4 className="text-lg font-semibold">Number of Guests</h4>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          onClick={() => handleGuestChange('decrement')}
+                          variant="secondary"
+                          size="icon"
+                          className="h-10 w-10"
+                        >
+                          <Minus size={20} />
+                        </Button>
+                        <Input
+                          type="text"
+                          value={guestCount}
+                          readOnly
+                          className="w-20 border-gray-300 bg-gray-100 text-center text-lg font-semibold dark:border-gray-700 dark:bg-gray-900"
+                        />
+                        <Button
+                          onClick={() => handleGuestChange('increment')}
+                          variant="secondary"
+                          size="icon"
+                          className="h-10 w-10"
+                        >
+                          <Plus size={20} />
+                        </Button>
+                      </div>
+                    </div>
+
                     <Button
-                      onClick={() => handleGuestChange('decrement')}
-                      variant="secondary"
-                      size="icon"
-                      className="h-10 w-10"
+                      onClick={() => setStep(2)}
+                      className="w-full py-6 text-lg font-semibold text-white"
                     >
-                      <Minus size={20} />
+                      Next Step
                     </Button>
-                    <Input
-                      type="text"
-                      value={guestCount}
-                      readOnly
-                      className="w-20 border-gray-300 bg-gray-100 text-center text-lg font-semibold dark:border-gray-700 dark:bg-gray-900"
-                    />
-                    <Button
-                      onClick={() => handleGuestChange('increment')}
-                      variant="secondary"
-                      size="icon"
-                      className="h-10 w-10"
-                    >
-                      <Plus size={20} />
-                    </Button>
-                  </div>
-                </div>
+                  </>
+                )}
 
-                {/* Booking Summary */}
-                <div className="space-y-3 text-gray-600 dark:text-gray-300">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">Price per person:</span>
-                    <span>${costFrom}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">Guests:</span>
-                    <span>{guestCount}</span>
-                  </div>
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-4 text-lg font-bold dark:border-gray-700">
-                    <span>Total Amount:</span>
-                    <span className="text-green-600 dark:text-green-400">${totalAmount}</span>
-                  </div>
-                </div>
+                {step === 2 && (
+                  <>
+                    <div className="space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-900">
+                      <h4 className="text-lg font-semibold">Traveler Information</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Please ensure your profile is updated with your phone number and address
+                        before proceeding to payment.
+                      </p>
+                    </div>
 
-                {/* Book Now Button */}
-                <Button
-                  onClick={handleBookNow}
-                  className="w-full py-6 text-lg font-semibold text-white"
-                >
-                  Book Now
-                </Button>
+                    {/* Booking Summary */}
+                    <div className="space-y-3 text-gray-600 dark:text-gray-300">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Price per person:</span>
+                        <span>${costFrom}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Guests:</span>
+                        <span>{guestCount}</span>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-gray-200 pt-4 text-lg font-bold dark:border-gray-700">
+                        <span>Total Amount:</span>
+                        <span className="text-green-600 dark:text-green-400">${totalAmount}</span>
+                      </div>
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <div className="flex gap-4">
+                      <Button
+                        onClick={() => setStep(1)}
+                        variant="outline"
+                        className="w-1/3 py-6 text-lg font-semibold"
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        onClick={handleBookNow}
+                        className="w-2/3 py-6 text-lg font-semibold text-white"
+                      >
+                        Confirm & Pay
+                      </Button>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, Calendar as CalendarIcon, MapPin, Users } from 'lucide-react';
 import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,28 +28,48 @@ const HeroSection = () => {
           src={heroBg}
           alt="Travel Destination"
           className="h-full w-full object-cover object-center"
+          loading="lazy"
+          decoding="async"
         />
         {/* Subtle overlay */}
         <div className="absolute inset-0 bg-black/20 mix-blend-multiply dark:bg-black/40" />
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 mx-auto mt-[-10vh] max-w-4xl px-4 text-center">
-        <h1
+      <motion.div
+        className="relative z-10 mx-auto mt-[-10vh] max-w-4xl px-4 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
+        <motion.h1
           className="mb-6 text-4xl font-bold tracking-tight text-white drop-shadow-lg md:text-6xl lg:text-7xl"
           style={{ fontFamily: 'var(--font-heading, serif)' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
         >
           Discover the World's Best Destinations
-        </h1>
-        <p className="mx-auto mb-10 max-w-2xl text-lg font-medium text-white/90 drop-shadow-md md:text-xl">
+        </motion.h1>
+        <motion.p
+          className="mx-auto mb-10 max-w-2xl text-lg font-medium text-white/90 drop-shadow-md md:text-xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+        >
           Experience extraordinary journeys crafted for the modern traveler. Explore hidden gems and
           iconic landmarks.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Floating Search Widget */}
       <div className="absolute bottom-10 left-1/2 hidden w-11/12 max-w-5xl -translate-x-1/2">
-        <div className="rounded-2xl border border-white/20 bg-white/80 p-4 shadow-2xl backdrop-blur-xl md:rounded-4xl md:p-6 dark:bg-slate-900/80">
+        <motion.div
+          className="rounded-2xl border border-white/20 bg-white/80 p-4 shadow-2xl backdrop-blur-xl md:rounded-4xl md:p-6 dark:bg-slate-900/80"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+        >
           <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
             {/* Destination */}
             <div className="space-y-1.5">
@@ -114,7 +135,7 @@ const HeroSection = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

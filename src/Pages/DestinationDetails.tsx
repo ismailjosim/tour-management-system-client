@@ -149,6 +149,8 @@ const DestinationDetails: React.FC = () => {
                 className="h-64 w-full rounded-md object-cover md:h-96"
                 src={newThumbnail}
                 alt={newTitle}
+                loading="lazy"
+                decoding="async"
               />
             </div>
 
@@ -268,6 +270,8 @@ const DestinationDetails: React.FC = () => {
                           src={image}
                           alt={`Gallery image ${idx + 1}`}
                           className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     ))}
