@@ -6,7 +6,7 @@ import { ArrowRight, Globe, Star } from 'lucide-react';
 
 const CTASection: React.FC = () => {
   return (
-    <section className="from-primary/20 to-secondary/20 dark:from-primary/80 dark:to-secondary/80 relative bg-gradient-to-r py-16">
+    <section className="from-primary/20 to-secondary/20 dark:from-primary/80 dark:to-secondary/80 relative bg-linear-to-r py-16">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl space-y-8 text-center">
           {/* Badge */}

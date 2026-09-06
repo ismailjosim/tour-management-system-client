@@ -101,7 +101,7 @@ export const ProfileCard = ({ guideProfile }: ProfileCardProps) => {
       {/* Header Card with Profile Image */}
       <Card className="overflow-hidden">
         <CardContent className="p-0">
-          <div className="relative h-40 bg-gradient-to-r from-blue-500 to-purple-500">
+          <div className="relative h-40 bg-linear-to-r from-blue-500 to-purple-500">
             <div className="absolute inset-0 bg-black/10" />
           </div>
           <div className="relative px-6 pb-6">

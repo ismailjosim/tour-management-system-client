@@ -11,7 +11,7 @@ import PieChartCard from '@/components/modules/analytics/PieChartCard';
 import BarChartCard from '@/components/modules/analytics/BarChartCard';
 import DivisionProgressCard from '@/components/modules/analytics/DivisionProgressCard';
 import StatCard from '@/components/modules/analytics/StatCard';
-import DestinationLoading from '@/utils/DestinationLoading';
+import DashboardSkeleton from '@/components/layout/DashboardSkeleton';
 
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
 
@@ -22,7 +22,7 @@ const Analytics: React.FC = () => {
   const { data: tourStatsRes } = useGetTourStatsQuery(undefined);
 
   if (!userStatsRes || !bookingStatsRes || !paymentStatsRes || !tourStatsRes) {
-    return <DestinationLoading />;
+    return <DashboardSkeleton />;
   }
 
   const userStats = userStatsRes.data ?? {};

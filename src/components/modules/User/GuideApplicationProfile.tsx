@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { BadgeCheck, CheckCircle, Mail, ShieldAlert, XCircle } from 'lucide-react';
-import DataLoader from '@/utils/DataLoader';
+import ProfileSkeleton from '@/components/layout/ProfileSkeleton';
 import { useGetMyGuideApplicationQuery } from '@/redux/features/guide/guide.api';
 
 interface IUser {
@@ -88,7 +88,7 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
     if (guideApplication) setIsApplied(true);
   }, [guideApplication, setIsApplied]);
 
-  if (isLoading) return <DataLoader />;
+  if (isLoading) return <ProfileSkeleton />;
 
   if (isError)
     return (
@@ -150,7 +150,7 @@ const GuideApplicationProfile = ({ setIsApplied }: GuideApplicationProfileProps)
         <Card className="bg-card overflow-hidden rounded-xl shadow">
           <div className="md:flex">
             {/* Profile Image */}
-            <div className="ml-5 flex items-center justify-center rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 p-8 md:w-1/3 dark:from-blue-900 dark:to-indigo-800">
+            <div className="ml-5 flex items-center justify-center rounded-md bg-linear-to-br from-blue-50 to-indigo-50 p-8 md:w-1/3 dark:from-blue-900 dark:to-indigo-800">
               <div className="text-center">
                 <img
                   src={photo || user.picture}

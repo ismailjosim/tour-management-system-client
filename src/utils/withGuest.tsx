@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import { useUserInfoQuery } from '../redux/features/auth/auth.api';
-import PageLoader from './PageLoader';
+import FullPageSkeleton from '@/components/layout/FullPageSkeleton';
 import { Navigate } from 'react-router';
 
 const withGuest = (Component: ComponentType) => {
@@ -9,7 +9,7 @@ const withGuest = (Component: ComponentType) => {
     const user = data?.data;
 
     if (isLoading) {
-      return <PageLoader />;
+      return <FullPageSkeleton />;
     }
     if (user?.email) {
       return <Navigate to="/" replace />;

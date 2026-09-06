@@ -57,7 +57,7 @@ const GallerySection = () => {
                   alt={galleryImages[0].alt}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               </div>
               <div className="hidden grid-cols-2 gap-6 lg:grid">
                 <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
@@ -67,7 +67,7 @@ const GallerySection = () => {
                     alt={galleryImages[1].alt}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                 </div>
                 <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
                   <img
@@ -76,7 +76,7 @@ const GallerySection = () => {
                     alt={galleryImages[2].alt}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                 </div>
               </div>
             </div>
@@ -91,7 +91,7 @@ const GallerySection = () => {
                     alt={galleryImages[1].alt}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                 </div>
                 <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
                   <img
@@ -100,7 +100,7 @@ const GallerySection = () => {
                     alt={galleryImages[2].alt}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                 </div>
               </div>
               <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-in-out hover:-translate-y-2 hover:shadow-2xl">
@@ -110,7 +110,7 @@ const GallerySection = () => {
                   alt={galleryImages[0].alt}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               </div>
             </div>
 
@@ -127,7 +127,7 @@ const GallerySection = () => {
                     alt={image.alt}
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
                 </div>
               ))}
             </div>

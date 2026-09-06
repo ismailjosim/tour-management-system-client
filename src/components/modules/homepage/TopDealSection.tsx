@@ -131,7 +131,7 @@ const TopDealSection: React.FC = () => {
                   loading="lazy"
                 />
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
 
                 {/* Top badge */}
                 <Badge

@@ -2,7 +2,7 @@ import type { ComponentType } from 'react';
 import type { TRole } from '@/types';
 import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
 import { Navigate, useLocation } from 'react-router';
-import PageLoader from './PageLoader';
+import FullPageSkeleton from '@/components/layout/FullPageSkeleton';
 
 export const withAuth = (Component: ComponentType, requiredRole?: TRole | TRole[]) => {
   return function AuthWrapper() {
@@ -12,7 +12,7 @@ export const withAuth = (Component: ComponentType, requiredRole?: TRole | TRole[
     const userRole = data?.data?.role;
 
     if (isLoading) {
-      return <PageLoader />;
+      return <FullPageSkeleton />;
     }
 
     if (!isLoading && !data?.data?.email) {

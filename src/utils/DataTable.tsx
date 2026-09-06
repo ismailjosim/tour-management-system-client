@@ -2,7 +2,7 @@
 // components/ui/DataTable.tsx
 import { type ReactNode } from 'react';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import DataLoader from '@/utils/DataLoader';
+import TableSkeleton from '@/components/layout/TableSkeleton';
 
 interface Column {
   key: string;
@@ -25,7 +25,7 @@ const DataTable = ({
   emptyMessage = 'No data available',
 }: DataTableProps) => {
   if (isLoading) {
-    return <DataLoader />;
+    return <TableSkeleton columns={columns.length} rows={5} />;
   }
 
   return (

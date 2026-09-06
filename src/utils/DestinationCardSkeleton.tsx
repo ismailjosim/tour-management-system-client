@@ -20,7 +20,7 @@ const DestinationCardSkeleton = () => {
       </div>
 
       {/* Gradient overlay */}
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-400/70 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-gray-400/70 to-transparent" />
     </div>
   );
 };

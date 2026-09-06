@@ -1,4 +1,4 @@
-import { Mail, PhoneCall, MapPin } from 'lucide-react';
+import { Mail, PhoneCall, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import logoBlack from '@/assets/images/site-logo-dark.png';
@@ -31,10 +31,28 @@ const Footer = () => {
             </Link>
           </CardHeader>
           <CardContent className="mt-4 p-0">
-            <p className="text-muted-foreground text-sm leading-relaxed lg:w-5/6">
+            <p className="text-muted-foreground mb-6 text-sm leading-relaxed lg:w-5/6">
               Urna ratione ante harum provident, eleifend, vulputate molestiae proin fringilla,
               praesentium magna conubia at perferendis, pretium, aenean aut ultrices.
             </p>
+            <div className="text-muted-foreground flex items-center gap-4">
+              <a href="#" className="hover:text-foreground transition-colors" aria-label="Facebook">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="hover:text-foreground transition-colors" aria-label="Twitter">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="hover:text-foreground transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="#" className="hover:text-foreground transition-colors" aria-label="LinkedIn">
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
           </CardContent>
         </Card>
 
@@ -74,7 +92,7 @@ const Footer = () => {
           <CardContent className="space-y-4 p-0 text-sm">
             <p className="text-muted-foreground">Feel free to contact and reach us !!</p>
             <div className="flex items-center gap-3">
-              <PhoneCall className="text-muted-foreground h-4 w-4 flex-shrink-0" />
+              <PhoneCall className="text-muted-foreground h-4 w-4 shrink-0" />
               <a
                 href="tel:+01988256203"
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -83,7 +101,7 @@ const Footer = () => {
               </a>
             </div>
             <div className="flex items-center gap-3">
-              <Mail className="text-muted-foreground h-4 w-4 flex-shrink-0" />
+              <Mail className="text-muted-foreground h-4 w-4 shrink-0" />
               <a
                 href="mailto:contact@traveler.com"
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -92,7 +110,7 @@ const Footer = () => {
               </a>
             </div>
             <div className="flex items-center gap-3">
-              <MapPin className="text-muted-foreground h-4 w-4 flex-shrink-0" />
+              <MapPin className="text-muted-foreground h-4 w-4 shrink-0" />
               <span className="text-muted-foreground">3146 Koontz, California</span>
             </div>
           </CardContent>

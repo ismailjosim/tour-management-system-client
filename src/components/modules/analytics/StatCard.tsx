@@ -33,7 +33,7 @@ const StatCard: React.FC<StatCardProps> = ({
     <div className="bg-card rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md">
       {/* top section */}
       <div className="mb-4 flex items-center justify-between">
-        <div className={`rounded-xl bg-gradient-to-r ${colorClasses[color]} p-3 shadow-md`}>
+        <div className={`rounded-xl bg-linear-to-r ${colorClasses[color]} p-3 shadow-md`}>
           <Icon className="h-6 w-6 text-white" />
         </div>
 

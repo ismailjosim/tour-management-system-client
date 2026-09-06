@@ -1,163 +1,121 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRef, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCreative, Navigation, Pagination } from 'swiper/modules';
-import gsap from 'gsap';
+import { useState } from 'react';
+import { Search, Calendar as CalendarIcon, MapPin, Users } from 'lucide-react';
+import { format } from 'date-fns';
 
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-import slideImg01 from '@/assets/homepage/slide01.jpg';
-import slideImg02 from '@/assets/homepage/slide02.jpg';
-import ButtonNavigate from '../../../utils/ButtonNavigate';
-
-interface SlideType {
-  picture: string;
-  subHeading: string;
-  heading: string;
-  description: string;
-  btnText: string;
-}
-
-const slides: SlideType[] = [
-  {
-    picture: slideImg01,
-    subHeading: 'Amazing Places',
-    heading: 'Make Your Trip Fun & Noted',
-    description:
-      'Aperiam sociosqu urna praesent, tristique, corrupti condimentum asperiores platea ipsum ad arcu. Nostrud. Aut nostrum, ornare quas provident laoreet nesciunt.',
-    btnText: 'Get Started',
-  },
-  {
-    picture: slideImg02,
-    subHeading: 'Amazing Places',
-    heading: 'Make Your Trip Fun & Noted',
-    description:
-      'Aperiam sociosqu urna praesent, tristique, corrupti condimentum asperiores platea ipsum ad arcu. Nostrud. Aut nostrum, ornare quas provident laoreet nesciunt.',
-    btnText: 'Get Started',
-  },
-];
+import heroBg from '@/assets/homepage/slide01.jpg';
 
 const HeroSection = () => {
-  const progressCircle = useRef<SVGSVGElement | null>(null);
-  const progressContent = useRef<HTMLSpanElement | null>(null);
-  const swiperRef = useRef<any>(null);
-
-  const onAutoplayTimeLeft = (_s: any, time: number, progress: number) => {
-    if (progressCircle.current) {
-      progressCircle.current.style.setProperty('--progress', `${1 - progress}`);
-    }
-    if (progressContent.current) {
-      progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
-    }
-  };
-
-  useEffect(() => {
-    const swiper = swiperRef.current.swiper;
-
-    const animateSlide = (index: number) => {
-      const slide = swiper.slides[index];
-      const content = slide.querySelector('.slide-content');
-
-      if (content) {
-        gsap.fromTo(
-          content,
-          { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-        );
-      }
-    };
-
-    swiper.on('slideChange', () => {
-      animateSlide(swiper.realIndex);
-    });
-
-    // Animate first slide on mount
-    animateSlide(swiper.realIndex);
-
-    return () => {
-      swiper.off('slideChange');
-    };
-  }, []);
+  const [date, setDate] = useState<Date | undefined>();
 
   return (
-    <div className="relative w-full">
-      <Swiper
-        ref={swiperRef}
-        speed={1000}
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: false,
-        }}
-        loop={true}
-        pagination={{ clickable: true }}
-        navigation
-        modules={[Autoplay, Pagination, EffectCreative, Navigation]}
-        onAutoplayTimeLeft={onAutoplayTimeLeft}
-        grabCursor={true}
-        effect="creative"
-        creativeEffect={{
-          prev: {
-            shadow: true,
-            translate: [0, 0, -400],
-          },
-          next: {
-            translate: ['100%', 0, 0],
-          },
-        }}
-        className="h-[80vh] w-full overflow-hidden rounded-2xl shadow-xl"
-      >
-        {slides.map((slide, idx) => (
-          <SwiperSlide key={idx}>
-            <div className="relative flex h-[80vh] w-full items-center justify-center">
-              <img
-                src={slide.picture}
-                alt={slide.heading}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+    <div className="relative flex h-[85vh] min-h-125 w-full flex-col items-center justify-center overflow-hidden bg-[#FBF9F5]">
+      {/* Background Media */}
+      <div className="absolute inset-0 h-full w-full">
+        <img
+          src={heroBg}
+          alt="Travel Destination"
+          className="h-full w-full object-cover object-center"
+        />
+        {/* Subtle overlay */}
+        <div className="absolute inset-0 bg-black/20 mix-blend-multiply dark:bg-black/40" />
+      </div>
 
-              {/* Overlay for dark mode */}
-              <div className="absolute inset-0 bg-black/40 transition-colors duration-300 dark:bg-black/60" />
+      {/* Hero Content */}
+      <div className="relative z-10 mx-auto mt-[-10vh] max-w-4xl px-4 text-center">
+        <h1
+          className="mb-6 text-4xl font-bold tracking-tight text-white drop-shadow-lg md:text-6xl lg:text-7xl"
+          style={{ fontFamily: 'var(--font-heading, serif)' }}
+        >
+          Discover the World's Best Destinations
+        </h1>
+        <p className="mx-auto mb-10 max-w-2xl text-lg font-medium text-white/90 drop-shadow-md md:text-xl">
+          Experience extraordinary journeys crafted for the modern traveler. Explore hidden gems and
+          iconic landmarks.
+        </p>
+      </div>
 
-              <div className="slide-content relative z-10 max-w-2xl px-6 text-center">
-                <h3 className="text-secondary text-lg font-semibold tracking-wide uppercase transition-colors duration-300 md:text-xl dark:text-gray-300">
-                  {slide.subHeading}
-                </h3>
-                <h2 className="my-4 text-3xl font-extrabold text-white drop-shadow-lg transition-colors duration-300 md:text-5xl dark:text-gray-100">
-                  {slide.heading}
-                </h2>
-                <p className="mb-6 text-base text-gray-100 transition-colors duration-300 md:text-lg dark:text-gray-300">
-                  {slide.description}
-                </p>
-
-                <ButtonNavigate
-                  btnText={slide.btnText}
-                  destination={'/destinations'}
-                  size="lg"
-                ></ButtonNavigate>
+      {/* Floating Search Widget */}
+      <div className="absolute bottom-10 left-1/2 hidden w-11/12 max-w-5xl -translate-x-1/2">
+        <div className="rounded-2xl border border-white/20 bg-white/80 p-4 shadow-2xl backdrop-blur-xl md:rounded-4xl md:p-6 dark:bg-slate-900/80">
+          <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
+            {/* Destination */}
+            <div className="space-y-1.5">
+              <label className="ml-1 text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                Location
+              </label>
+              <div className="relative">
+                <MapPin className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <Input
+                  placeholder="Where are you going?"
+                  className="h-12 rounded-xl border-slate-200 bg-white/50 pl-10 focus-visible:ring-[#0A3D62] dark:border-slate-700 dark:bg-slate-800/50"
+                />
               </div>
             </div>
-          </SwiperSlide>
-        ))}
 
-        {/* Progress Circle */}
-        <div className="absolute right-4 bottom-4 z-20 flex h-12 w-12 items-center justify-center font-bold">
-          <svg
-            className="stroke-primary dark:stroke-primary-dark absolute inset-0 h-full w-full -rotate-90 fill-none stroke-[4] transition-colors duration-300"
-            viewBox="0 0 48 48"
-            ref={progressCircle}
-          >
-            <circle cx="24" cy="24" r="20"></circle>
-          </svg>
-          <span
-            className="text-primary dark:text-primary-dark font-semibold transition-colors duration-300"
-            ref={progressContent}
-          ></span>
+            {/* Travel Dates */}
+            <div className="space-y-1.5">
+              <label className="ml-1 text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                Dates
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={'outline'}
+                    className="h-12 w-full justify-start rounded-xl border-slate-200 bg-white/50 pl-3 text-left font-normal focus-visible:ring-[#0A3D62] dark:border-slate-700 dark:bg-slate-800/50"
+                  >
+                    <CalendarIcon className="mr-2 h-5 w-5 text-slate-400" />
+                    {date ? format(date, 'PPP') : <span className="text-slate-500">Add dates</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto rounded-xl p-0" align="start">
+                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Guests */}
+            <div className="space-y-1.5">
+              <label className="ml-1 text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                Guests
+              </label>
+              <div className="relative">
+                <Users className="absolute top-1/2 left-3 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <Select>
+                  <SelectTrigger className="h-12 rounded-xl border-slate-200 bg-white/50 pl-10 focus:ring-[#0A3D62] dark:border-slate-700 dark:bg-slate-800/50">
+                    <SelectValue placeholder="2 Adults" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl">
+                    <SelectItem value="1">1 Guest</SelectItem>
+                    <SelectItem value="2">2 Guests</SelectItem>
+                    <SelectItem value="3">3 Guests</SelectItem>
+                    <SelectItem value="4">4+ Guests</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Search Button */}
+            <div>
+              <Button className="h-12 w-full rounded-xl bg-[#D96C4A] text-white shadow-lg transition-transform hover:scale-[1.02] hover:bg-[#c25838] active:scale-[0.98]">
+                <Search className="mr-2 h-5 w-5" />
+                Search
+              </Button>
+            </div>
+          </div>
         </div>
-      </Swiper>
+      </div>
     </div>
   );
 };

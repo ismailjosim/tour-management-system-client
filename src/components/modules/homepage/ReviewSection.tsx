@@ -37,7 +37,7 @@ const ReviewSection: React.FC = () => {
     }) || [];
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-white py-16 transition-colors duration-300 dark:from-gray-700 dark:to-gray-800">
+    <section className="bg-linear-to-br from-gray-50 to-white py-16 transition-colors duration-300 dark:from-gray-700 dark:to-gray-800">
       <div className="container mx-auto">
         <SectionHeading heading={heading} />
 
