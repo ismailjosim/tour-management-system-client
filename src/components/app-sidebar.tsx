@@ -67,7 +67,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarHeader>
         <Link to="/" className="flex items-center gap-2 font-medium">
-          <img src={theme === 'dark' ? logoWhile : logoBlack} alt="Site logo" />
+          <img
+            src={theme === 'dark' ? logoWhile : logoBlack}
+            alt="Site logo"
+            className="h-10 w-auto object-contain"
+          />
         </Link>
       </SidebarHeader>
 

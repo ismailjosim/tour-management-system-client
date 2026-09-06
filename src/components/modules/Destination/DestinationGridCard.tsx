@@ -72,25 +72,25 @@ const DestinationGridCard: React.FC<DestinationCardProps> = ({ item }) => {
           <span className="truncate text-sm font-medium">{location}</span>
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-5 dark:border-slate-800">
-          <div>
+        <div className="mt-auto flex items-end justify-between gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+          <div className="min-w-0">
             <span className="mb-0.5 block text-[10px] font-bold tracking-widest text-slate-400 uppercase">
               From
             </span>
             <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-bold text-[#0A3D62] dark:text-blue-400">
+              <span className="text-xl font-bold text-[#0A3D62] dark:text-blue-400">
                 ${costFrom || 0}
               </span>
-              <span className="text-sm font-medium text-slate-500">/person</span>
+              <span className="text-xs font-medium text-slate-500">/person</span>
             </div>
           </div>
 
           <Link
             to={`/destination/${slug}`}
-            className="flex items-center justify-center gap-2 rounded-xl bg-[#D96C4A] px-5 py-2.5 font-semibold text-white shadow-md shadow-[#D96C4A]/20 transition-transform hover:scale-105 hover:bg-[#c25838] active:scale-95"
+            className="flex shrink-0 items-center gap-1.5 rounded-xl bg-[#D96C4A] px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-md shadow-[#D96C4A]/20 transition-transform hover:scale-105 hover:bg-[#c25838] active:scale-95"
           >
             Quick Book
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

@@ -157,7 +157,11 @@ const Header: React.FC = () => {
     <header className="border-b shadow-sm">
       <div className="container mx-auto flex items-center justify-between px-0 py-4">
         <Link to="/" className="flex items-center gap-2 font-medium">
-          <img src={theme === 'dark' ? logoWhile : logoBlack} alt="Site logo" />
+          <img
+            className="h-12 w-auto object-contain"
+            src={theme === 'dark' ? logoWhile : logoBlack}
+            alt="Site logo"
+          />
         </Link>
 
         {/* Desktop Navigation */}

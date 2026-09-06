@@ -2,6 +2,7 @@ import type { IDestination } from '../../../types';
 import DestinationCardSkeleton from '../../../utils/DestinationCardSkeleton';
 import DestinationFlexCard from './DestinationFlexCard';
 import DestinationGridCard from './DestinationGridCard';
+import Error from '../../../utils/Error';
 
 type DestinationContentProps = {
   data?: {
@@ -36,19 +37,19 @@ const DestinationContent = ({
 
   if (isError) {
     return (
-      <div className="py-10 text-center">
-        <h3 className="text-xl text-red-500">Something went wrong</h3>
-        <p className="mt-2 text-gray-600">Please try again later</p>
-      </div>
+      <Error
+        message="Something went wrong"
+        description="We had trouble loading destinations. Please check your connection and try again."
+      />
     );
   }
 
   if (!data?.data?.length) {
     return (
-      <div className="py-10 text-center">
-        <h3 className="text-xl text-gray-500">No destinations found</h3>
-        <p className="mt-2 text-gray-600">Try adjusting your filters</p>
-      </div>
+      <Error
+        message="No destinations found"
+        description="We couldn't find any destinations matching your filters. Try broadening your search."
+      />
     );
   }
 

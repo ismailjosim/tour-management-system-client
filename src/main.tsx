@@ -1,21 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-
-import { RouterProvider } from 'react-router';
-import router from './routes/routes.ts';
-import { Provider as ReduxProvider } from 'react-redux';
-import { store } from './redux/app/store.ts';
-import { ThemeProvider } from './Providers/theme.provider.tsx';
-import { Toaster } from './components/ui/sonner.tsx';
+import { Root } from './Root.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <ReduxProvider store={store}>
-        <RouterProvider router={router} />
-        <Toaster richColors />
-      </ReduxProvider>
-    </ThemeProvider>
+    <Root />
   </StrictMode>
 );

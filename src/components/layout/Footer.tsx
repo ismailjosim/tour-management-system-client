@@ -26,7 +26,7 @@ const Footer = () => {
               <img
                 src={theme === 'dark' ? logoWhite : logoBlack}
                 alt="Site logo"
-                className="h-8 w-auto"
+                className="h-10 w-auto object-contain"
               />
             </Link>
           </CardHeader>
