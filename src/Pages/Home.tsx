@@ -1,5 +1,4 @@
 import HeroSection from '@/components/modules/homepage/HeroSection';
-import QuickSearchSection from '@/components/modules/homepage/QuickSearchSection';
 import FeaturedSection from '@/components/modules/homepage/FeaturedSection';
 import TopDestinationsSection from '@/components/modules/homepage/TopDestinationsSection';
 import GallerySection from '@/components/modules/homepage/GallerySection';
@@ -17,7 +16,6 @@ const Home = () => {
   return (
     <>
       <HeroSection />
-      <QuickSearchSection />
       <TopDestinationsSection />
       <HowTravelerWorksSection />
       <WhyBookWithTravelerSection />

@@ -2,6 +2,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useEffect } from 'react';
+import DocumentTitleUpdater from './DocumentTitleUpdater';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
 export default function DashboardLayout() {
@@ -20,6 +21,7 @@ export default function DashboardLayout() {
 
   return (
     <SidebarProvider>
+      <DocumentTitleUpdater />
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">

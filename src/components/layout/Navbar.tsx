@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { Button } from '../ui/button';
 import { Menu } from 'lucide-react';
 import { ModeToggle } from './ModeToggler';
@@ -51,6 +51,8 @@ const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const user = data?.data;
   const { theme } = useTheme();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
 
   const handleLogout = async () => {
     try {
@@ -75,7 +77,7 @@ const Header: React.FC = () => {
         <NavigationMenuItem>
           <Link
             to="/login"
-            className="text-foreground hover:text-primary text-sm font-medium uppercase transition"
+            className={`${isHome ? 'text-white/90 hover:text-white' : 'text-foreground hover:text-primary'} text-sm font-medium uppercase transition`}
           >
             Login / Register
           </Link>
@@ -136,7 +138,7 @@ const Header: React.FC = () => {
         <NavigationMenuItem>
           <Button
             variant="default"
-            className="hover:border-primary hover:text-primary mx-0 cursor-pointer border px-2 text-sm font-medium uppercase transition hover:bg-transparent"
+            className={`${isHome ? 'border-white text-white hover:bg-white hover:text-black' : 'border hover:border-primary hover:text-primary text-foreground'} mx-0 cursor-pointer px-2 text-sm font-medium uppercase transition bg-transparent`}
             onClick={handleLogout}
           >
             Logout
@@ -154,12 +156,12 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="border-b shadow-sm">
+    <header className={`${isHome ? 'absolute top-0 left-0 w-full z-50 bg-transparent text-white border-none' : 'border-b shadow-sm bg-background text-foreground'}`}>
       <div className="container mx-auto flex items-center justify-between px-0 py-4">
         <Link to="/" className="flex items-center gap-2 font-medium">
           <img
             className="h-12 w-auto object-contain"
-            src={theme === 'dark' ? logoWhile : logoBlack}
+            src={isHome ? logoWhile : (theme === 'dark' ? logoWhile : logoBlack)}
             alt="Site logo"
           />
         </Link>
@@ -171,14 +173,14 @@ const Header: React.FC = () => {
               {filteredNavLinks().map(({ label, href }) => (
                 <NavigationMenuItem key={href}>
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <NavLink className={'rounded-md p-2 px-3'} to={href}>
+                    <NavLink className={`rounded-md p-2 px-3 ${isHome ? 'text-white/90 hover:text-white' : 'text-foreground hover:text-primary'}`} to={href}>
                       {label}
                     </NavLink>
                   </motion.div>
                 </NavigationMenuItem>
               ))}
               {renderUserSection()}
-              <ModeToggle />
+              {!isHome && <ModeToggle />}
             </NavigationMenuList>
           </NavigationMenu>
         </nav>
